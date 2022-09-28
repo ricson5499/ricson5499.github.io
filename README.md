@@ -5,7 +5,7 @@
 
 - 🔭 I’m currently working at **Creative Labs**
 - 👯 with 1 of my partner as **Front End Dev**
-- 🌱 I’m currently learning **C#, Css, Javascript**
+- 🌱 I’m currently learning **SQL, Vue, NuxtJS, wordpress and Divi Builder**
 - 💻 Sending email to europe audience weekly start from 2012...
 - 📫 How to reach me **ricson5499@gmail.com**
 - ⚡ Fun fact **When you thinking tat is a feature, actually is a bug**
