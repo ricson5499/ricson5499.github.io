@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      background: #20262E;
+      padding: 20px;
+      font-family: Roboto;
+    }
+
+    #banner-message {
+      background: #fff;
+      border-radius: 4px;
+      padding: 20px;
+      font-size: 25px;
+      text-align: center;
+      transition: all 0.2s;
+      margin: 0 auto;
+      width: 300px;
+    }
+  </style>
+</head>
+<body>
+  
+  <div id="banner-message">
+    <p><input type="number"> <span>台币</span></p>
+    <p><span>RM</span> <span class="txt_myr"></span></p>
+    <p>兑换率 <br>马币to台币1:7 <br>台币to马币1:0.14</p>  
+  </div>
+
+  <script>
+  // set rate
+  var rateTWDtoMYR = 0.14;
+  // handle click and add class
+  document.querySelector("input[type='number']").addEventListener('input', function(e){
+    document.querySelector(".txt_myr").innerHTML=(e.target.value*rateTWDtoMYR).toFixed(1)+"0";
+  });
+  </script>
+</body>
+</html>
