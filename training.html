@@ -18,9 +18,9 @@
             background-color: #d4edda;
         }
         button {
-            margin: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
+            margin: 5px;
+            padding: 5px 10px;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -39,32 +39,72 @@
         </thead>
         <tbody>
             <tr>
-                <td>週一</td>
-                <td>下肢訓練 + 平衡與穩定性</td>
-                <td>深蹲, 弓步, 單腳平衡</td>
-                <td>3x12, 3x每腿10, 2x每腿30秒</td>
-                <td><button onclick="markComplete('monday')">達成</button></td>
+                <td rowspan="3">週一</td>
+                <td rowspan="3">下肢訓練 + 平衡與穩定性</td>
+                <td>深蹲</td>
+                <td>3x12</td>
+                <td><button onclick="markComplete('monday-squat')">達成</button></td>
             </tr>
             <tr>
-                <td>週三</td>
-                <td>核心訓練 + 爆發力訓練</td>
-                <td>平板支撐, 俄羅斯轉體, 箱跳</td>
-                <td>3x45秒, 3x15, 3x10</td>
-                <td><button onclick="markComplete('wednesday')">達成</button></td>
+                <td>弓步</td>
+                <td>3x每腿10</td>
+                <td><button onclick="markComplete('monday-lunge')">達成</button></td>
             </tr>
             <tr>
-                <td>週五</td>
-                <td>全身力量訓練</td>
-                <td>俯臥撐, 啞鈴肩推, 啞鈴划船</td>
-                <td>3x15, 3x12, 3x每邊12</td>
-                <td><button onclick="markComplete('friday')">達成</button></td>
+                <td>單腳平衡</td>
+                <td>2x每腿30秒</td>
+                <td><button onclick="markComplete('monday-balance')">達成</button></td>
             </tr>
             <tr>
-                <td>週六</td>
-                <td>髖關節與臀部訓練</td>
-                <td>臀橋, 側向弓步, 髖外展</td>
-                <td>3x15, 3x每腿12, 3x12</td>
-                <td><button onclick="markComplete('saturday')">達成</button></td>
+                <td rowspan="3">週三</td>
+                <td rowspan="3">核心訓練 + 爆發力訓練</td>
+                <td>平板支撐</td>
+                <td>3x45秒</td>
+                <td><button onclick="markComplete('wednesday-plank')">達成</button></td>
+            </tr>
+            <tr>
+                <td>俄羅斯轉體</td>
+                <td>3x15</td>
+                <td><button onclick="markComplete('wednesday-russian-twist')">達成</button></td>
+            </tr>
+            <tr>
+                <td>箱跳</td>
+                <td>3x10</td>
+                <td><button onclick="markComplete('wednesday-box-jump')">達成</button></td>
+            </tr>
+            <tr>
+                <td rowspan="3">週五</td>
+                <td rowspan="3">全身力量訓練</td>
+                <td>俯臥撐</td>
+                <td>3x15</td>
+                <td><button onclick="markComplete('friday-pushup')">達成</button></td>
+            </tr>
+            <tr>
+                <td>啞鈴肩推</td>
+                <td>3x12</td>
+                <td><button onclick="markComplete('friday-shoulder-press')">達成</button></td>
+            </tr>
+            <tr>
+                <td>啞鈴划船</td>
+                <td>3x每邊12</td>
+                <td><button onclick="markComplete('friday-row')">達成</button></td>
+            </tr>
+            <tr>
+                <td rowspan="3">週六</td>
+                <td rowspan="3">髖關節與臀部訓練</td>
+                <td>臀橋</td>
+                <td>3x15</td>
+                <td><button onclick="markComplete('saturday-bridge')">達成</button></td>
+            </tr>
+            <tr>
+                <td>側向弓步</td>
+                <td>3x每腿12</td>
+                <td><button onclick="markComplete('saturday-side-lunge')">達成</button></td>
+            </tr>
+            <tr>
+                <td>髖外展</td>
+                <td>3x12</td>
+                <td><button onclick="markComplete('saturday-hip-abduction')">達成</button></td>
             </tr>
         </tbody>
     </table>
@@ -90,34 +130,41 @@
             return null;
         }
 
-        function markComplete(day) {
-            document.querySelectorAll(`#training-plan button`).forEach(btn => {
-                if (btn.onclick.toString().includes(day)) {
-                    btn.parentElement.classList.add("completed");
-                    btn.innerText = "已達成";
-                    btn.disabled = true;
-                }
-            });
-            setCookie(day, "completed", 30);
+        function markComplete(task) {
+            const button = document.querySelector(`button[onclick="markComplete('${task}')"]`);
+            if (button) {
+                button.classList.add("completed");
+                button.innerText = "已達成";
+                button.disabled = true;
+            }
+            setCookie(task, "completed", 30);
         }
 
         function loadProgress() {
-            const days = ["monday", "wednesday", "friday", "saturday"];
-            days.forEach(day => {
-                if (getCookie(day) === "completed") {
-                    markComplete(day);
+            const tasks = [
+                "monday-squat", "monday-lunge", "monday-balance",
+                "wednesday-plank", "wednesday-russian-twist", "wednesday-box-jump",
+                "friday-pushup", "friday-shoulder-press", "friday-row",
+                "saturday-bridge", "saturday-side-lunge", "saturday-hip-abduction"
+            ];
+            tasks.forEach(task => {
+                if (getCookie(task) === "completed") {
+                    markComplete(task);
                 }
             });
         }
 
         function clearProgress() {
-            const days = ["monday", "wednesday", "friday", "saturday"];
-            days.forEach(day => {
-                setCookie(day, "", -1);
+            const tasks = [
+                "monday-squat", "monday-lunge", "monday-balance",
+                "wednesday-plank", "wednesday-russian-twist", "wednesday-box-jump",
+                "friday-pushup", "friday-shoulder-press", "friday-row",
+                "saturday-bridge", "saturday-side-lunge", "saturday-hip-abduction"
+            ];
+            tasks.forEach(task => {
+                setCookie(task, "", -1);
             });
-            document.querySelector(".clearStatus").innerHTML="所有達成狀態已清除！請刷新頁面。";
-            // alert("所有達成狀態已清除！");
-            // location.reload();
+            document.querySelector(".clearStatus").innerHTML="所有達成狀態已清除！請刷新頁面。";            
         }
 
         // 頁面加載時載入已保存的達成狀態
