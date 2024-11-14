@@ -70,6 +70,7 @@
     </table>
 
     <button onclick="clearProgress()">清除所有達成狀態</button>
+    <div><span class="clearStatus"></span></div>
 
     <script>
         function setCookie(name, value, days) {
@@ -114,8 +115,9 @@
             days.forEach(day => {
                 setCookie(day, "", -1);
             });
-            alert("所有達成狀態已清除！");
-            location.reload();
+            document.querySelector(".clearStatus").innerHTML="所有達成狀態已清除！請刷新頁面。";
+            // alert("所有達成狀態已清除！");
+            // location.reload();
         }
 
         // 頁面加載時載入已保存的達成狀態
