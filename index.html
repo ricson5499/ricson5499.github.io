@@ -98,16 +98,19 @@
       to { background: #191970; }
     }
     @keyframes drive {
-        from { transform: translateX(-100px); }
-        to { transform: translateX(calc(100vw + 100px)); }
+      0% { transform: translateX(-100px); }
+      40% { transform: translateX(calc(70vw + 100px)); }
+      50%, 87% { transform: translateX(calc(80vw + 100px)); }
+      100% { transform: translateX(calc(100vw + 100px)); }
     }
     @keyframes sunset {
         from { transform: translateY(0) translateX(0); }
         to { transform: translateY(60vh) translateX(60vw); }
     }
     @keyframes trafficLight {
-        0%, 60% { background-color: red; }
-        61%, 80% { background-color: yellow; }
+        0%, 40% { background-color: green; }
+        41%, 50% { background-color: yellow; }
+        51%, 80% { background-color: red; }
         81%, 100% { background-color: green; }
     }
     @keyframes windowlight {
