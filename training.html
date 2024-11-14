@@ -14,9 +14,9 @@
             padding: 10px;
             text-align: center;
         }
-        .completed {
+        table td.completed {
             background-color: #d4edda;
-        }
+        }        
         button {
             margin: 5px;
             padding: 5px 10px;
@@ -43,68 +43,68 @@
                 <td rowspan="3">下肢訓練 + 平衡與穩定性</td>
                 <td>深蹲</td>
                 <td>3x12</td>
-                <td><button onclick="markComplete('monday-squat')">達成</button></td>
+                <td class="monday-squat"><button onclick="markComplete('monday-squat')">達成</button></td>
             </tr>
             <tr>
                 <td>弓步</td>
                 <td>3x每腿10</td>
-                <td><button onclick="markComplete('monday-lunge')">達成</button></td>
+                <td class="monday-lunge"><button onclick="markComplete('monday-lunge')">達成</button></td>
             </tr>
             <tr>
                 <td>單腳平衡</td>
                 <td>2x每腿30秒</td>
-                <td><button onclick="markComplete('monday-balance')">達成</button></td>
+                <td class="monday-balance"><button onclick="markComplete('monday-balance')">達成</button></td>
             </tr>
             <tr>
                 <td rowspan="3">週三</td>
                 <td rowspan="3">核心訓練 + 爆發力訓練</td>
                 <td>平板支撐</td>
                 <td>3x45秒</td>
-                <td><button onclick="markComplete('wednesday-plank')">達成</button></td>
+                <td class="wednesday-plank"><button onclick="markComplete('wednesday-plank')">達成</button></td>
             </tr>
             <tr>
                 <td>俄羅斯轉體</td>
                 <td>3x15</td>
-                <td><button onclick="markComplete('wednesday-russian-twist')">達成</button></td>
+                <td class="wednesday-russian-twist"><button onclick="markComplete('wednesday-russian-twist')">達成</button></td>
             </tr>
             <tr>
                 <td>箱跳</td>
                 <td>3x10</td>
-                <td><button onclick="markComplete('wednesday-box-jump')">達成</button></td>
+                <td class="wednesday-box-jump"><button onclick="markComplete('wednesday-box-jump')">達成</button></td>
             </tr>
             <tr>
                 <td rowspan="3">週五</td>
                 <td rowspan="3">全身力量訓練</td>
                 <td>俯臥撐</td>
                 <td>3x15</td>
-                <td><button onclick="markComplete('friday-pushup')">達成</button></td>
+                <td class="friday-pushup"><button onclick="markComplete('friday-pushup')">達成</button></td>
             </tr>
             <tr>
                 <td>啞鈴肩推</td>
                 <td>3x12</td>
-                <td><button onclick="markComplete('friday-shoulder-press')">達成</button></td>
+                <td class="friday-shoulder-press"><button onclick="markComplete('friday-shoulder-press')">達成</button></td>
             </tr>
             <tr>
                 <td>啞鈴划船</td>
                 <td>3x每邊12</td>
-                <td><button onclick="markComplete('friday-row')">達成</button></td>
+                <td class="friday-row"><button onclick="markComplete('friday-row')">達成</button></td>
             </tr>
             <tr>
                 <td rowspan="3">週六</td>
                 <td rowspan="3">髖關節與臀部訓練</td>
                 <td>臀橋</td>
                 <td>3x15</td>
-                <td><button onclick="markComplete('saturday-bridge')">達成</button></td>
+                <td class="saturday-bridge"><button onclick="markComplete('saturday-bridge')">達成</button></td>
             </tr>
             <tr>
                 <td>側向弓步</td>
                 <td>3x每腿12</td>
-                <td><button onclick="markComplete('saturday-side-lunge')">達成</button></td>
+                <td class="saturday-side-lunge"><button onclick="markComplete('saturday-side-lunge')">達成</button></td>
             </tr>
             <tr>
                 <td>髖外展</td>
                 <td>3x12</td>
-                <td><button onclick="markComplete('saturday-hip-abduction')">達成</button></td>
+                <td class="saturday-hip-abduction"><button onclick="markComplete('saturday-hip-abduction')">達成</button></td>
             </tr>
         </tbody>
     </table>
@@ -131,11 +131,11 @@
         }
 
         function markComplete(task) {
-            const button = document.querySelector(`button[onclick="markComplete('${task}')"]`);
-            if (button) {
-                button.classList.add("completed");
-                button.innerText = "已達成";
-                button.disabled = true;
+            const td = document.querySelector(`td.${task}`);
+            if (td) {
+                td.classList.add("completed");
+                td.querySelector("button").innerText = "已達成";
+                td.querySelector("button").disabled = true;
             }
             setCookie(task, "completed", 30);
         }
