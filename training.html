@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>力量訓練達成追踪</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: center;
+        }
+        .completed {
+            background-color: #d4edda;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>力量訓練計劃表（每日達成追踪）</h1>
+
+    <table id="training-plan">
+        <thead>
+            <tr>
+                <th>星期</th>
+                <th>訓練內容</th>
+                <th>動作</th>
+                <th>組數 x 次數</th>
+                <th>狀態</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>週一</td>
+                <td>下肢訓練 + 平衡與穩定性</td>
+                <td>深蹲, 弓步, 單腳平衡</td>
+                <td>3x12, 3x每腿10, 2x每腿30秒</td>
+                <td><button onclick="markComplete('monday')">達成</button></td>
+            </tr>
+            <tr>
+                <td>週三</td>
+                <td>核心訓練 + 爆發力訓練</td>
+                <td>平板支撐, 俄羅斯轉體, 箱跳</td>
+                <td>3x45秒, 3x15, 3x10</td>
+                <td><button onclick="markComplete('wednesday')">達成</button></td>
+            </tr>
+            <tr>
+                <td>週五</td>
+                <td>全身力量訓練</td>
+                <td>俯臥撐, 啞鈴肩推, 啞鈴划船</td>
+                <td>3x15, 3x12, 3x每邊12</td>
+                <td><button onclick="markComplete('friday')">達成</button></td>
+            </tr>
+            <tr>
+                <td>週六</td>
+                <td>髖關節與臀部訓練</td>
+                <td>臀橋, 側向弓步, 髖外展</td>
+                <td>3x15, 3x每腿12, 3x12</td>
+                <td><button onclick="markComplete('saturday')">達成</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button onclick="clearProgress()">清除所有達成狀態</button>
+
+    <script>
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days*24*60*60*1000));
+            document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/`;
+        }
+
+        function getCookie(name) {
+            const cookies = document.cookie.split("; ");
+            for (let cookie of cookies) {
+                const [key, value] = cookie.split("=");
+                if (key === name) {
+                    return value;
+                }
+            }
+            return null;
+        }
+
+        function markComplete(day) {
+            document.querySelectorAll(`#training-plan button`).forEach(btn => {
+                if (btn.onclick.toString().includes(day)) {
+                    btn.parentElement.classList.add("completed");
+                    btn.innerText = "已達成";
+                    btn.disabled = true;
+                }
+            });
+            setCookie(day, "completed", 30);
+        }
+
+        function loadProgress() {
+            const days = ["monday", "wednesday", "friday", "saturday"];
+            days.forEach(day => {
+                if (getCookie(day) === "completed") {
+                    markComplete(day);
+                }
+            });
+        }
+
+        function clearProgress() {
+            const days = ["monday", "wednesday", "friday", "saturday"];
+            days.forEach(day => {
+                setCookie(day, "", -1);
+            });
+            alert("所有達成狀態已清除！");
+            location.reload();
+        }
+
+        // 頁面加載時載入已保存的達成狀態
+        window.onload = loadProgress;
+    </script>
+</body>
+</html>
