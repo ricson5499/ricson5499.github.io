@@ -168,6 +168,11 @@
             tasks.forEach(task => {
                 setCookie(task, "", -1);
             });
+            [...document.querySelectorAll("td.completed")].forEach(e=>e.classList.remove("completed"));
+            [...document.querySelectorAll("button")].forEach(function(e){
+                e.disabled = false;
+                e.innerText = "達成";
+            });
             document.querySelector(".clearStatus").innerHTML="所有達成狀態已清除！請刷新頁面。";            
         }
 
