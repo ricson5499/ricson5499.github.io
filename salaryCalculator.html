@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>秒薪计算器</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .number-display {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #1e40af;
+    }
+    .fixed-number {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #1e40af;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <h1 class="text-2xl font-bold text-center mb-6">秒薪计算器</h1>
+    
+    <div class="mb-4">
+      <label for="monthlySalary" class="block text-sm font-medium text-gray-700">月薪:</label>
+      <input type="number" id="monthlySalary" class="mt-1 p-2 w-full border rounded-md" placeholder="请输入月薪" required>
+    </div>
+    
+    <div class="mb-4">
+      <label for="dailyHours" class="block text-sm font-medium text-gray-700">每天工作小时数:</label>
+      <input type="number" id="dailyHours" class="mt-1 p-2 w-full border rounded-md" placeholder="请输入小时数" value="8" min="1" required>
+    </div>
+    
+    <div class="mb-6">
+      <label for="weeklyDays" class="block text-sm font-medium text-gray-700">每周工作天数:</label>
+      <input type="number" id="weeklyDays" class="mt-1 p-2 w-full border rounded-md" placeholder="请输入天数" value="5" min="1" max="7" required>
+    </div>
+    
+    <button onclick="calculateSalary()" class="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700">计算薪资</button>
+    
+    <div id="result" class="mt-6 text-center">
+      <p>你的实时秒薪:</p>
+      <span id="secondSalary" class="number-display">0.00000</span>
+      <div class="mt-4">
+        <p>你的小时薪资:</p>
+        <span id="hourlySalary" class="fixed-number">0.00</span>
+      </div>
+      <div class="mt-4">
+        <p>你的天薪资:</p>
+        <span id="dailySalary" class="fixed-number">0.00</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function calculateSalary() {
+      const monthlySalary = parseFloat(document.getElementById('monthlySalary').value);
+      const dailyHours = parseFloat(document.getElementById('dailyHours').value);
+      const weeklyDays = parseFloat(document.getElementById('weeklyDays').value);
+      const interval = 100; // 固定刷新间隔为100ms
+
+      if (isNaN(monthlySalary) || monthlySalary <= 0) {
+        alert('请输入有效的月薪！');
+        return;
+      }
+      if (isNaN(dailyHours) || dailyHours <= 0) {
+        alert('请输入有效的每天工作小时数！');
+        return;
+      }
+      if (isNaN(weeklyDays) || weeklyDays <= 0 || weeklyDays > 7) {
+        alert('请输入有效的每周工作天数（1-7）！');
+        return;
+      }
+
+      // 假设一个月4周，计算每月工作秒数
+      const secondsPerHour = 3600;
+      const weeksPerMonth = 4;
+      const monthlyWorkSeconds = dailyHours * secondsPerHour * weeklyDays * weeksPerMonth;
+      const secondSalary = monthlySalary / monthlyWorkSeconds;
+      const hourlySalary = secondSalary * secondsPerHour; // 每小时薪资
+      const dailySalary = hourlySalary * dailyHours; // 每天薪资
+
+      // 更新固定薪资显示
+      document.getElementById('hourlySalary').textContent = hourlySalary.toFixed(2);
+      document.getElementById('dailySalary').textContent = dailySalary.toFixed(2);
+
+      // 初始化实时秒薪显示
+      let elapsedSeconds = 0;
+      const secondSalaryElement = document.getElementById('secondSalary');
+
+      // 清除之前的定时器
+      if (window.salaryInterval) {
+        clearInterval(window.salaryInterval);
+      }
+
+      // 设置定时器，每100ms更新实时秒薪
+      window.salaryInterval = setInterval(() => {
+        elapsedSeconds += interval / 1000; // 转换为秒
+        const currentDisplay = secondSalary * elapsedSeconds;
+        secondSalaryElement.textContent = currentDisplay.toFixed(5); // 保留5位小数
+      }, interval);
+    }
+  </script>
+</body>
+</html>
