@@ -13,8 +13,9 @@
       background:#000;
     }
     div {
-      width: 100vw;
+      width: 100vw;    /* fallback for older browsers */
       height: 100vh;   /* fallback for older browsers */
+      height: 100dvw;  /* modern browsers will override */
       height: 100dvh;  /* modern browsers will override */
       background-color: lightblue;
       border:1px solid red;
