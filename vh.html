@@ -12,15 +12,25 @@
       margin:0;
       background:#000;
     }
-    div {
+    div.a {
       width: 100vw;
       height: 100vh;
       background-color: lightblue;
-      border:1px solid red;
+      display:flex;
+      align-items:center;
+      justify-content: center;
+    }
+    div.b {
+      background-color: yellow;      
+      display:block;
+      width:calc(100% - 40px);
+      height:calc(100% - 40px);
     }
   </style>
 </head>
 <body>
-  <div></div>
+  <div class="a">
+    <div class="b"></div>
+  </div>
 </body>
 </html>

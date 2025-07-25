@@ -12,17 +12,27 @@
       margin:0;
       background:#000;
     }
-    div {
+    div.a {
       width: 100vw;    /* fallback for older browsers */
       height: 100vh;   /* fallback for older browsers */
-      height: 100dvw;  /* modern browsers will override */
+      width: 100dvw;  /* modern browsers will override */
       height: 100dvh;  /* modern browsers will override */
       background-color: lightblue;
-      border:1px solid red;
+      display:flex;
+      align-items:center;
+      justify-content: center;
+    }
+    div.b {
+      background-color: yellow;
+      display:block;
+      width:calc(100% - 40px);
+      height:calc(100% - 40px);
     }
   </style>
 </head>
 <body>
-  <div></div>
+  <div class="a">
+    <div class="b"></div>
+  </div>
 </body>
 </html>
