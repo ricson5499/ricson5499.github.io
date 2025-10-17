@@ -9,33 +9,31 @@
   <h1>Prompt 收藏頁</h1>
   <div id="prompt-container" class="prompt-container"></div>
   <script type="module">
-    import prompts from './prompts.js';    
-</script>
+    import prompts from './prompts.js';
+    
+    const container = document.getElementById('prompt-container');
 
-  <script>
-        const container = document.getElementById('prompt-container');
+    prompts.forEach(group => {
+      const section = document.createElement('section');
+      section.className = 'prompt-section';
+      section.innerHTML = `<h2>${group.category}</h2>`;
 
-        prompts.forEach(group => {
-          const section = document.createElement('section');
-          section.className = 'prompt-section';
-          section.innerHTML = `<h2>${group.category}</h2>`;
+      const list = document.createElement('div');
+      list.className = 'prompt-list';
 
-          const list = document.createElement('div');
-          list.className = 'prompt-list';
+      group.items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'prompt-card';
+        card.innerHTML = `
+          <h3>${item.title}</h3>
+          <pre>${item.prompt}</pre>
+        `;
+        list.appendChild(card);
+      });
 
-          group.items.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'prompt-card';
-            card.innerHTML = `
-              <h3>${item.title}</h3>
-              <pre>${item.prompt}</pre>
-            `;
-            list.appendChild(card);
-          });
-
-          section.appendChild(list);
-          container.appendChild(section);
-        });
+      section.appendChild(list);
+      container.appendChild(section);
+    });
   </script>
 </body>
 </html>
