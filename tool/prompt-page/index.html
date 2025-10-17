@@ -8,14 +8,14 @@
 <body>
   <h1>Prompt 收藏頁</h1>
   <div id="prompt-container" class="prompt-container"></div>
+  <script type="module">
+    import prompts from './prompts.js';    
+</script>
 
   <script>
-    fetch('./prompts.json')
-      .then(res => res.json())
-      .then(data => {
         const container = document.getElementById('prompt-container');
 
-        data.forEach(group => {
+        prompts.forEach(group => {
           const section = document.createElement('section');
           section.className = 'prompt-section';
           section.innerHTML = `<h2>${group.category}</h2>`;
@@ -36,10 +36,6 @@
           section.appendChild(list);
           container.appendChild(section);
         });
-      })
-      .catch(err => {
-        document.getElementById('prompt-container').textContent = '載入失敗：' + err;
-      });
   </script>
 </body>
 </html>
