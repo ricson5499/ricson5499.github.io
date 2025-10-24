@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MotionCraft — F1 Realistic Wake</title>
+  <style>
+    :root{
+      --ctrl-width:340px;
+      --panel:#1f1f22;
+      --muted:#9aa0a6;
+      --bg-top:#e6e7ea;
+      --bg-bottom:#c5c7ca;
+    }
+    html,body{height:100%; margin:0;}
+    body{
+      display:flex;
+      height:100vh;
+      background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+      font-family: Inter, "Segoe UI", Roboto, Arial;
+      color:#fff;
+      overflow:hidden;
+    }
+    #controls{
+      width:var(--ctrl-width);
+      background:var(--panel);
+      padding:12px;
+      box-sizing:border-box;
+      border-right:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    #title{font-weight:700; font-size:15px;}
+    #hint{color:var(--muted); font-size:12px;}
+    #canvas-container{flex:1; position:relative;}
+    canvas{display:block; width:100%; height:100%;}
+    .footer{margin-top:auto; font-size:11px; color:var(--muted);}
+    .preset-row { display:flex; gap:8px; align-items:center; }
+    .preset-btn {
+      background:#2b8be0; border:none; color:white; padding:6px 8px; border-radius:6px; cursor:pointer;
+    }
+    .preset-btn.secondary { background:#6b7280; }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <div id="title">MotionCraft — F1 Realistic Wake</div>
+    <div id="hint">切換模型 / 啟用迎風區 (程式模擬)。按 R 重置粒子。1/2/3 切模型。</div>
+    <div id="gui-root"></div>
+
+    <div class="preset-row">
+      <button id="apply-f1" class="preset-btn">Apply F1 Realistic</button>
+      <button id="reset-view" class="preset-btn secondary">Reset View</button>
+    </div>
+
+    <div class="footer">程式模擬迎風區 • 側視風洞 • 速率色域：藍→青→紅</div>
+  </div>
+
+  <div id="canvas-container">
+    <canvas id="world"></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/lil-gui@0.18/dist/lil-gui.umd.min.js"></script>
+
+  <script>
+    /* MotionCraft — F1 Realistic Wake (single-file)
+       - Programmatic (lightweight) wake model:
+         stagnation zone, roof acceleration, wake vortices
+       - GUI includes "Apply F1 Realistic" preset which sets tuned parameters
+       - Comments in English; UI/hints in Chinese
+    */
+
+    // ===== Canvas setup =====
+    const CTRL_W = 340;
+    const canvas = document.getElementById('world');
+    const ctx = canvas.getContext('2d', { alpha: false });
+
+    // ===== Params (user adjustable) =====
+    const params = {
+      model: 'F1',             // Car | Motor | F1
+      windX: 0.06,
+      windY: 0.0,
+      baseSpeed: 1.0,
+      particleCount: 6000,    // denser for realistic F1 view (adjust if slow)
+      particleSize: 1.2,
+      particleVar: 0.6,
+      influenceRadius: 140,
+      flowStrength: 1.8,
+      maxColorSpeed: 12.0,
+      gravity: 0.02,
+      groundYOffset: 110,
+      // realism controls
+      realismToggle: true,
+      stagnationStrength: 1.8,
+      stagnationRadius: 80,
+      topAcceleration: 1.8,
+      wakeVortexStrength: 2.0,
+      vortexRadius: 90,
+      // preset / util
+      resetParticles: () => initParticles()
+    };
+
+    // ===== Layout & models =====
+    const layout = {
+      groundY: canvas.height - params.groundYOffset,
+      centerX: canvas.width / 2
+    };
+
+    function resize() {
+      canvas.width = window.innerWidth - CTRL_W;
+      canvas.height = window.innerHeight;
+      layout.groundY = canvas.height - params.groundYOffset;
+      layout.centerX = canvas.width / 2;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // vehicle shapes (side view) — more F1-accurate profile for F1
+    function makeCar() {
+      const w = 260, h = 90;
+      return {
+        name: 'Car', w, h,
+        draw(ctx, cx, topY) {
+          ctx.beginPath();
+          ctx.moveTo(cx - w/2 + 20, topY + 30);
+          ctx.lineTo(cx - w/4 + 10, topY - 6);
+          ctx.quadraticCurveTo(cx, topY - 40, cx + w/4 - 10, topY - 6);
+          ctx.lineTo(cx + w/2 - 20, topY + 30);
+          ctx.lineTo(cx - w/2 + 20, topY + 30);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = 'rgba(255,255,255,0.06)';
+          ctx.fillRect(cx - 10, topY - 32, 40, 10);
+          ctx.fillStyle = '#2a8bd6';
+        },
+        wheels(cx, topY) {
+          const wheelY = layout.groundY - 12;
+          return [
+            { x: cx - w * 0.28, y: wheelY, r: 14 },
+            { x: cx + w * 0.28, y: wheelY, r: 14 }
+          ];
+        }
+      };
+    }
+
+    function makeMotor() {
+      const w = 170, h = 90;
+      return {
+        name: 'Motor', w, h,
+        draw(ctx, cx, topY) {
+          ctx.beginPath();
+          ctx.moveTo(cx - w/2 + 10, topY + 20);
+          ctx.quadraticCurveTo(cx - w/6, topY - 6, cx + w/6, topY + 8);
+          ctx.quadraticCurveTo(cx + w/3, topY + 18, cx + w/2 - 12, topY + 12);
+          ctx.lineTo(cx - w/2 + 10, topY + 12);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = 'rgba(255,255,255,0.04)';
+          ctx.beginPath();
+          ctx.ellipse(cx - w*0.06, topY - 18, 8, 8, 0, 0, Math.PI*2);
+          ctx.fill();
+          ctx.fillStyle = '#2a8bd6';
+        },
+        wheels(cx, topY) {
+          const wheelY = layout.groundY - 10;
+          return [
+            { x: cx - w * 0.28, y: wheelY, r: 12 },
+            { x: cx + w * 0.28, y: wheelY, r: 12 }
+          ];
+        }
+      };
+    }
+
+    function makeF1() {
+      const w = 330, h = 68;
+      return {
+        name: 'F1', w, h,
+        draw(ctx, cx, topY) {
+          // more aggressive nose and diffuser profile
+          ctx.beginPath();
+          ctx.moveTo(cx - w/2 + 6, topY + 16);              // nose start
+          ctx.quadraticCurveTo(cx - w/6, topY - 6, cx + 10, topY - 24); // nose -> cockpit
+          ctx.quadraticCurveTo(cx + w/5, topY - 20, cx + w/2 - 36, topY + 18); // cockpit -> rear
+          ctx.lineTo(cx - w/2 + 6, topY + 18);
+          ctx.closePath();
+          ctx.fill();
+          // small cockpit window
+          ctx.fillStyle = 'rgba(255,255,255,0.06)';
+          ctx.fillRect(cx - 8, topY - 18, 18, 8);
+          ctx.fillStyle = '#2a8bd6';
+        },
+        wheels(cx, topY) {
+          const wheelY = layout.groundY - 12;
+          return [
+            { x: cx - w * 0.36, y: wheelY, r: 16 },
+            { x: cx + w * 0.36, y: wheelY, r: 16 }
+          ];
+        }
+      };
+    }
+
+    const models = { Car: makeCar(), Motor: makeMotor(), F1: makeF1() };
+    let currentModel = models[params.model];
+
+    function setModel(name) {
+      currentModel = models[name] || models.Car;
+      params.model = name;
+      // no need to re-draw GUI here; controllers will reflect values
+    }
+
+    // ===== Particle system =====
+    let particles = [];
+
+    function initParticles() {
+      particles = new Array(Math.max(0, Math.floor(params.particleCount))).fill(0).map(() => {
+        return {
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          speedFactor: 0.6 + Math.random() * params.particleVar
+        };
+      });
+    }
+    initParticles();
+
+    // ===== GUI =====
+    // We'll keep references to controllers so Apply F1 preset can set them programmatically
+    const gui = new lil.GUI({ container: document.getElementById('gui-root') });
+    const controllers = {};
+
+    controllers.model = gui.add(params, 'model', ['Car', 'Motor', 'F1']).name('物體 Model').onChange(v => setModel(v));
+    controllers.windX = gui.add(params, 'windX', -0.18, 0.18, 0.001).name('風向 X');
+    controllers.windY = gui.add(params, 'windY', -0.06, 0.06, 0.001).name('風向 Y');
+    controllers.baseSpeed = gui.add(params, 'baseSpeed', 0.1, 3.0, 0.05).name('風強度');
+    controllers.particleCount = gui.add(params, 'particleCount', 500, 16000, 100).name('粒子數量').onChange(v => { params.particleCount = v; initParticles(); });
+    controllers.particleSize = gui.add(params, 'particleSize', 0.6, 3.0, 0.1).name('粒子大小');
+    controllers.particleVar = gui.add(params, 'particleVar', 0.0, 1.5, 0.05).name('粒子速度變異').onChange(() => {
+      for (let p of particles) p.speedFactor = 0.6 + Math.random() * params.particleVar;
+    });
+    controllers.influenceRadius = gui.add(params, 'influenceRadius', 40, 300, 5).name('繞流半徑');
+    controllers.flowStrength = gui.add(params, 'flowStrength', 0.0, 3.6, 0.05).name('繞流強度');
+    controllers.stagnationStrength = gui.add(params, 'stagnationStrength', 0.0, 4.0, 0.05).name('迎風停滯強度');
+    controllers.stagnationRadius = gui.add(params, 'stagnationRadius', 20, 200, 2).name('迎風半徑');
+    controllers.topAcceleration = gui.add(params, 'topAcceleration', 0.0, 3.0, 0.05).name('車頂加速');
+    controllers.wakeVortexStrength = gui.add(params, 'wakeVortexStrength', 0.0, 4.0, 0.05).name('尾渦強度');
+    controllers.vortexRadius = gui.add(params, 'vortexRadius', 20, 180, 2).name('渦流半徑');
+    controllers.maxColorSpeed = gui.add(params, 'maxColorSpeed', 0.5, 40, 0.5).name('顏色速度上限');
+    controllers.gravity = gui.add(params, 'gravity', -0.1, 0.2, 0.005).name('重力');
+    controllers.realismToggle = gui.add(params, 'realismToggle').name('Enable Wake');
+
+    controllers.resetParticles = gui.add(params, 'resetParticles').name('重置粒子');
+
+    // ===== Color helpers =====
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function lerpColor(a, b, t) { return [Math.round(lerp(a[0], b[0], t)), Math.round(lerp(a[1], b[1], t)), Math.round(lerp(a[2], b[2], t))]; }
+    const colSlow = [0, 100, 255], colMid = [0, 255, 200], colFast = [255, 80, 0];
+    function speedToColor(speed) {
+      const tRaw = Math.max(0, Math.min(1, speed / params.maxColorSpeed));
+      if (tRaw < 0.5) {
+        const t = tRaw / 0.5;
+        const c = lerpColor(colSlow, colMid, t);
+        return `rgb(${c[0]},${c[1]},${c[2]})`;
+      } else {
+        const t = (tRaw - 0.5) / 0.5;
+        const c = lerpColor(colMid, colFast, t);
+        return `rgb(${c[0]},${c[1]},${c[2]})`;
+      }
+    }
+
+    // ===== Utility geometry =====
+    function pointRectDist(px, py, rx, ry, rw, rh) {
+      const cx = rx + rw / 2, cy = ry + rh / 2;
+      const dx = Math.max(Math.abs(px - cx) - rw / 2, 0);
+      const dy = Math.max(Math.abs(py - cy) - rh / 2, 0);
+      return Math.hypot(dx, dy);
+    }
+    function signedDistRect(px, py, rx, ry, rw, rh) {
+      const cx = rx + rw / 2, cy = ry + rh / 2;
+      const dx = Math.abs(px - cx) - rw / 2;
+      const dy = Math.abs(py - cy) - rh / 2;
+      const inside = Math.max(dx, dy) <= 0;
+      if (inside) return -Math.min(rw / 2 - Math.abs(px - cx), rh / 2 - Math.abs(py - cy));
+      return Math.hypot(Math.max(dx, 0), Math.max(dy, 0));
+    }
+
+    // ===== Simulation (with wake model) =====
+    function updateParticles(dt) {
+      const windVX = params.windX * params.baseSpeed;
+      const windVY = params.windY * params.baseSpeed;
+      const cx = layout.centerX;
+      const groundY = layout.groundY;
+
+      // compute geometry each frame
+      const modelCx = cx;
+      const modelTopY = groundY - 60;
+      const geo = getModelWheelsAndBody(modelCx, modelTopY);
+      const wheels = geo.wheels;
+      const body = geo.bodyRect;
+
+      const forwardDir = (params.windX >= 0) ? 1 : -1;
+      // choose nose and rear positions depending on wind dir
+      const noseX = forwardDir > 0 ? body.x : body.x + body.w;
+      const noseY = body.y + body.h / 2;
+      const rearX = forwardDir > 0 ? body.x + body.w : body.x;
+      const rearY_top = body.y + body.h * 0.2;
+      const rearY_bottom = body.y + body.h * 0.8;
+      const vortexLeft = { x: rearX, y: rearY_top }, vortexRight = { x: rearX, y: rearY_bottom };
+
+      for (let p of particles) {
+        // base wind + small jitter
+        p.vx += (windVX + (Math.random() - 0.5) * 0.002) * p.speedFactor;
+        p.vy += (windVY + (Math.random() - 0.5) * 0.002) * p.speedFactor;
+
+        // gravity (frame scaled)
+        p.vy += params.gravity * (dt * 60) * p.speedFactor;
+
+        if (params.realismToggle) {
+          // ---- stagnation zone (in front of nose) ----
+          const nx = p.x - noseX, ny = p.y - noseY;
+          const proj = nx * forwardDir; // positive when particle is ahead of nose in wind dir
+          const lateral = Math.abs(ny - 0);
+          if (proj > -10 && proj < params.stagnationRadius && lateral < params.stagnationRadius * 0.9) {
+            const t = 1 - (proj / params.stagnationRadius);
+            const slowFactor = params.stagnationStrength * t * 0.9;
+            // reduce along wind direction
+            p.vx *= (1 - Math.min(0.95, slowFactor * 0.03));
+            // push sideways
+            const sideSign = (ny >= 0) ? 1 : -1;
+            p.vy += sideSign * 0.03 * slowFactor * (1 + Math.random() * 0.5);
+            // small outward jitter
+            p.x += (Math.random() - 0.5) * slowFactor * 0.2;
+          }
+
+          // ---- body surface: deflect + top acceleration ----
+          const distToBody = signedDistRect(p.x, p.y, body.x, body.y, body.w, body.h);
+          if (distToBody < params.influenceRadius) {
+            const bx = (body.x + body.w / 2), by = (body.y + body.h / 2);
+            let nx2 = p.x - bx, ny2 = p.y - by;
+            const r = Math.hypot(nx2, ny2) || 1e-6;
+            nx2 /= r; ny2 /= r;
+            const tangentX = -ny2, tangentY = nx2;
+            const repulse = (1 - Math.min(params.influenceRadius, Math.max(0, distToBody)) / params.influenceRadius) * params.flowStrength;
+            p.vx += nx2 * repulse * 0.7 + tangentX * repulse * 0.65;
+            p.vy += ny2 * repulse * 0.7 + tangentY * repulse * 0.65;
+
+            // accelerate over top if above body
+            if (p.y < body.y) {
+              p.vx += forwardDir * params.topAcceleration * 0.025 * (1 + params.flowStrength * 0.15);
+              p.vy += -0.003 * params.topAcceleration;
+            }
+          }
+
+          // ---- wheels: local strong deflection ----
+          for (let w of wheels) {
+            const dx = p.x - w.x, dy = p.y - w.y;
+            const dr = Math.hypot(dx, dy);
+            const distCircle = dr - w.r;
+            if (distCircle < params.influenceRadius) {
+              const unx = dx / (dr || 1e-6), uny = dy / (dr || 1e-6);
+              const tangX = -uny, tangY = unx;
+              const rep = (1 - distCircle / params.influenceRadius) * params.flowStrength * 0.95;
+              p.vx += unx * rep * 0.95 + tangX * rep * 0.55;
+              p.vy += uny * rep * 0.95 + tangY * rep * 0.55;
+              p.x += unx * rep * 0.28;
+              p.y += uny * rep * 0.28;
+            }
+          }
+
+          // ---- wake vortices: rotating flow near rear ----
+          const vortexCenters = [vortexLeft, vortexRight];
+          for (let i = 0; i < vortexCenters.length; i++) {
+            const vc = vortexCenters[i];
+            const dxv = p.x - vc.x, dyv = p.y - vc.y;
+            const rv = Math.hypot(dxv, dyv);
+            if (rv < params.vortexRadius) {
+              const tr = 1 - rv / params.vortexRadius;
+              const swirl = params.wakeVortexStrength * tr * 0.08;
+              const sign = (i === 0) ? 1 : -1;
+              p.vx += -dyv / (rv || 1) * swirl * sign;
+              p.vy += dxv / (rv || 1) * swirl * sign;
+            }
+          }
+        } // realism end
+
+        // clamp speed
+        const vLim = 34;
+        const sp = Math.hypot(p.vx, p.vy);
+        if (sp > vLim) { p.vx = (p.vx / sp) * vLim; p.vy = (p.vy / sp) * vLim; }
+
+        // integrate
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // wrap horizontally; respawn vertically to keep density
+        if (p.x < -40) p.x += canvas.width + 80;
+        if (p.x > canvas.width + 40) p.x -= canvas.width + 80;
+        if (p.y < -80) p.y += canvas.height + 160;
+        if (p.y > canvas.height + 80) p.y -= canvas.height + 160;
+      }
+    }
+
+    // helper to compute model geometry for influence math
+    function getModelWheelsAndBody(cx, topY) {
+      const wheels = currentModel.wheels(cx, topY);
+      const bodyW = currentModel.w * 0.9;
+      const bodyH = currentModel.h * 0.6;
+      const bodyX = cx - bodyW / 2;
+      const bodyY = layout.groundY - bodyH - 6;
+      return { wheels, bodyRect: { x: bodyX, y: bodyY, w: bodyW, h: bodyH } };
+    }
+
+    // ===== Drawing =====
+    function drawGround() {
+      ctx.fillStyle = '#9ea1a6';
+      const gy = layout.groundY;
+      ctx.fillRect(0, gy, canvas.width, canvas.height - gy);
+      ctx.fillStyle = '#7e8084';
+      ctx.fillRect(0, gy, canvas.width, 6);
+    }
+
+    function drawParticles() {
+      for (let p of particles) {
+        const speed = Math.hypot(p.vx, p.vy);
+        const col = speedToColor(speed);
+        const alpha = Math.max(0.12, Math.min(1, speed / (params.maxColorSpeed * 0.85)));
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = col;
+        const s = params.particleSize;
+        ctx.fillRect(p.x - s / 2, p.y - s / 2, s, s);
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function drawModel() {
+      const cx = layout.centerX;
+      const modelTopY = layout.groundY - 60;
+      ctx.fillStyle = '#2a8bd6';
+      currentModel.draw(ctx, cx, modelTopY);
+      // wheels
+      const wheels = currentModel.wheels(cx, modelTopY);
+      for (let w of wheels) {
+        ctx.beginPath();
+        ctx.fillStyle = '#111';
+        ctx.arc(w.x, w.y, w.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(255,255,255,0.06)';
+        ctx.arc(w.x, w.y, w.r * 0.45, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function drawHUD() {
+      ctx.fillStyle = 'rgba(0,0,0,0.45)';
+      ctx.fillRect(10, 10, 260, 130);
+      ctx.fillStyle = '#fff';
+      ctx.font = '12px system-ui, Arial';
+      ctx.fillText(`Model: ${params.model}`, 18, 30);
+      ctx.fillText(`Particles: ${particles.length}`, 18, 50);
+      ctx.fillText(`Wind: ${params.windX.toFixed(3)}, ${params.windY.toFixed(3)}`, 18, 70);
+      ctx.fillText(`Gravity: ${params.gravity.toFixed(3)}`, 18, 90);
+      ctx.fillText(`Wake: ${params.realismToggle ? 'ON' : 'OFF'}`, 18, 110);
+      ctx.fillText(`Preset: F1 Realistic available`, 18, 128);
+    }
+
+    // ===== Main loop =====
+    let last = performance.now();
+    function frame(now) {
+      const dt = Math.min((now - last) / 1000, 0.033);
+      last = now;
+
+      updateParticles(dt);
+
+      // background (wind tunnel)
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const g = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      g.addColorStop(0, '#e6e7ea');
+      g.addColorStop(1, '#c5c7ca');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      drawGround();
+      drawParticles();
+      drawModel();
+      drawHUD();
+
+      requestAnimationFrame(frame);
+    }
+
+    // ===== Preset: Realistic F1 =====
+    // When applied, this will set parameters tuned for an F1-style wake visualization.
+    function applyF1Preset() {
+      // F1-specific suggestions — tuned for clear wake visuals
+      const preset = {
+        model: 'F1',
+        windX: 0.08,
+        windY: 0.0,
+        baseSpeed: 1.2,
+        particleCount: 8000,        // heavy — reduce if slow
+        particleSize: 1.1,
+        particleVar: 0.5,
+        influenceRadius: 160,
+        flowStrength: 2.2,
+        maxColorSpeed: 18.0,
+        gravity: 0.02,
+        realismToggle: true,
+        stagnationStrength: 2.6,
+        stagnationRadius: 90,
+        topAcceleration: 2.2,
+        wakeVortexStrength: 2.6,
+        vortexRadius: 110
+      };
+      // apply to params & update controllers
+      for (let k in preset) {
+        if (k in params) params[k] = preset[k];
+      }
+      // update controllers visually
+      for (let key in controllers) {
+        if (controllers[key] && key in params) {
+          try { controllers[key].setValue(params[key]); } catch (e) { /* some controllers like resetParticles are functions */ }
+        }
+      }
+      // ensure model changed
+      setModel('F1');
+      // re-init particles for new count
+      initParticles();
+    }
+
+    // hook preset button
+    document.getElementById('apply-f1').addEventListener('click', () => {
+      applyF1Preset();
+    });
+    document.getElementById('reset-view').addEventListener('click', () => {
+      // gentle reset: center layout and reset particles
+      layout.centerX = canvas.width / 2;
+      initParticles();
+    });
+
+    // ===== Keyboard shortcuts =====
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'r' || e.key === 'R') initParticles();
+      if (e.key === '1') { setModel('Car'); controllers.model.setValue('Car'); }
+      if (e.key === '2') { setModel('Motor'); controllers.model.setValue('Motor'); }
+      if (e.key === '3') { setModel('F1'); controllers.model.setValue('F1'); }
+    });
+
+    // ===== Init =====
+    setModel(params.model);
+    resize();
+    initParticles();
+    requestAnimationFrame(frame);
+
+    // mobile hint
+    if ('ontouchstart' in window) {
+      document.getElementById('hint').textContent = '側視風洞。觸控 GUI 調參。按 R 重置粒子。';
+    }
+  </script>
+</body>
+</html>
