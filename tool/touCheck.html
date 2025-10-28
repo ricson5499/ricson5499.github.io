@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ToU 電費分析器（本地分析，無後臺）</title>
+
+  <!-- CDN: dayjs, PapaParse, SheetJS, Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/utc.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/timezone.js"></script>
+  <script>dayjs.extend(dayjs_plugin_utc); dayjs.extend(dayjs_plugin_timezone);</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans","Helvetica Neue",Arial;line-height:1.45;margin:20px;background:#fafafa;color:#111}
+    .card{background:white;padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(10,10,10,0.06);margin-bottom:16px}
+    h1{margin:0 0 8px 0;font-size:20px}
+    label{display:block;margin-bottom:6px;font-weight:600}
+    input[type=file]{margin-bottom:8px}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .col{flex:1;min-width:220px}
+    .col.clearfix,.col.col_header{flex-basis:100%;}
+    .col.col_header{font-weight: bold;font-size: 18px;border-top:1px solid #000;padding-top:5px;}
+    .small{font-size:13px;color:#555}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th,td{padding:6px;border:1px solid #eee;text-align:left;font-size:13px}
+    .btn{background:#2563eb;color:white;padding:8px 12px;border-radius:8px;border:0;cursor:pointer}
+    .muted{color:#666;font-size:13px}
+    #charts{display:flex;gap:16px;flex-wrap:wrap}
+    canvas{background:white;border-radius:8px;padding:8px}
+    canvas#pieChart{width:380px !important;height:280px !important;}
+    canvas#barChart{width:600px !important;height:280px !important;}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>ToU 電費分析器（離線）</h1>
+    <div class="small">把你的半小時（或小時）紀錄上傳（CSV 或 XLSX）。日期欄應含 UTC 或 ISO 時間字串，例如 <code>2025-10-12 00:00:00</code> 或 <code>20-10-2025 00:00</code>。此工具會把時間轉成馬來西亞時區（UTC+8），並將紀錄分成：平日 Peak（週一–週五 14:00–22:00）、平日 Off-Peak、週末（週六/週日）。全部在本機瀏覽器處理，不會上傳。</div>
+  </div>
+
+  <div class="card">
+    <label>上傳檔案（CSV 或 Excel）</label>
+    <input id="fileInput" type="file" accept=".csv, .xlsx, .xls" />
+    <div class="muted">支援 CSV 欄名: 包含 "Date" 或 "date"；能源數值欄名: "Total", "Usage (kWh)" 或 "Usage"。若你使用不同欄名，會提示你選欄位。</div>
+  </div>
+
+  <div class="card" id="optionsCard" style="display:none;">
+    <h2 style="font-size:16px;margin-bottom:8px">電價設定（可編輯）</h2>
+    <div class="row">
+      <div class="col col_header">舊方案</div>
+      <div class="col">
+        <label>Tenaga (RM/kWh)</label>
+        <input id="rateTenaga" type="number" step="0.0001" value="0.2703" />
+      </div>
+      <!-- <div class="col">
+        <label>Kapasiti (RM/kWh)</label>
+        <input id="rateKapasiti" type="number" step="0.0001" value="0.0455" />
+      </div>
+      <div class="col">
+        <label>Caj Rangkaian (RM/kWh)</label>
+        <input id="rateRangkaian" type="number" step="0.0001" value="0.1285" />
+      </div>
+      <div class="col">
+        <label>折扣 — Insentif Cekap Tenaga (-RM/kWh)</label>
+        <input id="rateDiscount" type="number" step="0.0001" value="-0.075" />
+      </div> -->
+      <div class="col clearfix">
+        <p class="small" style="margin-top:8px;color:#555;">*no include Kapasiti, Caj Rangkaian, Insentif Cekap Tenaga, AFA discount, service tax 8% and KWTBB (Renewable Energy Fund) 1.6%</p>
+      </div>
+      <div class="col col_header">新方案</div>
+      <div class="col">
+        <label>Peak（RM / kWh）</label>
+        <input id="ratePeak" type="number" step="0.001" value="0.2852" />        
+      </div>
+      <div class="col">
+        <label>Off-Peak（RM / kWh）</label>
+        <input id="rateOff"  type="number" step="0.001" value="0.2443" />
+      </div>
+      <div class="col clearfix">
+        <p class="small" style="margin-top:8px;color:#555;">*Peak hours are from 2 p.m. to 10 p.m. on weekdays, while off-peak hours include all day on weekends and from 10 p.m. to 2 p.m. on weekdays.</p>
+        <p class="small" style="margin-top:8px;color:#555;">
+          ⚠️ 注意：若每月總用電超過 1500 kWh，ToU 費率將提升至 Off-Peak RM 0.3443 / Peak RM 0.3852 每 kWh。本工具僅以 1500 kWh 以下級距計算。
+        </p>
+      </div>
+    </div>    
+    <div style="margin-top:12px" class="row">
+      <button id="analyzeBtn" class="btn">分析並顯示結果</button>
+      <button id="exportBtn" class="btn" style="background:#10b981" disabled>匯出結果 CSV</button>
+    </div>
+  </div>
+
+  <div id="resultArea" style="display:none;">
+    <div class="card">
+      <h2 style="font-size:16px">摘要</h2>
+      <div id="summaryText" class="small"></div>
+    </div>
+
+    <div class="card" id="charts">
+      <div style="width:380px">
+        <canvas id="pieChart" width="380" height="280"></canvas>
+      </div>
+      <div style="flex:1;min-width:280px">
+        <canvas id="barChart" width="600" height="280"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="font-size:16px">明細（前 50 筆示例）</h2>
+      <div id="tableWrap" style="max-height:260px;overflow:auto"></div>
+    </div>
+  </div>
+
+<script>
+/*
+  功能要點：
+  - 支援 CSV（PapaParse）與 Excel（SheetJS）
+  - 自動尋找 date 與 total 欄位；若不確定，提示使用者手動選欄
+  - 轉換為 MYT（UTC+8）並依規則分類為 Peak / Off-Peak / Weekend
+  - 根據使用者輸入的費率計算舊/新費用，並顯示差異
+  - 顯示圓餅與長條圖，並可匯出分析結果
+*/
+
+let rawRows = [];
+let parsedRecords = []; // {utcDate: Date, myt: dayjs, total: number, period: 'Weekday Peak'|'Weekday Off-Peak'|'Weekend'}
+
+const fileInput = document.getElementById('fileInput');
+const optionsCard = document.getElementById('optionsCard');
+const analyzeBtn = document.getElementById('analyzeBtn');
+const exportBtn = document.getElementById('exportBtn');
+const resultArea = document.getElementById('resultArea');
+const summaryText = document.getElementById('summaryText');
+
+let pieChart = null;
+let barChart = null;
+
+fileInput.addEventListener('change', async (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const name = f.name.toLowerCase();
+  rawRows = [];
+  parsedRecords = [];
+  resultArea.style.display = 'none';
+  exportBtn.disabled = true;
+
+  if (name.endsWith('.csv')) {
+    Papa.parse(f, {
+      header: true,
+      dynamicTyping: false,
+      skipEmptyLines: true,
+      complete: (res) => {
+        rawRows = res.data;
+        afterLoad();
+      },
+      error: (err) => alert('解析 CSV 發生錯誤: ' + err.message)
+    });
+  } else if (name.endsWith('.xlsx') || name.endsWith('.xls')) {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const data = new Uint8Array(ev.target.result);
+      const workbook = XLSX.read(data, {type:'array'});
+      const firstName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[firstName];
+      rawRows = XLSX.utils.sheet_to_json(sheet, {defval: null});
+      afterLoad();
+    };
+    reader.readAsArrayBuffer(f);
+  } else {
+    alert('僅支援 CSV 或 Excel (.xlsx/.xls)');
+  }
+});
+
+function guessColumns(rows) {
+  if (!rows || rows.length === 0) return {};
+  const cols = Object.keys(rows[0]).map(c => c.trim());
+  const lower = cols.map(c => c.toLowerCase());
+  // date candidates
+  const dateCandidates = ['date','timestamp','time','datetime'];
+  const totalCandidates = ['total','usage (kwh)','usage','kwh','consumption'];
+
+  let dateCol = null, totalCol = null;
+  for (let i=0;i<lower.length;i++){
+    if (!dateCol && dateCandidates.includes(lower[i])) dateCol = cols[i];
+    if (!totalCol && totalCandidates.includes(lower[i])) totalCol = cols[i];
+  }
+  // fallback: find first column that looks like date by sampling values
+  if (!dateCol) {
+    for (let i=0;i<cols.length;i++) {
+      const sample = String(rows[0][cols[i]]||'');
+      if (sample.match(/\d{4}-\d{2}-\d{2}/) || sample.match(/\d{2}:\d{2}:\d{2}/)) {
+        dateCol = cols[i];
+        break;
+      }
+    }
+  }
+  // fallback: pick numeric column for total
+  if (!totalCol) {
+    for (let i=0;i<cols.length;i++){
+      const v = rows[0][cols[i]];
+      if (typeof v === 'number') { totalCol = cols[i]; break; }
+      if (!isNaN(parseFloat(String(v).replace(/,/g,'')))) { totalCol = cols[i]; break; }
+    }
+  }
+  return {dateCol, totalCol, cols};
+}
+
+async function afterLoad() {
+  const guess = guessColumns(rawRows);
+  if (!guess.dateCol || !guess.totalCol) {
+    let msg = '找不到日期或數值欄位。\n';
+    msg += '欄位清單：\n' + guess.cols.join(', ') + '\n\n';
+    msg += '請確認你的檔案是否包含日期與用電量（kWh）欄位，或把欄名改為 Date 與 Total 再上傳。';
+    alert(msg);
+    return;
+  }
+
+  // 解析每筆 row
+  parsedRecords = [];
+  for (const r of rawRows) {
+    const rawDate = r[guess.dateCol];
+    if (!rawDate) continue;
+    // 嘗試幾種日期解析方式
+    let utc = null;
+    try {
+      const raw = String(rawDate).trim();
+      // if it's Excel date number, SheetJS gave a number -> convert
+      if (typeof rawDate === 'number') {
+        utc = dayjs(new Date(Math.round((rawDate - 25569)*86400*1000))).utc(); // excel serial -> date (approx)
+      } else if (/^\d{2}-\d{2}-\d{4} \d{2}:\d{2}/.test(raw)) {
+        // detect DD-MM-YYYY HH:mm
+        const [d, m, y, h, min] = raw.match(/\d+/g).map(Number);
+        const jsDate = new Date(Date.UTC(y, m - 1, d, h, min));
+        utc = dayjs(jsDate);
+      } else {
+        utc = dayjs.utc(String(rawDate).trim());
+        if (!utc.isValid()) {
+          // try native parse
+          utc = dayjs(String(rawDate).trim());
+          if (!utc.isValid()) continue;
+          // assume it's local but original is likely UTC; still proceed
+          utc = utc.utc();
+        }
+      }
+    } catch (e) {
+      continue;
+    }
+
+    const myt = utc.add(8, 'hour'); // UTC -> MYT
+    const hour = myt.hour();
+    const weekday = myt.day(); // 0 sunday ... 6 saturday
+    const rawTotal = r[guess.totalCol];
+    const total = Number(String(rawTotal).replace(/,/g,'') || 0) || 0;
+
+    let period = 'Weekday Off-Peak';
+    if (weekday === 6 || weekday === 0) period = 'Weekend';
+    else {
+      // Mon-Fri -> peak 14:00-22:00 (含14，不含22)
+      if (hour >= 14 && hour < 22) period = 'Weekday Peak';
+      else period = 'Weekday Off-Peak';
+    }
+
+    parsedRecords.push({
+      utcDate: utc.toDate(),
+      myt: myt,
+      hour, weekday, total, period,
+      raw: r
+    });
+  }
+
+  if (parsedRecords.length === 0) {
+    alert('解析後未取得任何可用紀錄，請檢查檔案格式與日期欄位。');
+    return;
+  }
+
+  optionsCard.style.display = 'block';
+  resultArea.style.display = 'none';
+  summaryText.innerHTML = `<strong>已載入 ${parsedRecords.length} 筆紀錄</strong>（示例顯示前 50 筆）。請確認電價後按「分析並顯示結果」。`;
+}
+
+analyzeBtn.addEventListener('click', () => {
+  if (!parsedRecords || parsedRecords.length === 0) { alert('請先上傳檔案'); return; }
+
+  const rateTenaga = parseFloat(document.getElementById('rateTenaga').value) || 0;
+  // const rateKapasiti = parseFloat(document.getElementById('rateKapasiti').value) || 0;
+  // const rateRangkaian = parseFloat(document.getElementById('rateRangkaian').value) || 0;
+  // const rateDiscount = parseFloat(document.getElementById('rateDiscount').value) || 0;
+  const rateOld = rateTenaga;// + rateKapasiti + rateRangkaian + rateDiscount;
+
+  const ratePeak = parseFloat(document.getElementById('ratePeak').value) || 0;
+  const rateOff = parseFloat(document.getElementById('rateOff').value) || 0;  
+
+  // aggregate
+  let weekdayPeak = 0, weekdayOff = 0, weekend = 0;
+  for (const r of parsedRecords) {
+    if (r.period === 'Weekday Peak') weekdayPeak += r.total;
+    else if (r.period === 'Weekday Off-Peak') weekdayOff += r.total;
+    else weekend += r.total;
+  }
+  const total = weekdayPeak + weekdayOff + weekend;
+
+  // costs
+  const costOld = total * rateOld;
+  const costNew = weekdayPeak*ratePeak + (weekdayOff + weekend)*rateOff;
+  const diff = costOld - costNew;
+  const percent = costOld === 0 ? 0 : (diff / costOld * 100);
+
+  // summary text
+  summaryText.innerHTML = `
+  <div>取得的紀錄共 <strong>${parsedRecords.length}</strong> 筆。</div>
+  <div>天數： <strong>${Math.ceil(parsedRecords.length / 48)}</strong> 天（假設半小時紀錄）。</div>
+    <div><strong>用電總量：</strong>${total.toFixed(3)} kWh</div>
+    <div style="margin-top:6px">
+      <strong>分區用電 (kWh)：</strong>
+      Weekday Peak ${weekdayPeak.toFixed(3)} /
+      Weekday Off-Peak ${weekdayOff.toFixed(3)} /
+      Weekend ${weekend.toFixed(3)}
+    </div>
+    <div style="margin-top:8px"><strong>費用比較（RM）</strong></div>
+    <div>
+      舊方案<br>
+      Tenaga ${rateOld.toFixed(4)} * ${total.toFixed(3)} kWh ： RM ${costOld.toFixed(2)}
+    </div>
+    <div>新方案<br>
+      ToU（Peak rate ${ratePeak.toFixed(3)} * ${weekdayPeak.toFixed(3)} kWh + Off-Peak rate ${rateOff.toFixed(3)} * (Off-peak ${weekdayOff.toFixed(3)} kWh + weekend ${weekend.toFixed(3)} kWh))： RM ${costNew.toFixed(2)}</div>
+    <div style="margin-top:6px">${diff>=0 ? '💡 ToU 比舊方案省下' : '⚠️ ToU 比舊方案多花'} RM ${Math.abs(diff).toFixed(2)} （${Math.abs(percent).toFixed(2)}%）</div>
+    <div class="small">*前端顯示的數值經過格式化，後臺會用完整較長的號碼進行準確計算</div>
+  `;
+
+  // charts
+  renderCharts({weekdayPeak, weekdayOff, weekend, total});
+
+  // show sample table
+  renderTable(parsedRecords.slice(0,50));
+
+  resultArea.style.display = 'block';
+  exportBtn.disabled = false;
+
+  // store last results for export
+  lastResult = {weekdayPeak, weekdayOff, weekend, total, costOld, costNew, diff, percent, rateOld, ratePeak, rateOff, records: parsedRecords};
+});
+
+// chart rendering
+function renderCharts({weekdayPeak, weekdayOff, weekend, total}) {
+  console.log('renderCharts', {weekdayPeak, weekdayOff, weekend, total});
+  const pieCtx = document.getElementById('pieChart').getContext('2d');
+  const barCtx = document.getElementById('barChart').getContext('2d');
+
+  const pieData = {
+    labels: ['Weekday Peak','Weekday Off-Peak','Weekend'],
+    datasets:[{
+      data: [weekdayPeak, weekdayOff, weekend],
+      backgroundColor: ['#ef4444','#f59e0b','#10b981']
+    }]
+  };
+  if (pieChart) pieChart.destroy();
+  pieChart = new Chart(pieCtx, {
+    type:'pie', data:pieData, options:{      
+      plugins:{legend:{position:'bottom'}}
+    }
+  });
+
+  const barData = {
+    labels: ['Weekday Peak','Weekday Off-Peak','Weekend'],
+    datasets:[{
+      label:'kWh',
+      data:[weekdayPeak, weekdayOff, weekend],
+      borderRadius:6,
+      barThickness:40
+    }]
+  };
+  if (barChart) barChart.destroy();
+  barChart = new Chart(barCtx, {type:'bar', data:barData, options:{plugins:{legend:{display:false}}}});
+}
+
+function renderTable(rows){
+  const wrap = document.getElementById('tableWrap');
+  let html = '<table><thead><tr><th>#</th><th>MYT</th><th>Period</th><th>kWh</th></tr></thead><tbody>';
+  rows.forEach((r,i)=>{
+    html += `<tr><td>${i+1}</td><td>${r.myt.format('YYYY-MM-DD HH:mm')}</td><td>${r.period}</td><td>${r.total}</td></tr>`;
+  });
+  html += '</tbody></table>';
+  wrap.innerHTML = html;
+}
+
+// export CSV
+let lastResult = null;
+exportBtn.addEventListener('click', () => {
+  if (!lastResult) return;
+  const rows = [
+    ['metric','value'],
+    ['total_kWh', lastResult.total],
+    ['weekday_peak_kWh', lastResult.weekdayPeak],
+    ['weekday_offpeak_kWh', lastResult.weekdayOff],
+    ['weekend_kWh', lastResult.weekend],
+    ['rate_old_RM_per_kWh', lastResult.rateOld],
+    ['rate_peak_RM_per_kWh', lastResult.ratePeak],
+    ['rate_off_RM_per_kWh', lastResult.rateOff],    
+    ['cost_old_RM', lastResult.costOld],
+    ['cost_new_RM', lastResult.costNew],
+    ['cost_diff_RM', lastResult.diff],
+    ['cost_diff_percent', lastResult.percent]
+  ];
+  // create CSV text
+  const csv = rows.map(r => r.join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'tou_analysis_summary.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
+</script>
+</body>
+</html>
