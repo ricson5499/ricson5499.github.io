@@ -300,12 +300,14 @@ async function afterLoad() {
       period = inPeak ? 'Weekday Peak' : 'Weekday Off-Peak';
     }
 
-    parsedRecords.push({
-      utcDate: utc.toDate(),
-      myt: myt,
-      hour, min, weekday, total, period,
-      raw: r
-    });
+    if(r.Date != "Total"){
+      parsedRecords.push({
+        utcDate: utc.toDate(),
+        myt: myt,
+        hour, min, weekday, total, period,
+        raw: r
+      }); 
+    }
   }
 
   if (parsedRecords.length === 0) {
