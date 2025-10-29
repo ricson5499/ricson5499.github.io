@@ -17,14 +17,14 @@
 
   <style>
     body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans","Helvetica Neue",Arial;line-height:1.45;margin:20px;background:#fafafa;color:#111}
-    .card{background:white;padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(10,10,10,0.06);margin-bottom:16px}
+    .card{background:white;padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(10,10,10,0.06);margin-bottom:16px; width:100%; max-width:1200px;margin-left:auto;margin-right:auto;}
     h1{margin:0 0 8px 0;font-size:20px}
     label{display:block;margin-bottom:6px;font-weight:600}
     input[type=file]{margin-bottom:8px}
     .row{display:flex;gap:12px;flex-wrap:wrap}
     .col{flex:1;min-width:220px}
     .col.clearfix,.col.col_header{flex-basis:100%;}
-    .col.col_header{font-weight: bold;font-size: 18px;border-top:1px solid #000;padding-top:5px;}
+    .col.col_header{font-weight: bold;font-size: 18px;border-top:1px solid #d8d8d8;padding-top:5px;}
     .small{font-size:13px;color:#555}
     table{width:100%;border-collapse:collapse;margin-top:8px}
     th,td{padding:6px;border:1px solid #eee;text-align:left;font-size:13px}
@@ -34,12 +34,34 @@
     canvas{background:white;border-radius:8px;padding:8px}
     canvas#pieChart{width:380px !important;height:280px !important;}
     canvas#barChart{width:600px !important;height:280px !important;}
+    .txtSummary{font-weight:bold;font-size:20px;}
   </style>
 </head>
 <body>
   <div class="card">
     <h1>ToU 電費分析器（離線）</h1>
-    <div class="small">把你的半小時（或小時）紀錄上傳（CSV 或 XLSX）。日期欄應含 UTC 或 ISO 時間字串，例如 <code>2025-10-12 00:00:00</code> 或 <code>20-10-2025 00:00</code>。此工具會把時間轉成馬來西亞時區（UTC+8），並將紀錄分成：平日 Peak（週一–週五 14:00–22:00）、平日 Off-Peak、週末（週六/週日）。全部在本機瀏覽器處理，不會上傳。</div>
+    <div class="small">把你的半小時（或小時）紀錄上傳（CSV 或 XLSX）。日期欄應含 UTC 或 ISO 時間字串，例如 <code>2025-10-12 00:00:00</code> 或 <code>20-10-2025 00:00</code>。此工具會把時間轉成馬來西亞時區（UTC+8），並將紀錄分成：平日 Peak（週一–週五 14:00–22:00）、平日 Off-Peak、週末（週六/週日）。全部在本機瀏覽器處理，不會上傳到服務器。</div>
+    <div>
+      <p>Sample</p>
+      <table style="width:100%;max-width:450px;">
+        <tr>
+          <td>Date</td>
+          <td>Usage (kWh)</td>
+          <td>Total</td>
+        </tr>
+        <tr>
+          <td>18-10-2025 00:00</td>
+          <td>1.393</td>
+          <td>1.393</td>
+        </tr>
+        <tr>
+          <td>18-10-2025 00:30</td>
+          <td>0.992</td>
+          <td>0.992</td>
+        </tr>
+      </table>
+      <p>我這份是從tnb官方下載的table，你們也可以登入自己的account去找到day的csv下載 (week的沒有用，他只會output每一天的total，無法計算peak hour)</p>
+    </div>
   </div>
 
   <div class="card">
@@ -51,12 +73,8 @@
   <div class="card" id="optionsCard" style="display:none;">
     <h2 style="font-size:16px;margin-bottom:8px">電價設定（可編輯）</h2>
     <div class="row">
-      <div class="col col_header">舊方案</div>
+      <!-- <div class="col col_header">服務費</div>
       <div class="col">
-        <label>Tenaga (RM/kWh)</label>
-        <input id="rateTenaga" type="number" step="0.0001" value="0.2703" />
-      </div>
-      <!-- <div class="col">
         <label>Kapasiti (RM/kWh)</label>
         <input id="rateKapasiti" type="number" step="0.0001" value="0.0455" />
       </div>
@@ -65,26 +83,39 @@
         <input id="rateRangkaian" type="number" step="0.0001" value="0.1285" />
       </div>
       <div class="col">
+        <label>Retail Charge （total consumption 少過 600 kWh 會自動扣除）</label>
+        <input id="priceRetail" type="number" step="1" value="10" />
+      </div> -->
+      <!-- <div class="col">
         <label>折扣 — Insentif Cekap Tenaga (-RM/kWh)</label>
         <input id="rateDiscount" type="number" step="0.0001" value="-0.075" />
       </div> -->
-      <div class="col clearfix">
-        <p class="small" style="margin-top:8px;color:#555;">*no include Kapasiti, Caj Rangkaian, Insentif Cekap Tenaga, AFA discount, service tax 8% and KWTBB (Renewable Energy Fund) 1.6%</p>
+      <div class="col col_header">舊方案</div>
+      <div class="col">
+        <label>Tenaga (RM/kWh)</label>
+        <input id="rateTenaga" type="number" step="0.0001" value="0.2703" />
       </div>
       <div class="col col_header">新方案</div>
       <div class="col">
-        <label>Peak（RM / kWh）</label>
+        <label>Tenaga Peak（RM / kWh）</label>
         <input id="ratePeak" type="number" step="0.001" value="0.2852" />        
       </div>
       <div class="col">
-        <label>Off-Peak（RM / kWh）</label>
+        <label>Tenaga Off-Peak（RM / kWh）</label>
         <input id="rateOff"  type="number" step="0.001" value="0.2443" />
       </div>
       <div class="col clearfix">
         <p class="small" style="margin-top:8px;color:#555;">*Peak hours are from 2 p.m. to 10 p.m. on weekdays, while off-peak hours include all day on weekends and from 10 p.m. to 2 p.m. on weekdays.</p>
         <p class="small" style="margin-top:8px;color:#555;">
-          ⚠️ 注意：若每月總用電超過 1500 kWh，ToU 費率將提升至 Off-Peak RM 0.3443 / Peak RM 0.3852 每 kWh。本工具僅以 1500 kWh 以下級距計算。
+          ⚠️ 注意：若每月總用電超過 1500 kWh，新舊Tenaga rate 都將提升，請自行調整後再分析。rate可以參考官方網站。
         </p>
+        <p class="small" style="margin-top:8px;color:#555;">
+          *no include Capacity, Network charge, Insentif Cekap Tenaga, Retail charge, 因爲他們在這兩個配套基本是一樣的
+        </p>
+        <div style="border:1px solid #000; border-radius:10px;padding:10px; width:100%;max-width:450px;">
+          <p class="small">最新的Domestic General Tariff 和 Domestic ToU Tariff 可以直接在下面這個官方網站查看價格</p>
+          <p class="small"><a href="https://www.mytnb.com.my/tariff/index.html?v=1.1.47#Category" target="_blank">https://www.mytnb.com.my/tariff/index.html?v=1.1.47#Category</a> <br>選 Domestic 然後點 Tariff Schedule</p>
+        </div>        
       </div>
     </div>    
     <div style="margin-top:12px" class="row">
@@ -228,44 +259,50 @@ async function afterLoad() {
       const raw = String(rawDate).trim();
       // if it's Excel date number, SheetJS gave a number -> convert
       if (typeof rawDate === 'number') {
-        utc = dayjs(new Date(Math.round((rawDate - 25569)*86400*1000))).utc(); // excel serial -> date (approx)
+        utc = dayjs(new Date(Math.round((rawDate - 25569)*86400*1000))); // excel serial -> date (approx)
       } else if (/^\d{2}-\d{2}-\d{4} \d{2}:\d{2}/.test(raw)) {
         // detect DD-MM-YYYY HH:mm
         const [d, m, y, h, min] = raw.match(/\d+/g).map(Number);
-        const jsDate = new Date(Date.UTC(y, m - 1, d, h, min));
+        const jsDate = new Date(y, m - 1, d, h, min);
         utc = dayjs(jsDate);
       } else {
-        utc = dayjs.utc(String(rawDate).trim());
-        if (!utc.isValid()) {
-          // try native parse
-          utc = dayjs(String(rawDate).trim());
-          if (!utc.isValid()) continue;
-          // assume it's local but original is likely UTC; still proceed
-          utc = utc.utc();
-        }
+        utc = dayjs(String(rawDate).trim());        
       }
     } catch (e) {
       continue;
     }
 
-    const myt = utc.add(8, 'hour'); // UTC -> MYT
+    //const myt = utc.add(8, 'hour'); // UTC -> MYT
+    const myt = utc;
     const hour = myt.hour();
+    const min = myt.minute();
     const weekday = myt.day(); // 0 sunday ... 6 saturday
     const rawTotal = r[guess.totalCol];
     const total = Number(String(rawTotal).replace(/,/g,'') || 0) || 0;
 
     let period = 'Weekday Off-Peak';
-    if (weekday === 6 || weekday === 0) period = 'Weekend';
-    else {
-      // Mon-Fri -> peak 14:00-22:00 (含14，不含22)
-      if (hour >= 14 && hour < 22) period = 'Weekday Peak';
-      else period = 'Weekday Off-Peak';
+    if (weekday === 6 && hour === 0 && min === 0) {
+      // Saturday 00:00 → Friday Off-Peak
+      period = 'Weekday Off-Peak';
+    } else if (weekday === 1 && hour === 0 && min === 0) {
+      // Monday 00:00 → Sunday (Weekend)
+      period = 'Weekend';
+    } else if (weekday === 6 || weekday === 0) {
+      // Saturday or Sunday (except Sat 00:00 handled above)
+      period = 'Weekend';
+    } else {
+      // Monday–Friday
+      const inPeak =
+        (hour > 14 && hour < 22) ||
+        (hour === 14 && min === 30) ||
+        (hour === 22 && min === 0);
+      period = inPeak ? 'Weekday Peak' : 'Weekday Off-Peak';
     }
 
     parsedRecords.push({
       utcDate: utc.toDate(),
       myt: myt,
-      hour, weekday, total, period,
+      hour, min, weekday, total, period,
       raw: r
     });
   }
@@ -274,6 +311,8 @@ async function afterLoad() {
     alert('解析後未取得任何可用紀錄，請檢查檔案格式與日期欄位。');
     return;
   }
+
+  console.log('parsedRecords', parsedRecords);
 
   optionsCard.style.display = 'block';
   resultArea.style.display = 'none';
@@ -284,13 +323,16 @@ analyzeBtn.addEventListener('click', () => {
   if (!parsedRecords || parsedRecords.length === 0) { alert('請先上傳檔案'); return; }
 
   const rateTenaga = parseFloat(document.getElementById('rateTenaga').value) || 0;
-  // const rateKapasiti = parseFloat(document.getElementById('rateKapasiti').value) || 0;
-  // const rateRangkaian = parseFloat(document.getElementById('rateRangkaian').value) || 0;
+  //const rateKapasiti = parseFloat(document.getElementById('rateKapasiti').value) || 0;
+  //const rateRangkaian = parseFloat(document.getElementById('rateRangkaian').value) || 0;
   // const rateDiscount = parseFloat(document.getElementById('rateDiscount').value) || 0;
-  const rateOld = rateTenaga;// + rateKapasiti + rateRangkaian + rateDiscount;
+  //const rateOther = rateKapasiti + rateRangkaian;// + rateDiscount;
+  
+  const rateOld = rateTenaga;// + rateOther;// + rateDiscount;
 
   const ratePeak = parseFloat(document.getElementById('ratePeak').value) || 0;
   const rateOff = parseFloat(document.getElementById('rateOff').value) || 0;  
+  
 
   // aggregate
   let weekdayPeak = 0, weekdayOff = 0, weekend = 0;
@@ -300,10 +342,11 @@ analyzeBtn.addEventListener('click', () => {
     else weekend += r.total;
   }
   const total = weekdayPeak + weekdayOff + weekend;
+  //const priceService = total*rateOther;
 
   // costs
   const costOld = total * rateOld;
-  const costNew = weekdayPeak*ratePeak + (weekdayOff + weekend)*rateOff;
+  const costNew = weekdayPeak*ratePeak + (weekdayOff + weekend)*rateOff;// + priceService;
   const diff = costOld - costNew;
   const percent = costOld === 0 ? 0 : (diff / costOld * 100);
 
@@ -311,21 +354,21 @@ analyzeBtn.addEventListener('click', () => {
   summaryText.innerHTML = `
   <div>取得的紀錄共 <strong>${parsedRecords.length}</strong> 筆。</div>
   <div>天數： <strong>${Math.ceil(parsedRecords.length / 48)}</strong> 天（假設半小時紀錄）。</div>
-    <div><strong>用電總量：</strong>${total.toFixed(3)} kWh</div>
+    <div><strong>用電總量：</strong>${total.toFixed(4)} kWh</div>
     <div style="margin-top:6px">
       <strong>分區用電 (kWh)：</strong>
-      Weekday Peak ${weekdayPeak.toFixed(3)} /
-      Weekday Off-Peak ${weekdayOff.toFixed(3)} /
-      Weekend ${weekend.toFixed(3)}
+      Weekday Peak ${weekdayPeak.toFixed(4)} /
+      Weekday Off-Peak ${weekdayOff.toFixed(4)} /
+      Weekend ${weekend.toFixed(4)}
     </div>
     <div style="margin-top:8px"><strong>費用比較（RM）</strong></div>
     <div>
       舊方案<br>
-      Tenaga ${rateOld.toFixed(4)} * ${total.toFixed(3)} kWh ： RM ${costOld.toFixed(2)}
+      ${rateOld.toFixed(4)} * ${total.toFixed(4)} kWh ： RM ${costOld.toFixed(4)}
     </div>
     <div>新方案<br>
-      ToU（Peak rate ${ratePeak.toFixed(3)} * ${weekdayPeak.toFixed(3)} kWh + Off-Peak rate ${rateOff.toFixed(3)} * (Off-peak ${weekdayOff.toFixed(3)} kWh + weekend ${weekend.toFixed(3)} kWh))： RM ${costNew.toFixed(2)}</div>
-    <div style="margin-top:6px">${diff>=0 ? '💡 ToU 比舊方案省下' : '⚠️ ToU 比舊方案多花'} RM ${Math.abs(diff).toFixed(2)} （${Math.abs(percent).toFixed(2)}%）</div>
+      ToU (Peak rate ${ratePeak.toFixed(4)} * ${weekdayPeak.toFixed(4)} kWh + Off-Peak rate ${rateOff.toFixed(4)} * (Off-peak ${weekdayOff.toFixed(4)} kWh + weekend ${weekend.toFixed(4)} kWh)) ： RM ${costNew.toFixed(4)}</div>
+    <div class="txtSummary" style="margin-top:6px">${diff>=0 ? '💡 ToU 比舊方案省下' : '⚠️ ToU 比舊方案多花'} RM ${Math.abs(diff).toFixed(4)} （${Math.abs(percent).toFixed(4)}%）</div>
     <div class="small">*前端顯示的數值經過格式化，後臺會用完整較長的號碼進行準確計算</div>
   `;
 
