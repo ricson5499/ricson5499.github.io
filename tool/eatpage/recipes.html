@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>食谱 — 吃货</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>食谱库</h1>
+    <nav>
+      <a href="index.html">首页</a>
+      <a href="recipes.html">食谱</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <section class="panel" style="flex:1;">
+      <h2>妈妈的家常菜</h2>
+
+      <!-- 搜索 -->
+      <div class="search-row">
+        <input id="recipeSearch" placeholder="搜索：菜名 / 材料" />
+      </div>
+
+      <!-- 第一排分类：汤/菜/肉/海鲜/蛋类/饭面 -->
+      <h3 style="margin-top:20px;">菜式分类</h3>
+      <div id="catButtons" class="filters"></div>
+
+      <!-- 第二排分类：广东/福建/客家/娘惹 等 -->
+      <h3 style="margin-top:20px;">料理风格</h3>
+      <div id="cuisineButtons" class="filters"></div>
+
+      <!-- 列表 -->
+      <div id="recipeList" class="cards"></div>
+    </section>
+
+    <aside class="panel side">
+      <h3>说明</h3>
+      <p>食谱全部来自 <code>data/recipes.js</code></p>
+      <p>要新增，只要在里面加一项即可。</p>
+    </aside>
+
+  </main>
+
+  <footer class="footer">希望妈妈每天煮得更轻松 🧡</footer>
+
+  <script src="./data/recipes.js"></script>
+  <script src="./js/recipes.js"></script>
+</body>
+</html>

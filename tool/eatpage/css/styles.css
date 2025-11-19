@@ -1,0 +1,57 @@
+/* English comments: Basic styles for the Eat Page */
+:root{
+  --bg:#f6f7fb;
+  --card:#fff;
+  --muted:#777;
+  --accent:#ff7a59;
+  --maxw:992px;
+  font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:#222;
+  -webkit-font-smoothing:antialiased;
+}
+.topbar{
+  background:linear-gradient(90deg,#fff 0,#fff0 100%);
+  padding:14px 20px;
+  border-bottom:1px solid #eee;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.topbar h1{font-size:18px;margin:0}
+.topbar nav a{margin-left:12px;text-decoration:none;color:var(--muted)}
+.container{
+  max-width:var(--maxw);
+  margin:20px auto;
+  display:flex;
+  gap:20px;
+  padding:0 16px;
+}
+.panel{
+  background:var(--card);
+  border-radius:10px;
+  padding:16px;
+  box-shadow:0 2px 8px rgba(20,20,30,0.04);
+}
+.side{width:260px;flex:0 0 260px;display:none;}
+.panel h2{margin-top:0}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:12px}
+.card{
+  padding:12px;border-radius:8px;border:1px solid #f0f0f5;
+}
+.card h4{margin:0 0 6px 0}
+.muted{color:var(--muted);font-size:13px}
+.filter-btn{margin-right:8px;padding:8px 10px;border-radius:8px;border:1px solid #eee;background:#fff;cursor:pointer}
+.filter-btn.active{background:var(--accent);color:#fff;border-color:transparent}
+.search-row{display:flex;gap:8px;margin-top:12px}
+.search-row input, .search-row select{flex:1;padding:8px;border-radius:8px;border:1px solid #eee}
+.footer{text-align:center;padding:18px;color:var(--muted);margin-top:24px}
+.type-grid{display:flex;flex-wrap:wrap;gap:12px}
+.type-card{background:#fff;padding:12px;border-radius:8px;min-width:200px;flex:1 1 240px;border:1px solid #f3f3f6}
+.mini-list{margin-top:8px}
+.mini-item{padding:8px;border-radius:6px;border:1px dashed #fafafa;margin-bottom:8px}
+.small{font-size:12px;color:var(--muted)}
