@@ -1,81 +1,68 @@
 // English comments: Sample meal list
 
-const MEALS = [
-  /* --- 早餐 --- */
+const MEALS = [  
   {
-    "id": "m001",
-    "name": "小王早点",
-    "meal": "早餐",
-    "type": "小吃",
-    "location": "Taman Desa",
-    "note": "蛋饼 + 豆浆不错",
-    "tags": ["早餐", "轻食"]
-  },
-  {
-    "id": "m002",
-    "name": "传统咖椰面包",
-    "meal": "早餐",
-    "type": "小吃",
-    "location": "SS2",
-    "note": "咖椰香又不太甜",
-    "tags": ["kopitiam"]
-  },
-
-  /* --- 午餐 --- */
-  {
-    "id": "m101",
-    "name": "阿贤鸡饭",
-    "meal": "午餐",
-    "type": "饭",
-    "location": "SS2",
-    "note": "烧鸡好吃，份量大",
-    "tags": ["chicken rice"]
-  },
-  {
-    "id": "m102",
-    "name": "老地方牛肉面",
+    "name": "鱼片米粉",
     "meal": "午餐",
     "type": "面",
-    "location": "Bukit Bintang",
-    "note": "汤清甜，肉软嫩",
-    "tags": ["noodle", "beef"]
+    "location": "Impian Emas",
+    "note": "咖喱鱼片 赞，配饭也不错",
+    "tags": ["饭"]
   },
   {
-    "id": "m103",
-    "name": "经济饭",
+    "name": "哥打肉骨茶",
     "meal": "午餐",
     "type": "饭",
-    "location": "Kepong",
-    "note": "选菜多，适合快速吃",
-    "tags": ["mixed rice"]
+    "location": "哥打",
+    "note": "猪肚汤也不错",
+    "tags": ["饭"]
   },
-
-  /* --- 晚餐 --- */
   {
-    "id": "m201",
-    "name": "大华海鲜煮炒",
+    "name": "新海珍 鸭肉",
+    "meal": "午餐",
+    "type": "饭",
+    "location": "公主",
+    "note": "鸭肉软软 好吃",
+    "tags": [""]
+  },
+  {
+    "name": "Number One 泰式",
     "meal": "晚餐",
     "type": "饭",
-    "location": "Cheras",
-    "note": "海鲜粥和铁板豆腐好吃",
-    "tags": ["seafood", "tze char"]
+    "location": "Taman U",
+    "note": "Kampung 炒饭必点",
+    "tags": [""]
   },
   {
-    "id": "m202",
-    "name": "板面之家",
-    "meal": "晚餐",
+    "name": "炒虾面",
+    "meal": "午餐",
     "type": "面",
-    "location": "Puchong",
-    "note": "辣板面不错",
-    "tags": ["handmade noodle"]
+    "location": "Taman U",
+    "note": "配上他的酱 nice",
+    "tags": [""]
   },
   {
-    "id": "m203",
-    "name": "奶茶店 - Chatime",
-    "meal": "晚餐",
-    "type": "饮料",
-    "location": "Mid Valley",
-    "note": "喝饮料休息一下",
-    "tags": ["drinks"]
-  }
+    "name": "萬記吉隆坡福建面",
+    "meal": "午餐",
+    "type": "面",
+    "location": "皇后",
+    "note": "滑蛋生面也是不错",
+    "tags": [""]
+  },
+  {
+    "name": "新皇庭",
+    "meal": "午餐",
+    "type": "汤",
+    "location": "Mount Austin",
+    "note": "浓汤配饭 shiok",
+    "tags": [""]
+  },
+  {
+    "name": "Restoran Ameer",
+    "meal": "早餐",
+    "type": "Roti",
+    "location": "Mutiara Rini",
+    "note": "Roti够脆不过要等",
+    "tags": [""]
+  },
 ];

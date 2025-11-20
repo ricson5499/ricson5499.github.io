@@ -6,13 +6,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const mealButtons = document.getElementById('mealButtons');
   const typeButtons = document.getElementById('typeButtons');
+  const locationButtons = document.getElementById('locationButtons');
 
   // Unique values
   const mealTypes = [...new Set(MEALS.map(x => x.meal))];
-  const foodTypes = [...new Set(MEALS.map(x => x.type))];
+  const foodTypes = [...new Set(MEALS.map(x => x.type))];  
+  const locationTypes = [...new Set(MEALS.map(x => x.location))];
 
   let selectedMeal = '全部';
   let selectedType = '全部';
+  let selectedLocation = '全部';
 
   // Create filter buttons
   function createGroupButtons(container, values, type) {
@@ -44,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (group === 'meal') selectedMeal = value;
       if (group === 'type') selectedType = value;
+      if (group === 'location') selectedLocation = value;
 
       apply();
     });
@@ -86,6 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (selectedType !== '全部')
       list = list.filter(x => x.type === selectedType);
 
+    if (selectedLocation !== '全部')
+      list = list.filter(x => x.location === selectedLocation);
+
     if (q) {
       list = list.filter(x =>
         x.name.toLowerCase().includes(q) ||
@@ -101,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initial render
   createGroupButtons(mealButtons, mealTypes, 'meal');
   createGroupButtons(typeButtons, foodTypes, 'type');
+  createGroupButtons(locationButtons, locationTypes, 'location');
   apply();
 
   searchInput.addEventListener('input', apply);
