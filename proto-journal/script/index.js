@@ -10,11 +10,18 @@
 
   // 读取 entries 目录
   async function loadEntryFiles() {
-    const dirDoc = parseHTML(await fetchText('entries.json'));
-    return [...dirDoc.querySelectorAll('a')]
-      .map(a => a.getAttribute('href'))
-      .filter(f => f && f.endsWith('.html'));
+    try {
+      const res = await fetch("entries.json");
+      if (!res.ok) throw "fetch error";
+
+      const list = await res.json();
+      return list.filter(name => name.endsWith(".html"));
+    } catch {
+      console.error("无法读取 entries.json");
+      return [];
+    }
   }
+
 
   // 解析某篇文章的 metadata
   async function readEntry(file) {
