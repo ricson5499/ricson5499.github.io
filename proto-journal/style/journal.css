@@ -1,0 +1,89 @@
+/* ===========================
+   GLOBAL
+   =========================== */
+
+body {
+  font-family: Arial, sans-serif;
+  background: #0d1117;
+  color: #c9d1d9;
+  margin: 40px auto;
+  max-width: 800px;
+  padding: 0 20px;
+  line-height: 1.75;
+}
+
+h1 {
+  font-size: 32px;
+  color: #58a6ff;
+  margin-bottom: 10px;
+}
+
+h2 {
+  margin-top: 32px;
+  border-left: 4px solid #3b4a5a;
+  padding-left: 10px;
+  color: #8ab4f8;
+}
+
+p, li {
+  font-size: 17px;
+}
+
+a {
+  color: #58a6ff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ===========================
+   INDEX PAGE
+   =========================== */
+
+.entry-list a {
+  display: block;
+  padding: 10px 0;
+  font-size: 18px;
+  color: #9fbce8;
+  border-bottom: 1px solid #1f2933;
+}
+
+.entry-list a:hover {
+  color: #58a6ff;
+}
+
+.loading {
+  color: #6e7681;
+}
+
+/* ===========================
+   ARTICLE PAGE
+   =========================== */
+
+.meta {
+  font-size: 14px;
+  color: #8b949e;
+  margin-bottom: 20px;
+}
+
+img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin: 20px 0;
+  border: 1px solid #3a3f45;
+}
+
+pre {
+  background: #111822;
+  border: 1px solid #2e3440;
+  padding: 12px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 15px;
+}
+
+code {
+  color: #9fc1ff;
+}
