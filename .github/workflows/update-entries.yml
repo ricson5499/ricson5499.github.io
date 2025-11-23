@@ -1,0 +1,44 @@
+name: Update Entries JSON
+
+on:
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - "proto-journal/entries/**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Generate entries.json
+        run: |
+          cd proto-journal/entries
+          
+          # List only .html files
+          ls *.html > ../../entries_raw.txt || true
+          
+          cd ../../
+
+          # Convert to JSON array
+          jq -R -s -c 'split("\n")[:-1]' entries_raw.txt > proto-journal/entries.json
+          
+          rm entries_raw.txt
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+          git add proto-journal/entries.json
+          git commit -m "Auto-update entries.json" || echo "No changes to commit"
+          
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git

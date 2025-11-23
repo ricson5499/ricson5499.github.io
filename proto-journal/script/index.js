@@ -10,7 +10,7 @@
 
   // 读取 entries 目录
   async function loadEntryFiles() {
-    const dirDoc = parseHTML(await fetchText('entries/'));
+    const dirDoc = parseHTML(await fetchText('entries.json'));
     return [...dirDoc.querySelectorAll('a')]
       .map(a => a.getAttribute('href'))
       .filter(f => f && f.endsWith('.html'));
