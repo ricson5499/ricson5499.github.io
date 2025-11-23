@@ -39,6 +39,44 @@ a:hover {
 }
 
 /* ===========================
+   Filter buttons（深色灰蓝）
+   =========================== */
+    .filter-bar {
+      margin: 20px 0 30px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .filter-btn {
+      padding: 6px 14px;
+      background: #1b2330;
+      color: #9fbce8;
+      border: 1px solid #2d3643;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      user-select: none;
+      transition: 0.15s;
+    }
+
+    .filter-btn:hover {
+      background: #233044;
+      color: #58a6ff;
+    }
+
+    .filter-btn.active {
+      background: #2d4a74;
+      border-color: #4a6da8;
+      color: white;
+    }
+
+    .entry-item {
+      padding: 18px 0;
+      border-bottom: 1px solid #1f2933;
+    }
+
+/* ===========================
    INDEX PAGE
    =========================== */
 

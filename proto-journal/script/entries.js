@@ -8,24 +8,22 @@
   const date    = get("date");
   const status  = get("status");
   const abstr   = get("abstract");
+  const type    = get("type");
 
-  // Document title
   if (title) document.title = title + " - Proto Journal";
 
-  // Page <h1>
   const h1 = document.querySelector('h1');
   if (h1 && title) h1.innerText = title;
 
-  // Meta info section
   const metaDisplay = document.querySelector('.meta');
   if (metaDisplay) {
     metaDisplay.innerHTML = `
       Status: ${status || "Unknown"}<br>
       Date: ${date || "Unknown"}<br>
+      Type: ${type || "Uncategorized"}<br>
     `;
   }
 
-  // Abstract
   const abstractBlock = document.querySelector('#auto-abstract');
   if (abstractBlock && abstr) {
     abstractBlock.innerText = abstr;
