@@ -35,7 +35,6 @@
       filePath: path,
       title: get("title") || doc.querySelector('h1')?.innerText || file.replace('.html', ''),
       date: get("date"),
-      status: get("status"),
       type: get("type") || "Uncategorized",
       abstract: get("abstract") || doc.querySelector("p")?.innerText || ""
     };
@@ -76,8 +75,7 @@
           ${ent.title}
         </a>
         <div style="font-size:14px; color:#8b949e; margin-bottom:6px;">
-          ${ent.date ? `Date: ${ent.date}` : ""}
-          ${ent.status ? ` | Status: ${ent.status}` : ""}
+          ${ent.date ? `Date: ${ent.date}` : ""}          
           ${ent.type ? ` | Type: ${ent.type}` : ""}
         </div>
         <div style="font-size:15px; color:#9da6b5;">${ent.abstract}</div>

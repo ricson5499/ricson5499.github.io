@@ -6,7 +6,6 @@
 
   const title   = get("title");
   const date    = get("date");
-  const status  = get("status");
   const abstr   = get("abstract");
   const type    = get("type");
 
@@ -18,7 +17,6 @@
   const metaDisplay = document.querySelector('.meta');
   if (metaDisplay) {
     metaDisplay.innerHTML = `
-      Status: ${status || "Unknown"}<br>
       Date: ${date || "Unknown"}<br>
       Type: ${type || "Uncategorized"}<br>
     `;
