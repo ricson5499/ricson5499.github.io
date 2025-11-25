@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>[Nationwide Emergency Web System] - Proto Journal</title>
+  <link rel="stylesheet" href="../style/journal.css">
+</head>
+<body>
+
+  <!-- Metadata Block -->
+  <div class="meta-block">
+    <meta name="title" content="Nationwide Emergency Web System">
+    <meta name="date" content="2025-11-25">
+    <meta name="type" content="System Architecture / Product Design">
+    <meta name="abstract" content="这是一个建立在 Web 技术（Vue + Node.js + PostgreSQL）上的全国紧急联动系统，具备最高级别的数据保护、零信任网络、分布式架构以及可承载全国性灾害流量的弹性能力。普通用户可通过网页发出求助，紧急部门通过同一 Web 后台查看、接单与处理事件。本方案包括概念、系统设计、开发计划、硬件要求、经费估算与潜在应用场景。">
+  </div>
+
+  <!-- Auto-generated title -->
+  <h1></h1>
+
+  <!-- Auto-filled meta -->
+  <div class="meta"></div>
+
+  <h2>Abstract</h2>
+  <p id="auto-abstract"></p>
+
+  <h2>Observations</h2>
+  <ul>
+    <li>传统紧急系统（999/112）主要依赖电话，不具备事件图片、视频、GPS 定位等数字化能力。</li>
+    <li>全国紧急部门间系统标准不一致，调度信息难以共享。</li>
+    <li>灾害期间，高峰流量可能导致系统拥塞或服务降级。</li>
+    <li>政府机构普遍担心数据泄露，因此数据保护等级必须高于一般商业产品。</li>
+    <li>Web 技术已经足够强大，Vue + Node 结合 Cloudflare 可在零暴露架构中安全运行。</li>
+    <li>OTP（Email + Phone）能确保用户来源真实，提高事件可信度。</li>
+    <li>高流量写入必须依靠 Redis 队列（Queue）做流量削峰，以保护数据库。</li>
+    <li>紧急部门只需要简单的 Dashboard，不需要复杂的 native app。</li>
+  </ul>
+
+  <h2>Hypotheses</h2>
+  <ul>
+    <li>如果建立全国统一 Web 平台，能显著提高事件分派速度（比电话描述更快）。</li>
+    <li>如果用户提交照片、位置与事件类型，部门调度效率会提升 20–40%。</li>
+    <li>如果采用零信任 Cloudflare Tunnel，可以完全避免 API 和 DB 的公网暴露。</li>
+    <li>如果所有敏感字段采用 AES-256 字段加密，即便数据库泄漏也无法读取内容。</li>
+    <li>如果采用 Redis Stream 作为事件队列，系统在灾害高峰仍可保持稳定。</li>
+    <li>全国级别流量可通过 Kubernetes + 分布式数据库扩展。</li>
+    <li>部门采用 RBAC（角色权限）后，可确保区域部门只能查看其区域事件，避免越权。</li>
+  </ul>
+
+  <h2>Images</h2>
+  <img src="./img/new999.png" alt="System Architecture Diagram" style="max-width: 100%; height: auto;">
+
+  <h2>Notes</h2>
+  <p>
+    以下为系统完整内容，包括技术、架构、用户流程、部门流程、硬件规格、经费预算、时间线规划、风险控制与扩展路线。
+  </p>
+
+  <h3>1. 系统概念（Concept）</h3>
+  <p>
+    使用 Web 技术构建全国紧急部门联动系统，让用户可在浏览器发出求助，并让警察、消防与医疗部门在同一平台查看与处理事件。所有敏感数据采用最高等级加密，并以零信任架构保护整个系统免受攻击。目标是在常态、高峰与灾害级事件中都能维持系统稳定。
+  </p>
+
+  <h3>2. 核心模块（Modules）</h3>
+  <ul>
+    <li>用户门户（HTML）：注册、Email/Phone OTP、GPS 定位、事件上传（图/视频）。</li>
+    <li>部门 Dashboard（HTML）：事件查看、地图、接单、进度更新、备注。</li>
+    <li>事件 API（Node.js）：处理事件流、分派、队列写入。</li>
+    <li>Redis Stream：事件队列（高峰保护）。</li>
+    <li>PostgreSQL：主要数据储存（字段级加密）。</li>
+    <li>对象储存（MinIO/S3）：媒体文件加签名存储。</li>
+    <li>Cloudflare Zero Trust：整个系统的封闭式入口、防护层。</li>
+  </ul>
+
+  <h3>3. 数据保护（最高级别）</h3>
+  <ul>
+    <li>Zero Trust 架构（Cloudflare Tunnel，API/DB 不暴露公网）。</li>
+    <li>AES-256-GCM 字段级加密（姓名、电话、地址、事件描述）。</li>
+    <li>密码用 bcrypt 存储（不可逆）。</li>
+    <li>JWT（ES256）+ Session Binding 提升登录安全。</li>
+    <li>RBAC 权限控制（部门区域隔离）。</li>
+    <li>WORM 日志存证（Write Once Read Many）。</li>
+  </ul>
+
+  <h3>4. 用户流程（User Flow）</h3>
+  <ol>
+    <li>用户注册 → Email OTP → Phone OTP。</li>
+    <li>进入系统 → 点击“一键求助”。</li>
+    <li>系统自动获取位置。</li>
+    <li>上传照片/视频（可选）。</li>
+    <li>系统将事件写入 Redis Queue。</li>
+    <li>后台 Worker 处理 → 写入数据库。</li>
+  </ol>
+
+  <h3>5. 部门流程（Department Flow）</h3>
+  <ol>
+    <li>部门账号登录 Dashboard。</li>
+    <li>按区域收到事件。</li>
+    <li>查看地图定位、照片、备注。</li>
+    <li>点击“接单”。</li>
+    <li>行动并更新状态（处理中、已完成）。</li>
+    <li>关闭事件。</li>
+  </ol>
+
+  <h3>6. 系统架构（Architecture）</h3>
+  <ul>
+    <li>Cloudflare（WAF + DDoS + Zero Trust）</li>
+    <li>Load Balancer（Active-Active）</li>
+    <li>Node.js（多实例 / Kubernetes）</li>
+    <li>Redis Queue（事件流峰值保护）</li>
+    <li>PostgreSQL（主/从 + 分区）</li>
+    <li>对象储存（MinIO/S3）</li>
+  </ul>
+
+  <h3>7. 硬件与经费（Budget）</h3>
+  <ul>
+    <li>物理服务器 x2（RM 30k）</li>
+    <li>数据库专机（RM 15k）</li>
+    <li>备份机（RM 8k）</li>
+    <li>机柜、UPS、交换机（RM 12k）</li>
+    <li>Cloudflare Enterprise（RM 10k）</li>
+    <li>SMS + Email OTP（年 RM 10k）</li>
+  </ul>
+  <p>总计约：RM 70k–90k（依实际配置变化）</p>
+
+  <h3>8. 开发技术（Tech Stack）</h3>
+  <ul>
+    <li>前端：HTML + Bootstrap + Javascript</li>
+    <li>后端：Node.js (Express)</li>
+    <li>数据库：PostgreSQL</li>
+    <li>队列：Redis</li>
+    <li>储存：MinIO/S3</li>
+    <li>基础架构：Cloudflare</li>
+    <li>部署：Docker</li>
+  </ul>
+
+  <h3>9. 开发时间表（Timeline）</h3>
+  <ul>
+    <li>第 1–2 周：系统设计、数据库 Schema、前后端框架初始化。</li>
+    <li>第 3–6 周：用户端、部门端主功能开发。</li>
+    <li>第 7–10 周：事件队列、媒体上传、地图模块开发。</li>
+    <li>第 11–12 周：安全加固、渗透测试、压测。</li>
+    <li>第 13–14 周：试点上线（一个城市）。</li>
+  </ul>
+
+  <h3>10. 风险评估</h3>
+  <ul>
+    <li>政府部门采用速度不一 → 先做区域试点。</li>
+    <li>系统在灾害高峰可能出现堆积 → Redis Queue 吸收峰值。</li>
+    <li>权限滥用 → RBAC + 审计日志（不可删）。</li>
+    <li>数据泄露风险 → AES-256 字段加密 + 零信任网络。</li>
+  </ul>
+
+  <h3>11. 扩展应用（Future Expansion）</h3>
+  <ul>
+    <li>与医院/警察信息系统联动。</li>
+    <li>加入 AI 事件自动分类。</li>
+    <li>加入灾害预测图层（气象、水灾）。</li>
+    <li>手机 PWA 版本（接近 App 使用体验）。</li>
+  </ul>
+
+  <h2>Potential Applications</h2>
+  <ul>
+    <li>全国统一紧急报警入口（One National Portal）。</li>
+    <li>大型活动（跨年、运动会）即时调度。</li>
+    <li>应急灾害统一管理平台。</li>
+    <li>警消医疗跨部门合作系统。</li>
+  </ul>
+
+  <script src="../script/entries.js"></script>
+</body>
+</html>

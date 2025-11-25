@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>User Emergency App</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: Arial; margin: 20px; }
+  .card { border:1px solid #ccc; padding:20px; border-radius:8px; max-width:450px; margin:auto; }
+  .input { width:100%; padding:10px; margin:8px 0; border:1px solid #aaa; border-radius:5px; }
+  button { padding:12px 20px; margin-top:10px; width:100%; border:none; background:#007bff; color:#fff; border-radius:5px; }
+  button:hover { background:#0062cc; }
+  .section-title { font-weight:bold; margin-top:25px; }
+</style>
+</head>
+
+<body>
+
+<h2>User Emergency Web App</h2>
+
+<div class="card">
+
+  <h3>Login</h3>
+  <input class="input" placeholder="Email">
+  <input class="input" placeholder="Password" type="password">
+  <button onclick="alert('Login placeholder – no API connected')">Login</button>
+
+  <div class="section-title">Don't have an account?</div>
+  <button onclick="document.getElementById('registerBox').style.display='block'">Register</button>
+</div>
+
+<!-- Register Box -->
+<div class="card" id="registerBox" style="display:none;">
+  <h3>Register</h3>
+  <input class="input" placeholder="Email">
+  <input class="input" placeholder="Phone Number">
+  <input class="input" placeholder="Password" type="password">
+  <button onclick="alert('OTP sent (sample)')">Send OTP</button>
+
+  <div class="section-title">Enter OTP</div>
+  <input class="input" placeholder="6-digit OTP">
+  <button onclick="alert('Registered (sample)')">Verify & Create Account</button>
+</div>
+
+<!-- Emergency Form -->
+<div class="card" style="margin-top:30px;">
+  <h3>Emergency Report</h3>
+
+  <label>Location (auto-detected):</label>
+  <input class="input" id="loc" value="1.23456, 103.56789 (sample)">
+  
+  <label>Type of Emergency:</label>
+  <select class="input">
+    <option>Fire</option>
+    <option>Medical</option>
+    <option>Police</option>
+  </select>
+
+  <label>Description:</label>
+  <textarea class="input" rows="3">Lorem ipsum dolor sit amet...</textarea>
+
+  <label>Upload Photo/Video:</label>
+  <input type="file" class="input">
+
+  <button onclick="alert('Emergency submitted (sample only)')">Submit Emergency</button>
+</div>
+
+</body>
+</html>

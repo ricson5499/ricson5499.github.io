@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Department Dashboard</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: Arial; margin: 20px; display:flex; }
+  .sidebar { width:260px; border-right:1px solid #ccc; padding-right:20px; }
+  .event-item { padding:10px; border:1px solid #ccc; margin-bottom:10px; border-radius:5px; cursor:pointer; }
+  .event-item:hover { background:#f1f1f1; }
+  #details { margin-left: 30px; width: 100%; }
+  .input { width:100%; padding:10px; margin:8px 0; border:1px solid #aaa; border-radius:5px; }
+  button { padding:10px 16px; margin-top:10px; border:none; background:#007bff; color:#fff; border-radius:5px; }
+  button:hover { background:#0062cc; }
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+  <h2>Department View</h2>
+
+  <h3>Login</h3>
+  <input class="input" placeholder="Department ID">
+  <input class="input" placeholder="Password" type="password">
+  <button onclick="alert('Logged in (sample)')">Login</button>
+
+  <h3 style="margin-top:30px;">Events</h3>
+
+  <div class="event-item" onclick="loadDetails(1)">
+    <b>Fire Emergency</b><br>
+    User: sample1@mail.com<br>
+    Location: 1.234, 103.567
+  </div>
+
+  <div class="event-item" onclick="loadDetails(2)">
+    <b>Medical Emergency</b><br>
+    User: johndoe@mail.com<br>
+    Location: 1.123, 103.456
+  </div>
+
+  <div class="event-item" onclick="loadDetails(3)">
+    <b>Police Report</b><br>
+    User: alice@mail.com<br>
+    Location: 1.678, 103.222
+  </div>
+
+</div>
+
+<div id="details">
+  <h2>Event Details</h2>
+  <div id="detailBox">
+    <p>Select an event to view details.</p>
+  </div>
+</div>
+
+<script>
+function loadDetails(id) {
+  const sample = {
+    1: {
+      type: "Fire",
+      user: "sample1@mail.com",
+      loc: "1.234, 103.567",
+      desc: "Smoke observed near residential area.",
+      status: "New"
+    },
+    2: {
+      type: "Medical",
+      user: "johndoe@mail.com",
+      loc: "1.123, 103.456",
+      desc: "Person unconscious near bus stop.",
+      status: "In Progress"
+    },
+    3: {
+      type: "Police",
+      user: "alice@mail.com",
+      loc: "1.678, 103.222",
+      desc: "Suspicious activity reported.",
+      status: "New"
+    }
+  };
+
+  const d = sample[id];
+  document.getElementById("detailBox").innerHTML = `
+    <h3>${d.type} Emergency</h3>
+    <p><b>User:</b> ${d.user}</p>
+    <p><b>Location:</b> ${d.loc}</p>
+    <p><b>Description:</b><br>${d.desc}</p>
+    <p><b>Status:</b> ${d.status}</p>
+
+    <h4>Actions</h4>
+    <button onclick="alert('Accepted (sample)')">Accept</button>
+    <button onclick="alert('Marked Completed (sample)')">Complete</button>
+
+    <h4 style="margin-top:20px;">Map Preview</h4>
+    <div style="width:100%; height:200px; background:#eee; display:flex; align-items:center; justify-content:center;">
+      <i>Map Placeholder</i>
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>
