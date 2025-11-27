@@ -38,7 +38,7 @@ function renderCards(list, title = "All Concepts") {
       <div class="explain">${item.explain}</div>
       <strong>Cheat sheet:</strong>
       <ul>
-        ${item.cheatsheet.map(c => `<li class='cheat-item'>• ${c}</li>`).join("")}
+        ${item.cheatsheet.map(c => `<li class='cheat-item'>${c}</li>`).join("")}
       </ul>
     `;
 

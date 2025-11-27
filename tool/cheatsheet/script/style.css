@@ -52,6 +52,9 @@ margin: 0 0 10px;
 font-size: 16px;
 color: #fff;
 }
+.card ul {
+  padding-left: 10px;
+}
 .explain {
 font-size: 14px;
 margin-bottom: 10px;
@@ -65,5 +68,6 @@ color: #bbb;
 pre {
 background: #111;
 padding: 10px;
-white-space: normal;
+white-space: pre-wrap;
+word-wrap: break-word;
 }

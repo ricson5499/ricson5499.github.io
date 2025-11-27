@@ -180,6 +180,22 @@ console.log(data);
         code: `button.addEventListener('click', ()=>{\n  console.log('clicked');\n});`
       }
     ]
+  },
+  {
+    id: "js-solid principles",
+    title: "什么是 SOLID 原则？",
+    category: "Basics",
+    language: "JavaScript",
+    level: "medium",
+    explain: "SOLID 是五个写好代码的原则缩写，帮你写出又干净又好维护的代码。",
+    cheatsheet: [
+      "S - 单一职责原则（Single Responsibility Principle），意思是每个模块或类应该只有一个职责。",
+      "O - 开闭原则（Open/Closed Principle），意思是软件实体应该对扩展开放，对修改关闭。",
+      "L - 里氏替换原则（Liskov Substitution Principle），意思是子类对象应该可以替换掉父类对象而不影响程序的正确性。",
+      "I - 接口隔离原则（Interface Segregation Principle），意思是客户端不应该被强迫依赖它们不使用的方法。",
+      "D - 依赖倒置原则（Dependency Inversion Principle），意思是高层模块不应该依赖低层模块，二者都应该依赖于抽象。"
+    ],
+    examples: []
   }
 
 ];
