@@ -65,4 +65,20 @@ const MEALS = [
     "note": "Roti够脆不过要等",
     "tags": [""]
   },
+  {
+    "name": "食客韩国烤肉",
+    "meal": "午餐",
+    "type": "烤肉",
+    "location": "Sutera",
+    "note": "Rib Eye 不错，送配菜",
+    "tags": [""]
+  },
+  {
+    "name": "Gangnam BBQ 韩国烤肉",
+    "meal": "午餐",
+    "type": "烤肉",
+    "location": "Kulai",
+    "note": "很像食客，蛋饼不错，菜给比较多",
+    "tags": [""]
+  },
 ];
