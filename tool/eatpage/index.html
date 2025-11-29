@@ -51,7 +51,16 @@
 
   <footer class="footer">吃得开心最重要 🍜</footer>
 
-  <script src="./data/meals.js"></script>
-  <script src="./js/main.js"></script>
+  <script>
+    const version = Date.now();
+
+    const script1 = document.createElement("script");
+    script1.src = `./data/meals.js?v=${version}`;
+    document.body.appendChild(script1);
+
+    const script2 = document.createElement("script");
+    script2.src = `./js/main.js?v=${version}`;
+    document.body.appendChild(script2);
+  </script>
 </body>
 </html>
