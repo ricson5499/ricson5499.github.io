@@ -1,6 +1,22 @@
 // English comments: Sample meal list
 
-const MEALS = [  
+const MEALS = [
+  {
+    "name": "豪友点心楼",
+    "meal": "早餐",
+    "type": "包点",
+    "location": "Taman Johor Jaya",
+    "note": "大包，点心，粥，咖啡都不错，还有炒粿条",
+    "tags": [""]
+  },
+  {
+    "name": "Restoran Ameer",
+    "meal": "早餐",
+    "type": "Roti",
+    "location": "Mutiara Rini",
+    "note": "Roti够脆不过要等",
+    "tags": [""]
+  },
   {
     "name": "鱼片米粉",
     "meal": "午餐",
@@ -56,15 +72,7 @@ const MEALS = [
     "location": "Mount Austin",
     "note": "浓汤配饭 shiok",
     "tags": [""]
-  },
-  {
-    "name": "Restoran Ameer",
-    "meal": "早餐",
-    "type": "Roti",
-    "location": "Mutiara Rini",
-    "note": "Roti够脆不过要等",
-    "tags": [""]
-  },
+  },  
   {
     "name": "食客韩国烤肉",
     "meal": "午餐",
