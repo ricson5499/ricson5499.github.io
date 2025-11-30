@@ -46,10 +46,12 @@ body{
 }
 .card h4{margin:0 0 6px 0}
 .muted{color:var(--muted);font-size:13px}
-.panel .filters{display: flex;gap: 10px;flex-wrap: wrap;}
+.panel .filter-group{display: flex;gap: 20px;flex-wrap:nowrap;margin-bottom:30px;}
+.panel .filters{display: flex;gap: 8px;flex-wrap: wrap;}
+.panel h3 {margin:0}
 .filter-btn{padding:8px 10px;border-radius:8px;border:1px solid #eee;background:#fff;cursor:pointer;font-size:var(--filter-btn-fontsize);}
 .filter-btn.active{background:var(--accent);color:#fff;border-color:transparent}
-.search-row{display:flex;gap:8px;margin-top:12px}
+.search-row{display:flex;gap:8px;margin:12px 0 20px;}
 .search-row input, .search-row select{flex:1;padding:8px;border-radius:8px;border:1px solid #eee}
 .footer{text-align:center;padding:18px;color:var(--muted);margin-top:24px}
 .type-grid{display:flex;flex-wrap:wrap;gap:12px}
