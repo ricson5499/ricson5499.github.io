@@ -1,5 +1,4 @@
 // English comments: Sample meal list
-
 const MEALS = [
   {
     "name": "🥮豪友点心楼",
