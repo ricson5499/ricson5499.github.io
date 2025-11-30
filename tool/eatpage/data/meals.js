@@ -3,98 +3,154 @@
 const MEALS = [
   {
     "name": "豪友点心楼",
-    "meal": "早餐",
-    "type": "包点",
+    "meal": ["早餐"],
+    "type": ["包点"],
     "location": "Johor Jaya",
     "note": "大包，点心，粥，咖啡都不错，还有炒粿条",
     "tags": [""]
   },
   {
     "name": "Restoran Ameer",
-    "meal": "早餐",
-    "type": "Roti",
+    "meal": ["早餐"],
+    "type": ["Roti"],
     "location": "Mutiara Rini",
     "note": "Roti够脆不过要等",
     "tags": [""]
   },
   {
     "name": "鱼片米粉",
-    "meal": "午餐",
-    "type": "面",
+    "meal": ["午餐"],
+    "type": ["米粉"],
     "location": "Impian Emas",
     "note": "咖喱鱼片 赞，配饭也不错",
     "tags": ["饭"]
   },
   {
     "name": "哥打肉骨茶",
-    "meal": "午餐",
-    "type": "饭",
+    "meal": ["早餐","午餐"],
+    "type": ["肉骨茶"],
     "location": "哥打",
     "note": "猪肚汤也不错",
     "tags": ["饭"]
   },
   {
     "name": "新海珍 鸭肉",
-    "meal": "午餐",
-    "type": "饭",
+    "meal": ["午餐","晚餐"],
+    "type": ["鸭肉","饭"],
     "location": "公主",
     "note": "鸭肉软软 好吃",
     "tags": [""]
   },
   {
     "name": "炒虾面",
-    "meal": "午餐",
-    "type": "面",
+    "meal": ["午餐"],
+    "type": ["面"],
     "location": "Taman U",
     "note": "配上他的酱 nice",
     "tags": [""]
   },
   {
     "name": "萬記吉隆坡福建面",
-    "meal": "午餐",
-    "type": "面",
+    "meal": ["午餐"],
+    "type": ["面"],
     "location": "皇后",
     "note": "主打黑黑福建面，滑蛋生面和鱼饼也是不错",
     "tags": [""]
   },
   {
     "name": "新皇庭",
-    "meal": "午餐",
-    "type": "汤",
+    "meal": ["午餐","晚餐"],
+    "type": ["汤饭"],
     "location": "Mount Austin",
     "note": "浓汤配饭 shiok",
     "tags": [""]
-  },  
+  },
   {
-    "name": "食客韩国烤肉",
-    "meal": "午餐",
-    "type": "烤肉",
+    "name": "和乐屋 日式料理",
+    "meal": ["午餐","晚餐"],
+    "type": ["日式"],
     "location": "Sutera",
     "note": "Rib Eye 不错，送配菜",
     "tags": [""]
   },
   {
+    "name": "食客 韩国烤肉",
+    "meal": ["午餐","晚餐"],
+    "type": ["韩国烤肉"],
+    "location": "Sutera",
+    "note": "Rib Eye 不错，送配菜",
+    "tags": [""]
+  },
+  {
+    "name": "食在霸道",
+    "meal": ["晚餐"],
+    "type": ["砂煲","甜品","小食"],
+    "location": "Sutera",
+    "note": "也有很多的甜品和小食选择",
+    "tags": [""]
+  },
+  {
     "name": "Gangnam BBQ 韩国烤肉",
-    "meal": "午餐",
-    "type": "烤肉",
+    "meal": ["午餐","晚餐"],
+    "type": ["韩国烤肉"],
     "location": "Kulai",
     "note": "很像食客，蛋饼不错，菜给比较多",
     "tags": [""]
   },
   {
     "name": "半唐水",
-    "meal": "午餐",
-    "type": "甜品",
+    "meal": ["午餐"],
+    "type": ["面","汉堡","甜品"],
     "location": "Impian Emas",
     "note": "并不错，也有出前一丁，日本咖喱饭和burger",
     "tags": [""]
   },
   {
-    "name": "Number One 泰式",
-    "meal": "晚餐",
-    "type": "饭",
+    "name": "Number One 泰式煮炒",
+    "meal": ["晚餐"],
+    "type": ["炒饭"],
     "location": "Taman U",
     "note": "Kampung 炒饭必点",
+    "tags": [""]
+  },
+  {
+    "name": "Der' Cabin Bistro",
+    "meal": ["晚餐"],
+    "type": ["西餐","鸡扒"],
+    "location": "Taman U",
+    "note": "户外环境不错，鸡扒好吃",
+    "tags": [""]
+  },
+  {
+    "name": "鐥洺海鲜楼",
+    "meal": ["晚餐"],
+    "type": ["海鲜","煮炒"],
+    "location": "Impian Emas",
+    "note": "菜色特别，环境不错，有点度假村的感觉",
+    "tags": [""]
+  },
+  {
+    "name": "億家海鲜",
+    "meal": ["晚餐"],
+    "type": ["海鲜","煮炒"],
+    "location": "Bukit Indah",
+    "note": "海鲜价钱ok, 也很新鲜",
+    "tags": [""]
+  },
+  {
+    "name": "Meet House Cafe",
+    "meal": ["午餐"],
+    "type": ["西餐"],
+    "location": "Bukit Indah",
+    "note": "油站楼上的主题餐厅，环境不错，很舒服，适合聚会",
+    "tags": [""]
+  },
+  {
+    "name": "Sushi Mentai",
+    "meal": ["午餐","晚餐"],
+    "type": ["寿司"],
+    "location": "Taman U",
+    "note": "旋转寿司，价钱合理，选择多，也有主食",
     "tags": [""]
   },
 ];

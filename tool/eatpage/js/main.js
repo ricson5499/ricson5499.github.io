@@ -9,8 +9,12 @@
     const locationButtons = document.getElementById('locationButtons');
 
     // Unique values
-    const mealTypes = [...new Set(MEALS.map(x => x.meal))];
-    const foodTypes = [...new Set(MEALS.map(x => x.type))];  
+    const mealTypes = [...new Set(
+      MEALS.flatMap(x => Array.isArray(x.meal) ? x.meal : [x.meal])
+    )];
+    const foodTypes = [...new Set(
+      MEALS.flatMap(x => Array.isArray(x.type) ? x.type : [x.type])
+    )];
     const locationTypes = [...new Set(MEALS.map(x => x.location))];
 
     let selectedMeal = '全部';
@@ -70,7 +74,13 @@
 
         div.innerHTML = `
           <h4>${x.name}</h4>
-          <div class="muted">${x.meal} • ${x.type} • ${x.location}</div>
+          <div class="muted">
+  ${(Array.isArray(x.meal) ? x.meal.join(' / ') : x.meal)}
+  •
+  ${(Array.isArray(x.type) ? x.type.join(' / ') : x.type)}
+  •
+  ${x.location}
+</div>
           <div class="small muted" style="margin-top:6px;">${x.note || ''}</div>
         `;
 
@@ -84,11 +94,13 @@
 
       let list = MEALS.slice();
 
-      if (selectedMeal !== '全部')
-        list = list.filter(x => x.meal === selectedMeal);
+      if (selectedMeal !== '全部') {
+        list = list.filter(x => Array.isArray(x.meal) ? x.meal.includes(selectedMeal) : x.meal === selectedMeal);
+      }
 
-      if (selectedType !== '全部')
-        list = list.filter(x => x.type === selectedType);
+      if (selectedType !== '全部') {
+        list = list.filter(x => Array.isArray(x.type) ? x.type.includes(selectedType) : x.type === selectedType);
+      }
 
       if (selectedLocation !== '全部')
         list = list.filter(x => x.location === selectedLocation);
