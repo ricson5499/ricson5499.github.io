@@ -5,7 +5,7 @@ const MEALS = [
     "name": "豪友点心楼",
     "meal": "早餐",
     "type": "包点",
-    "location": "Taman Johor Jaya",
+    "location": "Johor Jaya",
     "note": "大包，点心，粥，咖啡都不错，还有炒粿条",
     "tags": [""]
   },
@@ -39,14 +39,6 @@ const MEALS = [
     "type": "饭",
     "location": "公主",
     "note": "鸭肉软软 好吃",
-    "tags": [""]
-  },
-  {
-    "name": "Number One 泰式",
-    "meal": "晚餐",
-    "type": "饭",
-    "location": "Taman U",
-    "note": "Kampung 炒饭必点",
     "tags": [""]
   },
   {
@@ -87,6 +79,22 @@ const MEALS = [
     "type": "烤肉",
     "location": "Kulai",
     "note": "很像食客，蛋饼不错，菜给比较多",
+    "tags": [""]
+  },
+  {
+    "name": "半唐水",
+    "meal": "午餐",
+    "type": "甜品",
+    "location": "Impian Emas",
+    "note": "并不错，也有出前一丁，日本咖喱饭和burger",
+    "tags": [""]
+  },
+  {
+    "name": "Number One 泰式",
+    "meal": "晚餐",
+    "type": "饭",
+    "location": "Taman U",
+    "note": "Kampung 炒饭必点",
     "tags": [""]
   },
 ];
