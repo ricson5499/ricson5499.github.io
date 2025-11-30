@@ -157,7 +157,15 @@ const MEALS = [
     "meal": ["晚餐"],
     "type": ["西餐","鸡扒"],
     "location": "Taman U",
-    "note": "户外环境不错，鸡扒好吃",
+    "note": "户外，鸡扒好吃",
+    "tags": [""]
+  },
+  {
+    "name": "🍗肯德基 宽柔中学对面",
+    "meal": ["午餐","晚餐"],
+    "type": ["炸鸡","汉堡"],
+    "location": "Stulang Laut",
+    "note": "风景不错，炸鸡juicy",
     "tags": [""]
   },
   {
@@ -165,7 +173,7 @@ const MEALS = [
     "meal": ["晚餐"],
     "type": ["海鲜","煮炒"],
     "location": "Impian Emas",
-    "note": "菜色特别，环境不错，有点度假村的感觉",
+    "note": "菜色特别，环境不错，有点度假村的感觉，有冷气包厢但有最低消费的要求",
     "tags": [""]
   },
   {
