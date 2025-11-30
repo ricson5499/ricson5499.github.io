@@ -53,7 +53,7 @@ const MEALS = [
     "meal": ["早餐","午餐"],
     "type": ["面"],
     "location": "皇后",
-    "note": "酿豆腐很多选择，很干净，咖喱面不错，招牌咖啡也不错",
+    "note": "有冷气，酿豆腐很多选择，很干净，咖喱面不错，招牌咖啡也不错",
     "tags": [""]
   },
   {
@@ -61,7 +61,7 @@ const MEALS = [
     "meal": ["午餐","晚餐"],
     "type": ["炸鸡"],
     "location": "皇后",
-    "note": "经典炸鸡",
+    "note": "经典炸鸡，有冷气",
     "tags": [""]
   },
   {
@@ -69,7 +69,7 @@ const MEALS = [
     "meal": ["早餐","午餐"],
     "type": ["肉骨茶"],
     "location": "哥打",
-    "note": "猪肚汤也不错",
+    "note": "没有冷气，猪肚汤和猪脚也不错",
     "tags": ["饭"]
   },
   {
@@ -77,12 +77,12 @@ const MEALS = [
     "meal": ["午餐","晚餐"],
     "type": ["鸭肉","饭"],
     "location": "公主",
-    "note": "鸭肉软软 好吃",
+    "note": "鸭肉够味有嚼劲 好吃",
     "tags": [""]
   },
   {
     "name": "🍜炒虾面",
-    "meal": ["午餐"],
+    "meal": ["午餐","晚餐"],
     "type": ["面"],
     "location": "Taman U",
     "note": "配上他的酱 nice",
@@ -109,7 +109,7 @@ const MEALS = [
     "meal": ["午餐","晚餐"],
     "type": ["日式","寿司","拉面"],
     "location": "Sutera",
-    "note": "Rib Eye 不错，送配菜",
+    "note": "泡菜拉面不错，寿司选择多，也有很多主食，高档日式料理",
     "tags": [""]
   },
   {
@@ -117,7 +117,7 @@ const MEALS = [
     "meal": ["午餐","晚餐"],
     "type": ["韩国烤肉"],
     "location": "Sutera",
-    "note": "Rib Eye 不错，送配菜",
+    "note": "Rib Eye 不错，通常单点1个肉会送6~7样配菜",
     "tags": [""]
   },
   {
@@ -125,7 +125,7 @@ const MEALS = [
     "meal": ["晚餐"],
     "type": ["砂煲","甜品","小食"],
     "location": "Sutera",
-    "note": "也有很多的甜品和小食选择",
+    "note": "主打沙煲和冰，也有很多的Topping和小食选择",
     "tags": [""]
   },
   {
