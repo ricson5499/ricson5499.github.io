@@ -81,11 +81,11 @@ const MEALS = [
     "tags": [""]
   },
   {
-    "name": "🍜炒虾面",
+    "name": "🍜炒虾面 SUN & sun 96 Restaurant",
     "meal": ["午餐","晚餐"],
     "type": ["面"],
     "location": "Taman U",
-    "note": "配上他的酱 nice",
+    "note": "档口在旁边，面向tayar店。配上他的酱 nice",
     "tags": [""]
   },
   {
