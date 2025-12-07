@@ -44,7 +44,7 @@ body{
 .card{
   padding:12px;border-radius:8px;border:1px solid #f0f0f5;
 }
-.card h4{margin:0 0 6px 0}
+.card h4{margin:0 0 6px 0;font-size:20px;}
 .muted{color:var(--muted);font-size:13px}
 .panel .filter-group{display: flex;gap: 20px;flex-wrap:nowrap;margin-bottom:30px;}
 .panel .filters{display: flex;gap: 8px;flex-wrap: wrap;}

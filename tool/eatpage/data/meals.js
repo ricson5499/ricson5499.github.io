@@ -50,7 +50,7 @@ const MEALS = [
   },
   {
     "name": "🍲安记酿豆腐",
-    "meal": ["早餐","午餐"],
+    "meal": ["早餐"],
     "type": ["面"],
     "location": "皇后",
     "note": "有冷气，酿豆腐很多选择，很干净，咖喱面不错，招牌咖啡也不错",
@@ -65,10 +65,18 @@ const MEALS = [
     "tags": [""]
   },
   {
-    "name": "🍲哥打肉骨茶",
+    "name": "🍗Chicken Delights",
+    "meal": ["午餐"],
+    "type": ["炸鸡","汉堡","饭"],
+    "location": "Kulai",
+    "note": "经典炸鸡，有冷气",
+    "tags": [""]
+  },
+  {
+    "name": "🍲明香肉骨茶",
     "meal": ["早餐","午餐"],
     "type": ["肉骨茶"],
-    "location": "哥打",
+    "location": "Kota Tinggi",
     "note": "没有冷气，猪肚汤和猪脚也不错",
     "tags": ["饭"]
   },
@@ -115,7 +123,7 @@ const MEALS = [
   {
     "name": "🍖食客 韩国烤肉",
     "meal": ["午餐","晚餐"],
-    "type": ["韩国烤肉"],
+    "type": ["韩式","韩国烤肉"],
     "location": "Sutera",
     "note": "Rib Eye 不错，通常单点1个肉会送6~7样配菜",
     "tags": [""]
@@ -127,15 +135,7 @@ const MEALS = [
     "location": "Sutera",
     "note": "主打沙煲和冰，也有很多的Topping和小食选择",
     "tags": [""]
-  },
-  {
-    "name": "🍖Gangnam BBQ 韩国烤肉",
-    "meal": ["午餐","晚餐"],
-    "type": ["韩国烤肉"],
-    "location": "Kulai",
-    "note": "很像食客，蛋饼不错，菜给比较多",
-    "tags": [""]
-  },
+  },  
   {
     "name": "🍜🍨半唐水",
     "meal": ["午餐"],
@@ -181,7 +181,7 @@ const MEALS = [
     "meal": ["晚餐"],
     "type": ["海鲜","煮炒"],
     "location": "Bukit Indah",
-    "note": "海鲜价钱ok, 也很新鲜",
+    "note": "海鲜价钱ok, 也很新鲜，有包厢但是有最低消费的要求，楼上有冷气但需要提前预约",
     "tags": [""]
   },
   {
@@ -198,6 +198,22 @@ const MEALS = [
     "type": ["日式","寿司"],
     "location": "Taman U",
     "note": "旋转寿司，价钱合理，选择多，也有主食",
+    "tags": [""]
+  },
+  {
+    "name": "🍜🐟亞方餐室",
+    "meal": ["午餐"],
+    "type": ["面"],
+    "location": "Taman Gaya",
+    "note": "新鲜海鲜汤面，食物好吃，汤头鲜甜，也有干捞选择，没有冷气",
+    "tags": [""]
+  },
+  {
+    "name": "🍳🔥Mr.Dakgalbi",
+    "meal": ["午餐"],
+    "type": ["面","韩式","饭"],
+    "location": "Sunway BigBox",
+    "note": "韩式鸡肉炒饭，辣味适中,偏甜,有冷气",
     "tags": [""]
   },
 ];
