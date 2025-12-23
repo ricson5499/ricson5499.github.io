@@ -209,6 +209,14 @@ const MEALS = [
     "tags": []
   },
   {
+    "name": "🍱🍜Sushi King",
+    "meal": ["午餐","晚餐"],
+    "type": ["日式","寿司"],
+    "location": "Taman U",
+    "note": "旋转寿司，价钱合理，选择多，也有主食",
+    "tags": []
+  },
+  {
     "name": "🍜🐟亞方餐室",
     "meal": ["午餐"],
     "type": ["面"],

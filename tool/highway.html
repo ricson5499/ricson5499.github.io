@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      margin:0;
+      padding:0;
+    }
+    .highway-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-size: 15px;
+    }
+
+    .highway-table th,
+    .highway-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+    }
+
+    .highway-table th {
+      background: #f9fafb;
+      font-weight: 600;
+    }
+
+    .highway-table tbody tr:hover {
+      background: #f3f4f6;
+    }
+
+    .highway-table a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .highway-table tr.is-default {
+      background: #eff6ff;
+      font-weight: 600;
+    }
+
+    .highway-table tr.is-default td {
+      border-bottom: 1px solid #bfdbfe;
+    }
+  </style>
+</head>
+<body>
+  <table class="highway-table" id="highwayTable">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Contact</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const data = {      
+      GENERAL:{
+        "name":"PLUS Line (General hotline for all highways)",
+        "contact":"1800-88-0000",
+        "default":true
+      },
+      "E1/E2":{
+        "name":"Lebuhraya Utara Selatan (PLUS)",
+        "contact":"1800-88-0000"
+      },
+      "E3":{
+        "name":"Lebuhraya Laluan Kedua Malaysia-Singapura (LINKEDUA)",
+        "contact":"1800-88-0000"
+      },
+      "E5":{
+        "name":"Lebuhraya Shah Alam (KESAS)",
+        "contact":"03-56337188"
+      },
+      "E6":{
+        "name":"Lebuhraya Utara Selatan Hubungan Tengah (ELITE)",
+        "contact":"1800-88-0000"
+      },
+      "E7":{
+        "name":"Lebuhraya Cheras Kajang (Grand Saga)",
+        "contact":"1700-818-700"
+      },
+      "E8":{
+        "name":"Lebuhraya Pantai Timur Fasa 1(LPT1)",
+        "contact":"1700-818-700"
+      },
+      "E8":{
+        "name":"Lebuhraya Pantai Timur Fasa 2(LPT2)",
+        "contact":"1800-88-0220"
+      },
+      "E9":{
+        "name":"Lebuhraya Sungai Besi (BESRAYA)",
+        "contact":"1800-88-0999"
+      },
+      "E10":{
+        "name":"Lebuhraya Baru Pantai (NPE)",
+        "contact":"1300-88-1010"
+      },
+      "E11":{
+        "name":"Lebuhraya Damansara Puchong (LDP)",
+        "contact":"03-74947333"
+      },
+      "E12":{
+        "name":"Lebuhraya Bertingkat Ampang-Kuala Lumpur (AKLEH)",
+        "contact":"1300-88-1012"
+      },
+      "E13":{
+        "name":"Lebuhraya Kemuning -Shah Alam(LKSA)",
+        "contact":"1300-88-2801"
+      },
+      "E15":{
+        "name":"Lebuhraya Butterworth-Kulim (BKE)",
+        "contact":"1800-88-0000"
+      },
+      "E17":{
+        "name":"Lebuhraya Lingkaran Luar Butterworth (LLB)",
+        "contact":"04-3299999"
+      },
+      "E18":{
+        "name":"Lebuhraya Skim Penyuraian Trafik Lingkaran Kajang (SILK)",
+        "contact":"03-89210123"
+      },
+      "E20":{
+        "name":"Lebuhraya Kuala Lumpur-Putrajaya (MEX)",
+        "contact":"03-83159111"
+      },
+      "E21":{
+        "name":"Lebuhraya Kajang-Seremban (LEKAS)",
+        "contact":"1800-888-021"
+      },
+      "E22":{
+        "name":"Lebuhraya Senai-Desaru (SDE)",
+        "contact":"07-8612222"
+      },
+      "E23":{
+        "name":"Lebuhraya Skim Penyuraian Trafik Kuala Lumpur Barat (SPRINT)",
+        "contact":"03-74947376"
+      },
+      "E25":{
+        "name":"Lebuhraya Kuala Lumpur-Kuala Selangor (LATAR)",
+        "contact":"03-61451515"
+      },
+      "E26":{
+        "name":"Lebuhraya Lembah Klang Selatan (SKVE)",
+        "contact":"1300-88-0026"
+      },
+      "E28":{
+        "name":"Jambatan Sultan Abdul Halim Mu’adzam Shah (JPP2)",
+        "contact":"1300-30-2828"
+      },
+      "E29":{
+        "name":"Lebuhraya Seremban-Port Dickson (SPDH)",
+        "contact":"1800-88-0000"
+      },
+      "E30":{
+        "name":"Lebuhraya Jalan Pintas Selat Klang Utara Baru (NNKSB)",
+        "contact":"03-33450333"
+      },
+      "E32":{
+        "name":"Lebuhraya Pesisiran Pantai Barat (Taiping-Banting)",
+        "contact":"1700-81-6600"
+      },
+      "E33":{
+        "name":"Lebuhraya Duta-Ulu Klang (DUKE)",
+        "contact":"03-62513100"
+      },
+      "E35":{
+        "name":"Lebuhraya Shah Alam-Kuang (GCE)",
+        "contact":"1300-88-0035"
+      },
+      "E36":{
+        "name":"Jambatan Pulau Pinang (JPP)",
+        "contact":"1800-88-0000"
+      },
+      "E38":{
+        "name":"Sistem Pengurusan Air Banjir dan Terowong (SMART)",
+        "contact":"1300-88-7188"
+      }
+    };
+
+    const tbody = document.querySelector("#highwayTable tbody");
+
+    Object.entries(data).forEach(([code, info]) => {
+      const tr = document.createElement("tr");
+      if (info.default) tr.classList.add("is-default");
+
+      tr.innerHTML = `
+        <td><strong>${info.default ? "—" : code}</strong></td>
+        <td>${info.name}</td>
+        <td><a href="tel:${info.contact.replace(/[^0-9]/g, "")}">
+          ${info.contact}
+        </a></td>
+      `;
+
+      tbody.appendChild(tr);
+    });
+  </script>
+</body>
+</html>
