@@ -140,6 +140,61 @@
         from { color: #111; }
         to { color: #eee; }
     }
+
+    /* menu */
+    .menu-toggle {
+      position:absolute;
+      cursor: pointer;
+      background-color:#dfdfdf;
+      line-height:1;
+      padding:2px;
+      top:0;
+      left:0;
+      z-index:2;
+    }
+    .menu-container {
+      display:block;
+      z-index:2;
+      background:#0a0b1aef;
+      position:absolute;
+      top:0;
+      width:100vw;
+      padding:20px 20px 40px;
+      transform:translateY(-100vh);
+      transition:transform .4s ease;
+    }
+    .menu-container.open {
+      transform:translateY(0);
+    }
+    .menu-container .subtitle {
+      font-size:40px;
+      color:#949494
+    }
+    .menu-container a {
+      text-decoration:none;
+      padding:8px 4px;
+      /* border:1px solid #71607a;
+      border-radius:5px; */
+      /* background-color: #717197; */
+      color:#dfdfdf;
+      display:inline-block;
+      line-height:1.2;
+    }
+    .menu-container .close {
+      cursor:pointer;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      width:30px;
+      height:30px;
+      font-size:30px;
+      line-height:1;
+      color:#eee;
+      position: absolute;
+      left:calc(100vw - 15px);
+      bottom:10px;
+      transform: translateX(-50vw);
+    }
   </style>
 </head>
 <body>
@@ -191,5 +246,36 @@
       <li>⚡ Fun fact <span>When you thinking tat is a feature, actually is a bug</span></li>
     </ul>
   </div>
+  <div class="menu-toggle">tools</div>
+  <div class="menu-container">
+    <div class="tools">
+      <div class="subtitle">tools</div>
+      <div><a href="./tool/highway.html" target="_blank">highway phone number</a></div>
+      <div><a href="./tool/ipspeedtest.html" target="_blank">ip speed test</a></div>
+      <div><a href="./tool/MotionCraft.html" target="_blank">Motion Craft</a></div>
+      <div><a href="./tool/salaryCalculator.html" target="_blank">salary Calculator</a></div>
+      <div><a href="./tool/touCheck.html" target="_blank">TNB tou Checker</a></div>
+      <div><a href="./tool/twconverter.html" target="_blank">TW Currency Converter</a></div>
+      <div><a href="./tool/cheatsheet/script/index.html" target="_blank">script cheatsheet</a></div>
+      <div><a href="./tool/eatpage/index.html" target="_blank">eat wat</a></div>
+      <div><a href="./tool/prompt-page/index.html" target="_blank">prompt-page</a></div>
+    </div>
+    <hr>
+    <div class="others">
+      <div class="subtitle">others</div>
+      <div><a href="./proto-journal/index.html" target="_blank">proto journal</a></div>
+    </div>
+    <div class="close">x</div>
+  </div>
+
+  <script>
+    document.querySelector(".menu-toggle").addEventListener("click",function(){
+      document.querySelector(".menu-container").classList.add("open");
+    });
+    document.querySelector(".menu-container .close").addEventListener("click",function(){
+      const container = document.querySelector(".menu-container");
+      if(container.classList.contains("open")) container.classList.remove("open");
+    });
+  </script>
 </body>
 </html>
