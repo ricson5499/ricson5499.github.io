@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>从下单到出杯的自动化中枢</title>
+  <link rel="stylesheet" href="../style/journal.css">
+</head>
+
+<style>  
+  table{
+    width:100%;
+    max-width:1100px;
+    border-collapse:collapse;
+    background:#fff;
+    box-shadow:0 4px 16px rgba(0,0,0,0.08);
+    color:#111;
+  }
+  th,td{
+    padding:14px 16px;
+    border:1px solid #e5e7eb;
+    vertical-align:top;
+  }
+  th{
+    background:#0f172a;
+    color:#fff;
+    text-align:left;
+    font-size:15px;
+  }
+  th:nth-child(2){
+    background:#334155;
+  }
+  th:nth-child(3){
+    background:#1e40af;
+  }
+  td{
+    font-size:14px;
+    line-height:1.5;
+  }
+  tr:nth-child(even) td{
+    background:#f8fafc;
+  }
+  .highlight{
+    font-weight:600;
+    color:#1e40af;
+  }
+</style>
+
+<body>
+
+  <!-- Metadata Block -->
+  <div class="meta-block">
+    <meta name="title" content="Automated Beverage Production System 从下单到出杯的自动化中枢">
+    <meta name="date" content="2025-12-28">
+    <meta name="type" content="商业计划">
+    <meta name="abstract" content="一套把 付款、生产设备、出杯与顾客通知 串成自动流水线的系统，
+降低人力、减少错误、并可复制到更多门店。">
+  </div>
+
+  <!-- Auto-generated title -->
+  <h1></h1>
+
+  <!-- Auto-filled meta -->
+  <div class="meta"></div>
+
+  <h2>我们现在的问题</h2>
+  <p id="auto-abstract">
+    <ul>
+      <li>多杯订单靠人工协调，容易出错</li>
+      <li>高峰期无法掌握「哪杯卡在哪」</li>
+      <li>订单完成时间不稳定，顾客体验差</li>
+    </ul>
+  </p>
+
+  <hr>
+
+  <h2>这个系统做什么</h2>  
+  <ul>
+    <li>付款完成 → 自动生成 Bill Number</li>
+    <li>每一杯水变成「可追踪的生产任务」</li>
+    <li>杯子依序流经：<br><strong>取杯 → 打标签 → 加料 → 加水 → 封口 → 出杯</strong></li>
+    <li>当同一 Bill 的所有杯完成 → 才通知顾客取餐</li>
+  </ul>
+
+  <div>
+    <img src="./img/Automated-Beverage-Production-System.png" alt="">
+  </div>
+
+  <hr>
+
+  <h2>带来的直接价值</h2>  
+  <ul>
+    <li>📉 减少人力协调与错误</li>
+    <li>📈 提升出杯速度与一致性</li>
+    <li>📊 每一杯、每一单都有数据</li>
+    <li>🔁 可复制到更多产线 / 门店</li>
+  </ul>
+  
+<hr>
+
+  <h1>What It Takes & How We Control Risk <br>需要什么 / 风险怎么控</h1>
+
+  <hr>
+
+  <h2>需要的能力（不是人头暴增）</h2>
+
+  <h3>软件 & 系统</h3>
+  <ul>
+    <li>Web Dashboard（订单 / 产线状态）</li>
+    <li>中央控制系统（协调各设备）</li>
+    <li>API / 事件驱动逻辑（防卡死）</li>
+  </ul>
+
+  <h3>设备对接</h3>
+  <ul>
+    <li>设备能「接收开始信号」</li>
+    <li>设备能「回传完成 / 错误」</li>
+    <li>不改设备内部逻辑</li>
+  </ul>
+
+  <hr>
+
+<h2>基础设施（可云端 / 本地）</h2>
+<ul>
+  <li>后端服务（订单 & 状态）</li>
+  <li>数据库（Bill / Cup）</li>
+  <li>Queue / 缓冲机制（高峰期稳定）</li>
+  <li>管理后台（老板 & 现场）</li>
+</ul>
+
+<hr>
+
+<h2>风险 & 对策</h2>
+<table>
+  <tr><th>风险</th><th>控制方式</th></tr>
+  <tr><td>设备卡杯</td><td>单杯状态追踪</td></tr>
+  <tr><td>高峰拥堵</td><td>Queue 缓冲</td></tr>
+  <tr><td>系统挂掉</td><td>本地 fallback</td></tr>
+  <tr><td>扩展困难</td><td>模块化设计</td></tr>  
+</table>
+
+<hr>
+
+<h2>人工 vs 自动化 成本比较</h2>
+
+<table>
+  <tr>
+    <th>项目</th>
+    <th>人工驱动</th>
+    <th>自动化设备</th>
+  </tr>
+  <tr>
+    <td><strong>初期投资（一次性）</strong></td>
+    <td>RM 0 ~ RM 3,000<br>（仅软件 / POS）</td>
+    <td class="highlight">RM 50,000 ~ RM 300,000+<br>（产线机械 + 控制系统）</td>
+  </tr>
+  <tr>
+    <td><strong>人力成本（月）</strong></td>
+    <td>2–3 人 × RM1,800–3,000<br>= <strong>RM 3,600–9,000</strong></td>
+    <td>少人力：1 名管理 / 现场支援<br>= <strong>RM 1,800–3,000</strong></td>
+  </tr>
+  <tr>
+    <td><strong>设备维护（月）</strong></td>
+    <td>N/A</td>
+    <td>RM <strong>500–2,000</strong><br>（机械与控制维护备件）</td>
+  </tr>
+  <tr>
+    <td><strong>错误 / 返工成本</strong></td>
+    <td>⬆️ 高（人工误差）</td>
+    <td>⬇️ 低（流程标准化）</td>
+  </tr>
+  <tr>
+    <td><strong>处理速度 / 效率</strong></td>
+    <td>取决人力（人手极限）</td>
+    <td>⭐ 高效、稳定、无疲劳</td>
+  </tr>
+  <tr>
+    <td><strong>质量一致性</strong></td>
+    <td>人为差异</td>
+    <td>自动标准化</td>
+  </tr>
+  <tr>
+    <td><strong>可扩展性</strong></td>
+    <td>受人力限制</td>
+    <td>📈 产线可扩展</td>
+  </tr>
+  <tr>
+    <td><strong>回本时间估算</strong></td>
+    <td>⭐ 订单少时可不买设备</td>
+    <td class="highlight">📊 订单稳定高时：1–2 年可回本（示例）</td>
+  </tr>
+</table>
+	
+<hr>
+
+<h2>推进方式</h2>
+
+<h3>Phase 1 – MVP</h3>
+<ul>
+  <li>1 条产线</li>
+  <li>1–2 种饮品</li>
+  <li>屏幕叫号</li>
+</ul>
+
+<h3>Phase 2 – 稳定</h3>
+<ul>
+  <li>多选项</li>
+  <li>错误处理</li>
+  <li>效率数据</li>
+</ul>
+
+<h3>Phase 3 – 扩展</h3>
+<ul>
+  <li>多门店</li>
+  <li>顾客通知</li>
+  <li>智能调度</li>
+</ul>
+
+<hr>
+
+<h2>结论</h2>
+
+<p>这是一次 <strong>把“卖水”升级成“可规模化生产系统”</strong> 的机会，投入的是系统能力，回收的是长期效率与可复制性。</p>
+
+  <script src="../script/entries.js"></script>
+</body>
+</html>
