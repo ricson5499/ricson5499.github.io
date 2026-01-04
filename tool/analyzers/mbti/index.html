@@ -37,11 +37,25 @@ button {
   justify-content:center;
 }
 .panel {
-  width:90%;
-  max-width:520px;
-  background:#fff;
-  border-radius:16px;
-  padding:28px;
+  width: 90%;
+  max-width: 520px;
+  max-height: 90vh; 
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  overflow: hidden;     /* panel 不滚 */
+}
+@media (max-width: 480px) {
+  .panel {
+    width: 100%;
+    height: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+}
+.panel-content {
+  max-height: calc(90vh - 56px); /* 扣掉 padding */
+  overflow-y: auto;
 }
 
 /* Question */
@@ -73,6 +87,13 @@ h2 {
 .result {
   padding:32px;
 }
+.result-header {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  padding-bottom: 12px;
+  z-index: 1;
+}
 .tag {
   font-size:32px;
   font-weight:bold;
@@ -98,8 +119,12 @@ canvas {
   <button onclick="openQuiz()">开始测试</button>
 </div>
 
-<div id="modal" class="modal" style="display:none">
-  <div class="panel" id="panel"></div>
+<div id="modal" class="modal" style="display:none">  
+  <div class="panel" id="panel">
+    <div class="panel-content">
+      <!-- question / result 都丢这里 -->
+    </div>
+  </div>
 </div>
 <script>
 // ===== 人格数据 =====
@@ -285,9 +310,11 @@ function showResult(){
   const p = personalityMap[type] || {};
   document.getElementById("panel").innerHTML = `
     <div class="result">
-      <div class="tag">${type}</div>
-      <p>${p.title||""}</p>
-      <canvas id="radar" width="260" height="260"></canvas>
+      <div class="result-header">
+        <div class="tag">${type}</div>
+        <p>${p.title||""}</p>
+        <canvas id="radar" width="260" height="260"></canvas>
+      </div>
 
       <div class="card"><b>核心人格</b><p>${p.core||""}</p></div>
       <div class="card"><b>优势</b><ul>${(p.strengths||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
