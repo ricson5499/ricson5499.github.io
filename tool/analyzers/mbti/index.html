@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>MBTI · 12 题人格分析</title>
+<style>
+body {
+  font-family: system-ui, -apple-system;
+  background:#f4f4f4;
+  margin:0;
+}
+button {
+  cursor:pointer;
+}
+#start {
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+#start button {
+  padding:16px 28px;
+  font-size:18px;
+  border-radius:12px;
+  border:none;
+  background:#111;
+  color:#fff;
+}
+
+/* Modal */
+.modal {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.panel {
+  width:90%;
+  max-width:520px;
+  background:#fff;
+  border-radius:16px;
+  padding:28px;
+}
+
+/* Question */
+.progress {
+  font-size:14px;
+  color:#666;
+  margin-bottom:8px;
+}
+h2 {
+  margin-top:0;
+}
+.grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:20px;
+}
+.option {
+  padding:18px;
+  border-radius:12px;
+  background:#f7f7f7;
+  text-align:center;
+}
+.option:hover {
+  background:#eaeaea;
+}
+
+/* Result */
+.result {
+  padding:32px;
+}
+.tag {
+  font-size:32px;
+  font-weight:bold;
+}
+.card {
+  margin-top:20px;
+  background:#fafafa;
+  padding:20px;
+  border-radius:14px;
+}
+ul {
+  padding-left:18px;
+}
+canvas {
+  margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+<h1>MBTI · 12 题人格分析</h1>
+<div id="start">
+  <button onclick="openQuiz()">开始测试</button>
+</div>
+
+<div id="modal" class="modal" style="display:none">
+  <div class="panel" id="panel"></div>
+</div>
+<script>
+// ===== 人格数据 =====
+let personalityMap = {};
+  fetch('personalityMap.json').then(res => res.json())
+    .then(data => {
+      personalityMap = data;
+    });
+</script>
+
+<script>
+
+// ===== 题目 =====
+const questions = [
+  // ===== E / I =====
+  {
+    q: "在社交场合你更接近？",
+    dimension: ["E", "I"],
+    options: [
+      { text: "喜欢热闹、有人一起", score: "E" },
+      { text: "偏好安静、自己待着", score: "I" },
+      { text: "边想边说，在互动中整理想法", score: "E" },
+      { text: "先想清楚，再选择表达", score: "I" }
+    ]
+  },
+  {
+    q: "长时间与人相处后，你通常会？",
+    dimension: ["E", "I"],
+    options: [
+      { text: "感觉被充电，更有精神", score: "E" },
+      { text: "需要独处，慢慢恢复", score: "I" },
+      { text: "想继续聊天或行动", score: "E" },
+      { text: "想回到自己的空间", score: "I" }
+    ]
+  },
+  {
+    q: "在讨论中，你更自然的状态是？",
+    dimension: ["E", "I"],
+    options: [
+      { text: "主动分享想法", score: "E" },
+      { text: "先听别人怎么说", score: "I" },
+      { text: "通过说话理清思路", score: "E" },
+      { text: "在心里整理好再说", score: "I" }
+    ]
+  },
+
+  // ===== S / N =====
+  {
+    q: "学习新东西时，你更在意？",
+    dimension: ["S", "N"],
+    options: [
+      { text: "具体步骤与实例", score: "S" },
+      { text: "背后的原理与概念", score: "N" },
+      { text: "现在能怎么用", score: "S" },
+      { text: "未来还能怎么发展", score: "N" }
+    ]
+  },
+  {
+    q: "面对新点子，你通常先想？",
+    dimension: ["S", "N"],
+    options: [
+      { text: "能不能实际执行", score: "S" },
+      { text: "有没有新的可能性", score: "N" },
+      { text: "资源和限制在哪里", score: "S" },
+      { text: "还能延伸成什么", score: "N" }
+    ]
+  },
+  {
+    q: "别人讲事情时，你更容易记住？",
+    dimension: ["S", "N"],
+    options: [
+      { text: "发生了什么细节", score: "S" },
+      { text: "整体意义与趋势", score: "N" },
+      { text: "具体做了哪些事", score: "S" },
+      { text: "背后想表达什么", score: "N" }
+    ]
+  },
+
+  // ===== T / F =====
+  {
+    q: "做决定时，你更依赖？",
+    dimension: ["T", "F"],
+    options: [
+      { text: "逻辑与合理性", score: "T" },
+      { text: "感受与价值观", score: "F" },
+      { text: "是否有效率", score: "T" },
+      { text: "是否照顾到他人", score: "F" }
+    ]
+  },
+  {
+    q: "当别人犯错时，你更倾向？",
+    dimension: ["T", "F"],
+    options: [
+      { text: "指出问题本身", score: "T" },
+      { text: "先顾及对方感受", score: "F" },
+      { text: "帮忙修正逻辑", score: "T" },
+      { text: "避免让对方受伤", score: "F" }
+    ]
+  },
+  {
+    q: "你更认同哪一种想法？",
+    dimension: ["T", "F"],
+    options: [
+      { text: "对事不对人", score: "T" },
+      { text: "人比事情重要", score: "F" },
+      { text: "公平最重要", score: "T" },
+      { text: "关系更重要", score: "F" }
+    ]
+  },
+
+  // ===== J / P =====
+  {
+    q: "你的生活方式更接近？",
+    dimension: ["J", "P"],
+    options: [
+      { text: "有计划会更安心", score: "J" },
+      { text: "保留弹性更自在", score: "P" },
+      { text: "喜欢事情有结论", score: "J" },
+      { text: "顺其自然也很好", score: "P" }
+    ]
+  },
+  {
+    q: "面对截止日期，你通常？",
+    dimension: ["J", "P"],
+    options: [
+      { text: "尽量提前完成", score: "J" },
+      { text: "接近期限再处理", score: "P" },
+      { text: "按计划推进", score: "J" },
+      { text: "看当下状态调整", score: "P" }
+    ]
+  },
+  {
+    q: "旅行或安排活动时，你更喜欢？",
+    dimension: ["J", "P"],
+    options: [
+      { text: "事先规划好行程", score: "J" },
+      { text: "到时再决定", score: "P" },
+      { text: "有明确安排会安心", score: "J" },
+      { text: "跟着感觉走更自由", score: "P" }
+    ]
+  }
+];
+
+
+let index = 0;
+const scores = {E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+
+function openQuiz(){
+  document.getElementById("modal").style.display="flex";
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = questions[index];
+  document.getElementById("panel").innerHTML = `
+    <div class="progress">${index+1} / ${questions.length}</div>
+    <h2>${q.q}</h2>
+    <div class="grid">
+      ${q.options.map(o=>`
+        <div class="option" onclick="pick('${o.score}')">${o.text}</div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function pick(type){
+  scores[type]++;
+  index++;
+  if(index < questions.length){
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult(){
+  const type =
+    (scores.E>=scores.I?"E":"I")+
+    (scores.S>=scores.N?"S":"N")+
+    (scores.T>=scores.F?"T":"F")+
+    (scores.J>=scores.P?"J":"P");
+
+  const p = personalityMap[type] || {};
+  document.getElementById("panel").innerHTML = `
+    <div class="result">
+      <div class="tag">${type}</div>
+      <p>${p.title||""}</p>
+      <canvas id="radar" width="260" height="260"></canvas>
+
+      <div class="card"><b>核心人格</b><p>${p.core||""}</p></div>
+      <div class="card"><b>优势</b><ul>${(p.strengths||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
+      <div class="card"><b>盲点</b><ul>${(p.blindspots||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
+      <div class="card"><b>适合角色</b><ul>${(p.roles||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
+      <div class="card"><b>相处方式</b><ul>${(p.relations||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
+    </div>
+  `;
+  drawRadar();
+}
+
+// ===== 雷达图 =====
+function drawRadar(){
+  const c = document.getElementById("radar");
+  const ctx = c.getContext("2d");
+  const cx=130, cy=130, r=90;
+  const values=[
+    scores.E/(scores.E+scores.I||1),
+    scores.S/(scores.S+scores.N||1),
+    scores.T/(scores.T+scores.F||1),
+    scores.J/(scores.J+scores.P||1)
+  ];
+
+  ctx.strokeStyle="#ccc";
+  ctx.beginPath();
+  for(let i=0;i<4;i++){
+    const a=i*Math.PI/2-Math.PI/2;
+    ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
+  }
+  ctx.stroke();
+
+  ctx.fillStyle="rgba(0,0,0,.6)";
+  ctx.beginPath();
+  values.forEach((v,i)=>{
+    const a=i*Math.PI/2-Math.PI/2;
+    const x=cx+r*v*Math.cos(a);
+    const y=cy+r*v*Math.sin(a);
+    i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+  });
+  ctx.closePath();
+  ctx.fill();
+}
+</script>
+
+</body>
+</html>
