@@ -109,11 +109,16 @@ h2 {
   padding:20px;
   border-radius:14px;  
 }
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
 .col-6 {
   float:left;
   width:50%;
 }
-.col-6 + .col-6 {
+.col-6:nth-child(even) {
     padding-left: 15px;
 }
 ul {
