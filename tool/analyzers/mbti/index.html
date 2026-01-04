@@ -280,7 +280,7 @@ function openQuiz(){
 
 function renderQuestion(){
   const q = questions[index];
-  document.getElementById("panel").innerHTML = `
+  document.getElementById("panel-content").innerHTML = `
     <div class="progress">${index+1} / ${questions.length}</div>
     <h2>${q.q}</h2>
     <div class="grid">
