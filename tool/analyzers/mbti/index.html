@@ -109,7 +109,10 @@ ul {
   padding-left:18px;
 }
 canvas {
-  margin-top:20px;
+  /* margin-top:20px; */
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
 </head>
@@ -318,10 +321,14 @@ function showResult(){
       </div>
 
       <div class="card"><b>核心人格</b><p>${p.core||""}</p></div>
-      <div class="card"><b>优势</b><ul>${(p.strengths||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
-      <div class="card"><b>盲点</b><ul>${(p.blindspots||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
-      <div class="card"><b>适合角色</b><ul>${(p.roles||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
-      <div class="card"><b>相处方式</b><ul>${(p.relations||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>
+      <div class="row">
+        <div class="col-xs-6"><div class="card"><b>适合角色</b><ul>${(p.roles||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div></div>
+        <div class="col-xs-6"><div class="card"><b>优势</b><ul>${(p.strengths||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div></div>        
+      </div>
+      <div class="row">
+        <div class="col-xs-6"><div class="card"><b>相处方式</b><ul>${(p.relations||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div></div>
+        <div class="col-xs-6"><div class="card"><b>盲点</b><ul>${(p.blindspots||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div></div>
+      </div>
     </div>
   `;
   drawRadar();
