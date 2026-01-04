@@ -121,7 +121,7 @@ canvas {
 
 <div id="modal" class="modal" style="display:none">  
   <div class="panel" id="panel">
-    <div class="panel-content">
+    <div class="panel-content" id="panel-content">
       <!-- question / result 都丢这里 -->
     </div>
   </div>
@@ -308,7 +308,7 @@ function showResult(){
     (scores.J>=scores.P?"J":"P");
 
   const p = personalityMap[type] || {};
-  document.getElementById("panel").innerHTML = `
+  document.getElementById("panel-content").innerHTML = `
     <div class="result">
       <div class="result-header">
         <div class="tag">${type}</div>
