@@ -69,14 +69,16 @@
             background-color: green;
         }
         .sun {
-            position: absolute;
-            bottom: 40px;
-            left: 50px;
-            width: 80px;
-            height: 80px;
-            background-color: yellow;
-            border-radius: 50%;
-            animation: sunset 20s linear infinite;
+          position: absolute;
+          bottom: 40px;
+          left: 50px;
+
+          width: 80px;
+          height: 80px;
+          background: yellow;
+          border-radius: 50%;
+
+          animation: sunset 20s linear infinite;
         }
         .traffic-light {
             position: absolute;
@@ -104,11 +106,17 @@
       100% { transform: translateX(calc(100vw + 100px)); }
     }
     @keyframes sunset {
-        0% { transform: translate(0vw, 0vh); } 
-        25% { transform: translate(25vw, -25vh); } 
-        50% { transform: translate(50vw, -50vh); } 
-        75% { transform: translate(75vw, -25vh); } 
-        100% { transform: translate(100vw, 0vh); } 
+      0%   { transform: translate(0vw,   0vh); }
+      10%  { transform: translate(10vw, -10vh); }
+      20%  { transform: translate(20vw, -18vh); }
+      30%  { transform: translate(30vw, -24vh); }
+      40%  { transform: translate(40vw, -28vh); }
+      50%  { transform: translate(50vw, -30vh); }
+      60%  { transform: translate(60vw, -28vh); }
+      70%  { transform: translate(70vw, -24vh); }
+      80%  { transform: translate(80vw, -18vh); }
+      90%  { transform: translate(90vw, -10vh); }
+      100% { transform: translate(100vw, 0vh); }
     }
     @keyframes trafficLight {
         0%, 40% { background-color: green; }
@@ -117,10 +125,16 @@
         81%, 100% { background-color: green; }
     }
     @keyframes windowlight {
-        0%, 35% { background-color: none; }
+        /* 0%, 35% { background-color: none; }
         36%, 37% { background-color: yellow; }
         38%, 41% { background-color: black; }
-        43%, 100% { background-color: yellow; }
+        43%, 100% { background-color: yellow; } */
+
+
+        0%,75% { background-color: none; }
+        76%, 77% { background-color: yellow; }
+        78%, 81% { background-color: black; }
+        83%, 100% { background-color: yellow; }
     }
     .main {
       display:flex;
@@ -173,9 +187,6 @@
     .menu-container a {
       text-decoration:none;
       padding:8px 4px;
-      /* border:1px solid #71607a;
-      border-radius:5px; */
-      /* background-color: #717197; */
       color:#dfdfdf;
       display:inline-block;
       line-height:1.2;
