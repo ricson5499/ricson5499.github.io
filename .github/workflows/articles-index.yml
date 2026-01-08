@@ -1,0 +1,126 @@
+name: Generate Articles Index (HTML)
+
+on:
+  push:
+    paths:
+      - "articles/*.md"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate articles index.html (grouped, bilingual)
+        run: |
+          mkdir -p articles
+
+          cat << 'EOF' > articles/index.html
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Articles</title>
+            <style>
+              body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                             Roboto, Helvetica, Arial, sans-serif;
+                max-width: 720px;
+                margin: 60px auto;
+                padding: 0 20px;
+                line-height: 1.6;
+                color: #222;
+              }
+              h1 {
+                font-size: 2rem;
+                margin-bottom: 0.5em;
+              }
+              h2 {
+                font-size: 1.25rem;
+                margin-bottom: 0.2em;
+              }
+              h3 {
+                font-size: 1rem;
+                font-weight: normal;
+                color: #555;
+                margin-top: 0;
+                margin-bottom: 0.5em;
+              }
+              .article {
+                margin-bottom: 2em;
+              }
+              .links a {
+                margin-right: 12px;
+                text-decoration: none;
+                color: #0066cc;
+              }
+              .links a:hover {
+                text-decoration: underline;
+              }
+            </style>
+          </head>
+          <body>
+            <h1>Articles</h1>
+            <p>Personal essays and technical reflections.</p>
+          EOF
+
+          declare -A title_en
+          declare -A title_zh
+          declare -A file_en
+          declare -A file_zh
+
+          for file in articles/*.md; do
+            name=$(basename "$file")
+            base=$(echo "$name" | cut -d. -f1)
+            lang=$(echo "$name" | cut -d. -f2)
+            title=$(head -n 1 "$file" | sed 's/^# //')
+
+            if [ "$lang" = "en" ]; then
+              title_en["$base"]="$title"
+              file_en["$base"]="$name"
+            elif [ "$lang" = "zh" ]; then
+              title_zh["$base"]="$title"
+              file_zh["$base"]="$name"
+            fi
+          done
+
+          bases=$(printf "%s\n" "${!file_en[@]}" "${!file_zh[@]}" | sort -u)
+
+          for base in $bases; do
+            echo "<div class=\"article\">" >> articles/index.html
+
+            if [ -n "${title_en[$base]}" ]; then
+              echo "<h2>${title_en[$base]}</h2>" >> articles/index.html
+            else
+              echo "<h2>$base</h2>" >> articles/index.html
+            fi
+
+            if [ -n "${title_zh[$base]}" ]; then
+              echo "<h3>${title_zh[$base]}</h3>" >> articles/index.html
+            fi
+
+            echo "<div class=\"links\">" >> articles/index.html
+
+            if [ -n "${file_en[$base]}" ]; then
+              echo "<a href=\"${file_en[$base]}\">English</a>" >> articles/index.html
+            fi
+
+            if [ -n "${file_zh[$base]}" ]; then
+              echo "<a href=\"${file_zh[$base]}\">中文</a>" >> articles/index.html
+            fi
+
+            echo "</div></div>" >> articles/index.html
+          done
+
+          echo "</body></html>" >> articles/index.html
+
+      - name: Commit index.html
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add articles/index.html
+          git commit -m "chore: auto-generate articles index.html" || echo "No changes"
+          git push
