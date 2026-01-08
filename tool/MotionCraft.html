@@ -79,24 +79,24 @@
     // ===== Params (user adjustable) =====
     const params = {
       model: 'F1',             // Car | Motor | F1
-      windX: 0.06,
+      windX: 0.008,
       windY: 0.0,
-      baseSpeed: 1.0,
-      particleCount: 6000,    // denser for realistic F1 view (adjust if slow)
-      particleSize: 1.2,
-      particleVar: 0.6,
-      influenceRadius: 140,
-      flowStrength: 1.8,
-      maxColorSpeed: 12.0,
-      gravity: 0.02,
+      baseSpeed: 0.15,
+      particleCount: 9000,    // denser for realistic F1 view (adjust if slow)
+      particleSize: 3,
+      particleVar: 0.2,
+      influenceRadius: 40,
+      flowStrength: 0.2,
+      maxColorSpeed: 20,
+      gravity: 0.0001,
       groundYOffset: 110,
       // realism controls
       realismToggle: true,
-      stagnationStrength: 1.8,
-      stagnationRadius: 80,
-      topAcceleration: 1.8,
-      wakeVortexStrength: 2.0,
-      vortexRadius: 90,
+      stagnationStrength: 0.25,
+      stagnationRadius: 20,
+      topAcceleration: 0.1,
+      wakeVortexStrength: 0,
+      vortexRadius: 20,
       // preset / util
       resetParticles: () => initParticles()
     };
