@@ -177,7 +177,7 @@
       transform:translateY(-100vh);
       transition:transform .4s ease;
     }
-    .menu-container.open {
+    body.menu-open .menu-container {
       transform:translateY(0);
     }
     .menu-container .subtitle {
@@ -282,13 +282,27 @@
   </div>
 
   <script>
-    document.querySelector(".menu-toggle").addEventListener("click",function(){
-      document.querySelector(".menu-container").classList.add("open");
+    const menuToggle = (action) => {
+      document.body.classList.toggle("menu-open", action === "open");
+    };
+
+    document.querySelector(".menu-toggle").addEventListener("click", (e) => {
+      menuToggle("open");
+      e.stopPropagation();
     });
-    document.querySelector(".menu-container .close").addEventListener("click",function(){
-      const container = document.querySelector(".menu-container");
-      if(container.classList.contains("open")) container.classList.remove("open");
+
+    document.querySelector(".menu-container .close").addEventListener("click", () => {
+      menuToggle("close");
     });
+
+    document.body.addEventListener("click", () => {
+      menuToggle("close");
+    });
+
+    document.querySelector(".menu-container").addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+
   </script>
 </body>
 </html>
