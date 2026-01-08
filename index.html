@@ -17,83 +17,83 @@
       position: relative;
     }
     .background {
-        position: fixed;
-        left:0;
-        top:0;
-        width:100%;
-        height:100%;
-        z-index:0;
-        .road {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 100px;
-            background-color: #333;
+      position: fixed;
+      left:0;
+      top:0;
+      width:100%;
+      height:100%;
+      z-index:0;
+      .road {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 100px;
+        background-color: #333;
+      }
+      .building {
+        position: absolute;
+        bottom: 100px;
+        width: 100px;
+        height: 200px;
+        background-color: #555;
+        .grid {
+          display:flex;
+          flex-wrap:wrap;
+          width:58px;
+          gap:10px;
+          margin:30px auto;
         }
-        .building {
-            position: absolute;
-            bottom: 100px;
-            width: 100px;
-            height: 200px;
-            background-color: #555;
-            .grid {
-              display:flex;
-              flex-wrap:wrap;
-              width:58px;
-              gap:10px;
-              margin:30px auto;
-            }
-            .window {
-              width:20px;
-              height:20px;
-              border:2px solid #000;
-              animation: windowlight 20s step-end infinite;
-            }
+        .window {
+          width:20px;
+          height:20px;
+          border:2px solid #000;
+          animation: windowlight 20s step-end infinite;
         }
-        .building:nth-child(2) { left: 150px; height: 250px; }
-        .building:nth-child(3) { left: 300px; height: 180px; }
-        .car {
-            position: absolute;
-            bottom: 70px;
-            width: 60px;
-            height: 30px;
-            background-color: red;
-            animation: drive 10s linear infinite;
-        }
-        .car:nth-child(2) { 
-            animation-delay: 3s;
-            background-color: blue;
-        }
-        .car:nth-child(3) { 
-            animation-delay: 6s;
-            background-color: green;
-        }
-        .sun {
-          position: absolute;
-          bottom: 40px;
-          left: 50px;
+      }
+      .building:nth-child(2) { left: 150px; height: 250px; }
+      .building:nth-child(3) { left: 300px; height: 180px; }
+      .car {
+        position: absolute;
+        bottom: 100px;
+        width: 60px;
+        height: 30px;
+        background-color: red;
+        animation: drive 10s linear infinite;
+      }
+      .car:nth-child(2) { 
+        animation-delay: 3s;
+        background-color: blue;
+      }
+      .car:nth-child(3) { 
+        animation-delay: 6s;
+        background-color: green;
+      }
+      .sun {
+        position: absolute;
+        bottom: 40px;
+        left: 50px;
 
-          width: 80px;
-          height: 80px;
-          background: yellow;
-          border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        background: yellow;
+        border-radius: 50%;
 
-          animation: sunset 20s linear infinite;
-        }
-        .traffic-light {
-            position: absolute;
-            bottom: 100px;
-            right: 50px;
-            width: 20px;
-            height: 60px;
-            background-color: black;
-        }
-        .light {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            animation: trafficLight 10s step-end infinite;
-        }
+        animation: sunset 20s linear infinite;
+      }
+      .traffic-light {
+        position: absolute;
+        bottom: 100px;
+        right: 50px;
+        width: 20px;
+        height: 60px;
+        background-color: black;
+      }
+      .light {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        animation: trafficLight 10s step-end infinite;
+      }
     }
     @keyframes sky {
       from { background:  #87CEEB; }
@@ -101,8 +101,8 @@
     }
     @keyframes drive {
       0% { transform: translateX(-100px); }
-      40% { transform: translateX(calc(70vw + 100px)); }
-      50%, 87% { transform: translateX(calc(80vw + 100px)); }
+      41% { transform: translateX(calc(70vw + 100px)); }
+      54%, 86% { transform: translateX(calc(80vw + 100px)); }
       100% { transform: translateX(calc(100vw + 100px)); }
     }
     @keyframes sunset {
@@ -119,22 +119,16 @@
       100% { transform: translate(100vw, 0vh); }
     }
     @keyframes trafficLight {
-        0%, 40% { background-color: green; }
-        41%, 50% { background-color: yellow; }
-        51%, 80% { background-color: red; }
-        81%, 100% { background-color: green; }
+      0%, 40% { background-color: green; }
+      41%, 50% { background-color: yellow; }
+      51%, 80% { background-color: red; }
+      81%, 100% { background-color: green; }
     }
     @keyframes windowlight {
-        /* 0%, 35% { background-color: none; }
-        36%, 37% { background-color: yellow; }
-        38%, 41% { background-color: black; }
-        43%, 100% { background-color: yellow; } */
-
-
-        0%,75% { background-color: none; }
-        76%, 77% { background-color: yellow; }
-        78%, 81% { background-color: black; }
-        83%, 100% { background-color: yellow; }
+      0%,75% { background-color: none; }
+      76%, 77% { background-color: yellow; }
+      78%, 81% { background-color: black; }
+      83%, 100% { background-color: yellow; }
     }
     .main {
       display:flex;
@@ -151,8 +145,8 @@
       font-weight:bold;      
     }
     @keyframes desc {
-        from { color: #111; }
-        to { color: #eee; }
+      from { color: #111; }
+      to { color: #eee; }
     }
 
     /* menu */
@@ -236,12 +230,10 @@
       </div>
     </div>
     <div class="road"></div>
-    <div class="car"></div>
-    <div class="car"></div>
-    <div class="car"></div>
     <div class="traffic-light">
-        <div class="light"></div>
+      <div class="light"></div>
     </div>
+    <div class="car"></div>
 </div>
   <div class="main">
     <h1 align="center">Hi 👋, I'm Ricson Goo</h1>
