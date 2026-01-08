@@ -1,5 +1,3 @@
-> English version: [AI Usage for Junior Developers](ai-usage-for-junior-developers.en.md)
-
 # 给新手开发者的 AI 使用守则  
 *把 AI 当工具，而不是拐杖*
 
