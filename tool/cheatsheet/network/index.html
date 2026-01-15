@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Network Cheatsheet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg: #020617;
+      --panel: #020617;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --green: #22c55e;
+      --blue: #38bdf8;
+      --border: #1e293b;
+      --code: #020617;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 2.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 {
+      margin: 0 0 0.5rem;
+      font-size: 2rem;
+    }
+
+    header p {
+      color: var(--muted);
+      max-width: 760px;
+    }
+
+    main {
+      max-width: 1400px;
+      margin: auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    .cheatsheet-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    @media (min-width: 1280px) {
+      .cheatsheet-grid {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+      }
+    }
+
+    section h2 {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      padding: 0.5rem 0;
+      z-index: 1;
+    }
+
+    .basic h2 { color: var(--green); }
+    .advanced h2 { color: var(--blue); }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .card h3 {
+      margin: 0 0 0.4rem;
+      font-size: 1.1rem;
+    }
+
+    .desc {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 0.6rem;
+    }
+
+    pre {
+      background: var(--code);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      font-size: 0.9rem;
+      overflow-x: auto;
+      margin: 0;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🌐 Network Cheatsheet</h1>
+  <p>
+    A practical cheatsheet to understand how your network actually works —
+    from local IP to ISP routing and VPN.
+  </p>
+</header>
+
+<main>
+  <div class="cheatsheet-grid">
+
+    <!-- BASIC -->
+    <section class="basic">
+      <h2>🟢 Basic</h2>
+
+      <div class="card">
+        <h3>Local IP</h3>
+        <p class="desc">
+          Your identity inside the local network (LAN).  
+          Only visible within the same network.
+        </p>
+        <pre>192.168.1.23</pre>
+      </div>
+
+      <div class="card">
+        <h3>Subnet Mask</h3>
+        <p class="desc">
+          Defines which IPs are considered “local”.  
+          Used to decide whether traffic stays inside LAN.
+        </p>
+        <pre>255.255.255.0</pre>
+      </div>
+
+      <div class="card">
+        <h3>Default Gateway</h3>
+        <p class="desc">
+          The exit point to external networks.  
+          Anything not local is sent here.
+        </p>
+        <pre>192.168.1.1</pre>
+      </div>
+
+      <div class="card">
+        <h3>Router / Modem</h3>
+        <p class="desc">
+          Handles DHCP, NAT, firewall, and routes traffic between LAN and WAN.
+        </p>
+        <pre>LAN → NAT → WAN → Internet</pre>
+      </div>
+
+      <div class="card">
+        <h3>Public IP</h3>
+        <p class="desc">
+          Your visible address on the internet, assigned by ISP.
+        </p>
+        <pre>60.xxx.xxx.xxx</pre>
+      </div>
+
+      <div class="card">
+        <h3>DNS</h3>
+        <p class="desc">
+          Resolves domain names to IP addresses.  
+          DNS does NOT control routing.
+        </p>
+        <pre>google.com → IP</pre>
+      </div>
+    </section>
+
+    <!-- ADVANCED -->
+    <section class="advanced">
+      <h2>🔵 Advanced</h2>
+
+      <div class="card">
+        <h3>Traceroute / Tracert</h3>
+        <p class="desc">
+          Shows the actual path packets take across networks (hop by hop).
+        </p>
+        <pre>
+1  192.168.1.1
+2  tm-core-my
+3  tm-singapore
+4  hk-backbone
+        </pre>
+      </div>
+
+      <div class="card">
+        <h3>ISP Routing & Peering</h3>
+        <p class="desc">
+          Routes are chosen based on cost, congestion, and agreements —
+          not geographical distance.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>VPN Effect</h3>
+        <p class="desc">
+          VPN changes your public IP and encrypts traffic.
+          Routing continues from the VPN exit.
+        </p>
+        <pre>You → ISP → VPN → Internet</pre>
+      </div>
+
+      <div class="card">
+        <h3>DNS Leak</h3>
+        <p class="desc">
+          When DNS queries still go through ISP while VPN is active,
+          exposing your real location.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>ARP & MAC</h3>
+        <p class="desc">
+          ARP maps IP addresses to MAC addresses inside LAN only.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>TCP vs UDP</h3>
+        <p class="desc">
+          Transport protocols with different trade-offs.
+        </p>
+        <pre>
+TCP: reliable, ordered
+UDP: fast, low-latency
+        </pre>
+      </div>
+
+      <div class="card">
+        <h3>ICMP / MTU / Ports</h3>
+        <p class="desc">
+          ICMP is used by ping/traceroute.  
+          MTU affects packet size.  
+          Ports define service endpoints.
+        </p>
+        <pre>
+80   HTTP
+443  HTTPS
+22   SSH
+        </pre>
+      </div>
+
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  Network fundamentals cheatsheet · Optimized for large screens
+</footer>
+
+</body>
+</html>
