@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Stop Touching It</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #111;
+    overflow: hidden;
+  }
+  canvas {
+    display: block;
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const dot = {
+  x: canvas.width / 2,
+  y: canvas.height / 2,
+  vx: 0,
+  vy: 0,
+  r: 5
+};
+
+const CONFIG = {
+  pushForce: 5,
+  drift: 0.2,
+  friction: 0.98,
+  maxSpeed: 8
+};
+
+canvas.addEventListener('click', e => {
+  const dx = dot.x - e.clientX;
+  const dy = dot.y - e.clientY;
+  const dist = Math.hypot(dx, dy) || 1;
+
+  dot.vx += (dx / dist) * CONFIG.pushForce;
+  dot.vy += (dy / dist) * CONFIG.pushForce;
+});
+
+function clampAndBounce() {
+  const r = dot.r;
+
+  if (dot.x < r) {
+    dot.x = r;
+    dot.vx *= -1;
+  }
+  if (dot.x > canvas.width - r) {
+    dot.x = canvas.width - r;
+    dot.vx *= -1;
+  }
+  if (dot.y < r) {
+    dot.y = r;
+    dot.vy *= -1;
+  }
+  if (dot.y > canvas.height - r) {
+    dot.y = canvas.height - r;
+    dot.vy *= -1;
+  }
+}
+
+function limitSpeed() {
+  const speed = Math.hypot(dot.vx, dot.vy);
+  if (speed > CONFIG.maxSpeed) {
+    dot.vx = (dot.vx / speed) * CONFIG.maxSpeed;
+    dot.vy = (dot.vy / speed) * CONFIG.maxSpeed;
+  }
+}
+
+function update() {
+  // natural drift (uneasy feeling)
+  dot.vx += (Math.random() - 0.5) * CONFIG.drift;
+  dot.vy += (Math.random() - 0.5) * CONFIG.drift;
+
+  // friction
+  dot.vx *= CONFIG.friction;
+  dot.vy *= CONFIG.friction;
+
+  limitSpeed();
+
+  dot.x += dot.vx;
+  dot.y += dot.vy;
+
+  clampAndBounce();
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = '#0f0';
+  ctx.beginPath();
+  ctx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+</body>
+</html>
