@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <title>如何下载 m3u8 视频（ffmpeg 教学）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CDN -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+</head>
+
+<body class="bg-light">
+
+<div class="container py-5">
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+      <h1 class="card-title mb-4">如何下载 m3u8 视频（使用 ffmpeg）</h1>
+
+      <p class="text-muted">
+        m3u8 不是单一视频文件，而是一个播放清单（HLS）。
+        我们可以使用 <strong>ffmpeg</strong> 将它下载并合并成 mp4。
+      </p>
+
+      <hr />
+
+      <!-- Step 1 -->
+      <h4 class="mt-4">步骤 1：安装 ffmpeg</h4>
+
+      <ul>
+        <li>
+          <strong>Windows：</strong>
+          下载 ffmpeg，解压后加入 <code>PATH</code><br>
+          * 如果有 Chocolatey，可以用 <code>choco install ffmpeg</code>
+        </li>
+        <li>
+          <strong>macOS：</strong>
+          <code>brew install ffmpeg</code>
+        </li>
+        <li>
+          <strong>Linux：</strong>
+          <code>sudo apt install ffmpeg</code>
+        </li>
+      </ul>
+
+      <div class="alert alert-info">
+        安装完成后，在终端输入 <code>ffmpeg -version</code> 应该能看到版本信息。
+      </div>
+
+      <!-- Step 2 -->
+      <h4 class="mt-4">步骤 2：准备 m3u8 链接</h4>
+
+      <p>
+        示例：
+      </p>
+
+      <pre class="bg-dark text-light p-3 rounded">https://example.com/path/index.m3u8</pre>
+      <p class="text-muted">
+        可以是主 m3u8（master playlist），ffmpeg 会自动处理。
+      </p>
+      <p class="text-muted">
+        有时master playlist里面还有个absolute path playlist url e.g. /video/path/index.m3u8，可以在network tab确认full path，直接用那个来下载
+      </p>
+
+      <!-- Step 3 -->
+      <h4 class="mt-4">步骤 3：使用 ffmpeg 下载并合并</h4>
+
+      <p>
+        在终端中执行以下命令：
+      </p>
+
+      <pre class="bg-dark text-light p-3 rounded">ffmpeg -protocol_whitelist file,http,https,tcp,tls,crypto -i "https://example.com/path/index.m3u8" -c copy output.mp4</pre>
+
+      <!-- Step 4 -->
+      <h4 class="mt-4">常见问题</h4>
+
+      <ul>
+        <li>
+          <strong>Protocol not on whitelist：</strong><br />
+          需要加 <code>-protocol_whitelist</code>
+        </li>
+        <li>
+          <strong>403 Forbidden：</strong><br />
+          可能需要 Referer 或 Cookie
+        </li>
+        <li>
+          <strong>无法下载：</strong><br />
+          如果是 DRM（Widevine / FairPlay），ffmpeg 无法处理
+        </li>
+      </ul>
+
+      <hr />
+
+      <p class="text-muted small">
+        本教学仅用于学习与技术研究，请遵守当地法律与版权规定。
+      </p>
+
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
