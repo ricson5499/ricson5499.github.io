@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>农历新年倒数</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fireworks.js -->
+  <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.x/dist/index.umd.js"></script>
+
+  <style>
+    :root {
+      --red: #b30000;
+      --gold: #ffd700;
+      --dark-red: #7a0000;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #ff3b3b, var(--dark-red));
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--gold);
+      overflow: hidden;
+    }
+
+    #fireworks {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      text-align: center;
+      background: rgba(0,0,0,0.25);
+      padding: 40px 60px;
+      border-radius: 20px;
+      box-shadow: 0 0 40px rgba(255,215,0,0.4);
+      backdrop-filter: blur(4px);
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      text-shadow: 0 0 12px gold;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+
+    .countdown {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .box {
+      background: rgba(255,215,0,0.15);
+      border: 2px solid var(--gold);
+      border-radius: 12px;
+      padding: 15px 20px;
+      min-width: 90px;
+    }
+
+    .happy {
+      font-size: 3.2rem;
+      animation: glow 1.5s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px gold; }
+      to { text-shadow: 0 0 30px gold, 0 0 60px red; }
+    }
+
+    /* 吉祥话 */
+    .blessing {
+      position: fixed;
+      bottom: -50px;
+      font-weight: bold;
+      color: gold;
+      text-shadow: 0 0 10px rgba(255,215,0,0.8);
+      animation: floatUp 6s ease-out forwards;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes floatUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      10% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-300px); }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="fireworks"></div>
+
+  <div class="container">
+    <div class="card">
+      <h1 id="title">2026农历新年倒数</h1>
+      <div class="subtitle" id="subtitle">距离大年初一还有</div>
+
+      <div class="countdown" id="countdown">
+        <div class="box"><div id="days">0</div>天</div>
+        <div class="box"><div id="hours">0</div>小时</div>
+        <div class="box"><div id="minutes">0</div>分钟</div>
+        <div class="box"><div id="seconds">0</div>秒</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================
+       新年日期（阳历，不是农历）
+       改这里即可复用
+    ========================= */
+    var CHINESE_NEW_YEAR_DATE = new Date("2026-02-17T00:00:00");
+
+    /* 自动算除夕 */
+    var EVE_DATE = new Date(CHINESE_NEW_YEAR_DATE.getTime() - 86400000);
+
+    /* =========================
+       烟花初始化
+    ========================= */
+    const fireworks = new Fireworks.default(
+      document.getElementById("fireworks"),
+      {
+        acceleration: 1.02,
+        intensity: 80,
+        explosion: 10,
+        friction: 0.95,
+        opacity: 0.3,
+        particles: 200,
+        decay: { min: 0.005, max: 0.009 },
+        delay: { min: 100, max: 100 },
+        traceSpeed:1,
+        lineWidth: { min: 0.5, max: 1.5 },
+        lineStyle: "round",
+        traceLength:3,
+        gravity:1.50,
+        autoresize: true
+      }
+    );
+    // fireworks.start();
+    fireworks.isRunning = false;
+
+    let fireworksMode = "normal";
+
+    /* =========================
+       倒数 + 时间轴控制
+    ========================= */
+    function updateCountdown() {
+      const now = new Date();
+      const diff = CHINESE_NEW_YEAR_DATE - now;
+
+      /* ===== 时间点 ===== */
+      const eveStart = new Date(EVE_DATE);
+      eveStart.setHours(23, 59, 0, 0);
+
+      const newYearMoment = CHINESE_NEW_YEAR_DATE.getTime();
+
+      /* ===== 烟花时间轴 ===== */
+
+      // 除夕 23:59 预热
+      // if (now >= eveStart && now < newYearMoment && fireworksMode !== "eve") {
+      //   fireworks.updateOptions({
+      //     intensity: 45,
+      //     explosion: 4,
+      //     opacity: 0.7,
+      //     particles: 100
+      //   });
+      //   fireworksMode = "eve";
+      // }
+
+      // 00:00 爆量
+      if (now.getTime() >= newYearMoment && fireworksMode !== "newyear" && fireworks.isRunning === false) {
+        fireworksMode = "newyear";
+        fireworks.start();
+        fireworks.isRunning = true;        
+      }
+
+      /* ===== 倒数显示 ===== */
+      if (diff <= 0) {
+        document.getElementById("countdown").innerHTML =
+          '<div class="happy">🎉 新年快乐 🧧</div>';
+        document.getElementById("subtitle").innerText = "恭喜发财，万事如意";
+        document.getElementById("title").innerText = "春节快乐";
+        return;
+      }
+
+      days.innerText    = Math.floor(diff / 86400000);
+      hours.innerText   = Math.floor(diff / 3600000) % 24;
+      minutes.innerText = Math.floor(diff / 60000) % 60;
+      seconds.innerText = Math.floor(diff / 1000) % 60;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    /* =========================
+       吉祥话飘浮
+    ========================= */
+    const blessings = [
+      "恭喜发财",
+      "万事如意",
+      "新年快乐",
+      "心想事成",
+      "身体健康",
+      "年年有余",
+      "大吉大利"
+    ];
+
+    index = 0;
+
+    function spawnBlessing() {
+      const el = document.createElement("div");
+      el.className = "blessing";
+      el.innerText = blessings[index];
+
+      index = (index >= blessings.length - 1) ? 0 : index+1;
+      
+      el.style.fontSize = (18 + Math.random() * 20) + "px";
+      el.style.left = (10 + Math.random() * 80) + "%";
+
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 6000);
+    }
+
+    setInterval(() => {
+      if(new Date().getTime() >= CHINESE_NEW_YEAR_DATE.getTime()){
+        const count = 2 + Math.floor(Math.random() * 2); // 2~3 个
+        for (let i = 0; i < count; i++) {
+          setTimeout(spawnBlessing, i * 500);
+        }
+      }
+    }, 4000);
+  </script>
+
+</body>
+</html>
