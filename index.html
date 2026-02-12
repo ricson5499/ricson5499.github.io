@@ -83,7 +83,7 @@
       .traffic-light {
         position: absolute;
         bottom: 100px;
-        right: 50px;
+        right: calc(21vw - 60px);
         width: 20px;
         height: 60px;
         background-color: black;
@@ -100,10 +100,10 @@
       to { background: #191970; }
     }
     @keyframes drive {
-      0% { transform: translateX(-100px); }
-      42% { transform: translateX(calc(70vw + 100px)); }
-      54%, 86% { transform: translateX(calc(80vw + 100px)); }
-      100% { transform: translateX(calc(100vw + 100px)); }
+      0% { transform: translateX(-0px); }
+      42% { transform: translateX(calc(70vw + 0px)); }
+      54%, 86% { transform: translateX(calc(78vw + 0px)); }
+      100% { transform: translateX(calc(100vw + 0px)); }
     }
     @keyframes sunset {
       0%   { transform: translate(0vw,   0vh); }
