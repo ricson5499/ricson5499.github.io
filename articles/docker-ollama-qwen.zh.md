@@ -285,8 +285,12 @@ docker restart ollama
 
 ---
 
-> 文档维护建议：
->
-> * 固定模型版本
-> * 不频繁追新
-> * 以“可用、稳定”为第一优先级
+## Reference
+
+* api app (container + model) : https://docs.ollama.com/
+
+* web ui app : https://docs.openwebui.com/
+
+* docker (app control) : https://docs.docker.com/get-started/
+
+---
