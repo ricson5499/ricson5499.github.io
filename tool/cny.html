@@ -177,6 +177,8 @@
 
     let fireworksMode = "normal";
 
+    let showText = false;
+
     /* =========================
        倒数 + 时间轴控制
     ========================= */
@@ -210,8 +212,9 @@
         fireworks.isRunning = true;        
       }
 
-      /* ===== 倒数显示 ===== */
-      if (diff <= 0) {
+      /* ===== 倒数显示 ===== */      
+      if (diff <= 0 && !showText) {
+        showText = true;
         document.getElementById("countdown").innerHTML =
           '<div class="happy">🎉 新年快乐 🧧</div>';
         document.getElementById("subtitle").innerText = "恭喜发财，万事如意";
