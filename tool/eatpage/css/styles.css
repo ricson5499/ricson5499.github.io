@@ -10,7 +10,7 @@
 }
 *{box-sizing:border-box}
 body{
-  width:100vw;
+  width:100%;
   margin:0;
   background:var(--bg);
   color:#222;
@@ -57,7 +57,7 @@ body{
 .filter-btn.active{background:var(--accent);color:#fff;border-color:transparent}
 .search-row{display:flex;gap:8px;margin:12px 0 20px;}
 .search-row input, .search-row select{flex:1;padding:8px;border-radius:8px;border:1px solid #eee}
-.footer{text-align:center;padding:18px;color:var(--muted);margin-top:24px}
+.footer{display:flex;justify-content:center;max-width:1170px;padding:18px;color:var(--muted);margin:24px auto;}
 .type-grid{display:flex;flex-wrap:wrap;gap:12px}
 .type-card{background:#fff;padding:12px;border-radius:8px;min-width:200px;flex:1 1 240px;border:1px solid #f3f3f6}
 .mini-list{margin-top:8px}
