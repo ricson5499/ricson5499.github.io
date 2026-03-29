@@ -105,20 +105,20 @@ function spawnEnemy(scene, type) {
     const enemyContainer = scene.add.container(startPoint.x, startPoint.y);
     
     // 1. 先設定屬性
-    let baseHp = 60 + (state.wave * 20);
+    let baseHp = 50 + (state.wave * 20);
     let color = 0xffffff;
     let scale = 1;
     let reward = 10;
 
     switch (type) {
         case 'miniBoss':
-            baseHp *= 5; color = 0xffaa00; scale = 1.5; reward = 50;
+            baseHp *= 4; color = 0xffaa00; scale = 1.5; reward = 50;
             break;
         case 'bigBoss':
             baseHp *= 20; color = 0xff0000; scale = 2.5; reward = 200;
             break;
         case 'hellSmallBoss':
-            baseHp *= 50; color = 0xff0000; scale = 0.5; reward = 500;
+            baseHp *= 50; color = 0x03fcba; scale = 0.5; reward = 500;
             break;
     }    
 
