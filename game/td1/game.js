@@ -112,10 +112,10 @@ function spawnEnemy(scene, type) {
 
     switch (type) {
         case 'miniBoss':
-            baseHp *= 5; color = 0xffaa00; scale = 1.5; reward = 25 + (state.wave * 3);
+            baseHp *= 4; color = 0xffaa00; scale = 1.5; reward = 25 + (state.wave * 3);
             break;
         case 'bigBoss':
-            baseHp *= 7; color = 0xff0000; scale = 2.5; reward = 25 + (state.wave * 10);
+            baseHp *= 6; color = 0xff0000; scale = 2.5; reward = 25 + (state.wave * 10);
             break;
         case 'hellSmallBoss':
             baseHp *= 15; color = 0x03fcba; scale = 0.5; reward = 25 + (state.wave * 20);
