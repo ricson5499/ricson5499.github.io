@@ -89,12 +89,16 @@ function startNextWave(scene) {
     });
 }
 
+/**
+ * Fully stabilized Spawn logic
+ */
 function spawnEnemy(scene, type) {
     const startPoint = path.getStartPoint();
-    // 建立一個空的 Container 作為敵人物件
-    const enemyContainer = scene.add.container(startPoint.x, startPoint.y);
-    scene.physics.add.existing(enemyContainer); // 賦予物理屬性
     
+    // 建立 Container
+    const enemyContainer = scene.add.container(startPoint.x, startPoint.y);
+    
+    // 1. 先設定屬性
     let baseHp = 50 + (state.wave * 10);
     let color = 0xffffff;
     let scale = 1;
@@ -106,28 +110,40 @@ function spawnEnemy(scene, type) {
         baseHp *= 20; color = 0xff0000; scale = 2.5; reward = 200;
     }
 
-    // 建立視覺圖形並放入 Container
-    const visual = scene.add.circle(0, 0, 15 * scale, color);
-    enemyContainer.add(visual); 
-    
-    // 設定碰撞體大小 (配合縮放)
-    enemyContainer.body.setCircle(15 * scale, -15 * scale, -15 * scale);
-    
     enemyContainer.hp = baseHp;
     enemyContainer.reward = reward;
+
+    // 2. 建立視覺 (圓形)
+    const visual = scene.add.circle(0, 0, 15 * scale, color);
+    enemyContainer.add(visual);
+
+    // 3. 加入物理系統 (關鍵：先加入 Group，再設定 Body)
+    enemies.add(enemyContainer); 
+    scene.physics.add.existing(enemyContainer);
     
+    // 設定碰撞範圍 (對齊中心)
+    if (enemyContainer.body) {
+        enemyContainer.body.setCircle(15 * scale, -15 * scale, -15 * scale);
+    }
+
+    // 4. 移動動畫
     scene.tweens.add({
         targets: enemyContainer,
-        duration: 12000 - Math.min(state.wave * 100, 5000),
+        val: 1, // 虛擬屬性從 0 到 1
+        duration: Math.max(2000, 10000 - (state.wave * 200)),
         onUpdate: (tween) => {
             const pos = path.getPoint(tween.progress);
             enemyContainer.setPosition(pos.x, pos.y);
         },
         onComplete: () => {
-            if (enemyContainer.active) enemyContainer.destroy();
+            if (enemyContainer.active) {
+                enemyContainer.destroy();
+                // 可以在這裡扣玩家血量
+                state.enemiesLeft--;
+                checkWaveEnd(scene);
+            }
         }
     });
-    enemies.add(enemyContainer);
 }
 
 function handleBulletHit(enemy, bullet) {
@@ -197,9 +213,14 @@ function showEvolutionMenu(scene) {
 // --- Helpers ---
 
 function setupMap(scene) {
-    const g = scene.add.graphics().lineStyle(2, 0x444444);
-    path = new Phaser.Curves.Path(0, 300).lineTo(800, 300); // Simple straight path
-    path.draw(g);
+    // 畫出一條明顯的灰線作為路徑參考
+    const graphics = scene.add.graphics();
+    graphics.lineStyle(4, 0x333333, 1);
+    
+    path = new Phaser.Curves.Path(0, 300);
+    path.lineTo(800, 300);
+    
+    path.draw(graphics);
 }
 
 function updateUI() {
