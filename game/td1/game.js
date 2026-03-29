@@ -92,20 +92,38 @@ function update(time, delta) {
 
 // --- Helper Functions ---
 
+/**
+ * Revised Spawn Enemy Logic
+ * Uses Physics Sprite with Path Follower integration
+ */
 function spawnEnemy(scene) {
-    const enemy = scene.add.follower(path, 0, 300, null).setCircle(15);
-    scene.physics.add.existing(enemy);
-    enemy.setData('hp', 50);
-    enemy.startFollow({
-        duration: 10000,
-        rotateToPath: true,
-        onComplete: () => enemy.destroy()
-    });
-    enemies.add(enemy);
+    // 1. Create a basic physics sprite at the start of the path
+    const startPoint = path.getStartPoint();
+    const enemy = scene.physics.add.sprite(startPoint.x, startPoint.y, null);
     
-    // Custom graphics for enemy
-    const circle = scene.add.circle(0, 0, 15, 0xff0000);
+    // 2. Draw a placeholder circle graphic and add it to the enemy
+    const graphics = scene.add.circle(0, 0, 15, 0xff0000);
+    enemy.setCircle(15); // Now it works because 'enemy' is a Physics Sprite
+    
+    // 3. Initialize properties
     enemy.hp = 50;
+    
+    // 4. Manual path following using a generic 'path' data object
+    // Alternatively, use a tween for cleaner movement logic
+    scene.tweens.add({
+        targets: enemy,
+        z: 1, // Dummy property to animate
+        duration: 10000,
+        onUpdate: (tween) => {
+            const position = path.getPoint(tween.progress);
+            enemy.setPosition(position.x, position.y);
+        },
+        onComplete: () => {
+            if (enemy.active) enemy.destroy();
+        }
+    });
+
+    enemies.add(enemy);
 }
 
 function placeTurret(scene, x, y) {
