@@ -112,7 +112,7 @@ function spawnEnemy(scene, type) {
 
     enemyContainer.hp = baseHp;
     enemyContainer.reward = reward;
-    enemyContainer.scene = scene;
+    enemyContainer.sceneRef = scene;
 
     // 2. 建立視覺 (圓形)
     const visual = scene.add.circle(0, 0, 15 * scale, color);
@@ -148,14 +148,16 @@ function spawnEnemy(scene, type) {
 }
 
 function handleBulletHit(enemy, bullet) {
+    if (!enemy.active) return;
     bullet.destroy();
     enemy.hp -= bullet.damage || 20;
     if (enemy.hp <= 0) {
         state.gold += enemy.reward;
         state.score += enemy.reward;
+        const scene = enemy.sceneRef;
         enemy.destroy();
         state.enemiesLeft--;
-        checkWaveEnd(enemy.scene);
+        checkWaveEnd(scene);
         updateUI();
     }
 }
@@ -229,7 +231,8 @@ function updateUI() {
 }
 
 function checkWaveEnd(scene) {
-    if (state.enemiesLeft <= 0) {
+    if (state.enemiesLeft <= 0 && state.isWaveActive) {
+        state.isWaveActive = false;
         state.wave++;
         updateUI();
         scene.time.delayedCall(3000, () => startNextWave(scene));
