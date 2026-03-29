@@ -84,7 +84,13 @@ function startNextWave(scene) {
 
     // Spawn Boss after minions
     scene.time.delayedCall(spawnCount * 1000 + 500, () => {
-        const type = (state.wave % 10 === 0) ? 'bigBoss' : 'miniBoss';
+        let type = "miniBoss";
+        if (state.wave % 5 === 0) {
+            type = 'bigBoss';
+        } else if (state.wave % 10 === 0) {
+            type = 'hellSmallBoss';
+        }
+
         spawnEnemy(scene, type);
     });
 }
@@ -99,16 +105,22 @@ function spawnEnemy(scene, type) {
     const enemyContainer = scene.add.container(startPoint.x, startPoint.y);
     
     // 1. 先設定屬性
-    let baseHp = 50 + (state.wave * 10);
+    let baseHp = 60 + (state.wave * 10);
     let color = 0xffffff;
     let scale = 1;
     let reward = 10;
 
-    if (type === 'miniBoss') {
-        baseHp *= 4; color = 0xffaa00; scale = 1.5; reward = 50;
-    } else if (type === 'bigBoss') {
-        baseHp *= 20; color = 0xff0000; scale = 2.5; reward = 200;
-    }
+    switch (type) {
+        case 'miniBoss':
+            baseHp *= 5; color = 0xffaa00; scale = 1.5; reward = 50;
+            break;
+        case 'bigBoss':
+            baseHp *= 20; color = 0xff0000; scale = 2.5; reward = 200;
+            break;
+        case 'hellSmallBoss':
+            baseHp *= 50; color = 0xff0000; scale = 0.5; reward = 500;
+            break;
+    }    
 
     enemyContainer.hp = baseHp;
     enemyContainer.reward = reward;
