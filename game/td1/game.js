@@ -183,9 +183,9 @@ function placeTurret(scene, x, y, type = 'basic') {
     const turret = scene.add.container(x, y);
     let stats = { range: 200, fireRate: 1000, color: 0x00ff00, damage: 20 };
 
-    if (type === 'machineGun') stats = { range: 400, fireRate: 150, color: 0x5555ff, damage: 10 };
-    if (type === 'bow') stats = { range: 250, fireRate: 600, color: 0xffff00, damage: 45 };
-    if (type === 'crossbow') stats = { range: 150, fireRate: 1500, color: 0xff00ff, damage: 150 };
+    if (type === 'machineGun') stats = { range: 400, fireRate: 120, color: 0x5555ff, damage: 10 };
+    if (type === 'bow') stats = { range: 250, fireRate: 500, color: 0xffff00, damage: 45 };
+    if (type === 'crossbow') stats = { range: 150, fireRate: 1200, color: 0xff00ff, damage: 160 };
 
     // 建立視覺矩形並放入 Container
     const rect = scene.add.rectangle(0, 0, 30, 30, stats.color);
