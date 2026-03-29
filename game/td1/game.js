@@ -105,13 +105,14 @@ function spawnEnemy(scene, type) {
     let reward = 10;
 
     if (type === 'miniBoss') {
-        baseHp *= 5; color = 0xffaa00; scale = 1.5; reward = 50;
+        baseHp *= 4; color = 0xffaa00; scale = 1.5; reward = 50;
     } else if (type === 'bigBoss') {
         baseHp *= 20; color = 0xff0000; scale = 2.5; reward = 200;
     }
 
     enemyContainer.hp = baseHp;
     enemyContainer.reward = reward;
+    enemyContainer.scene = scene;
 
     // 2. 建立視覺 (圓形)
     const visual = scene.add.circle(0, 0, 15 * scale, color);
