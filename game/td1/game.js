@@ -91,46 +91,43 @@ function startNextWave(scene) {
 
 function spawnEnemy(scene, type) {
     const startPoint = path.getStartPoint();
-    const enemy = scene.physics.add.sprite(startPoint.x, startPoint.y, null);
+    // 建立一個空的 Container 作為敵人物件
+    const enemyContainer = scene.add.container(startPoint.x, startPoint.y);
+    scene.physics.add.existing(enemyContainer); // 賦予物理屬性
     
-    // Scaling Stats based on Wave
     let baseHp = 50 + (state.wave * 10);
     let color = 0xffffff;
     let scale = 1;
     let reward = 10;
 
     if (type === 'miniBoss') {
-        baseHp *= 5;
-        color = 0xffaa00;
-        scale = 1.5;
-        reward = 50;
+        baseHp *= 5; color = 0xffaa00; scale = 1.5; reward = 50;
     } else if (type === 'bigBoss') {
-        baseHp *= 20;
-        color = 0xff0000;
-        scale = 2.5;
-        reward = 200;
+        baseHp *= 20; color = 0xff0000; scale = 2.5; reward = 200;
     }
 
-    enemy.hp = baseHp;
-    enemy.reward = reward;
-    scene.add.circle(0, 0, 15 * scale, color).setParentContainer(enemy); // Visual
+    // 建立視覺圖形並放入 Container
+    const visual = scene.add.circle(0, 0, 15 * scale, color);
+    enemyContainer.add(visual); 
     
-    // Movement Logic
+    // 設定碰撞體大小 (配合縮放)
+    enemyContainer.body.setCircle(15 * scale, -15 * scale, -15 * scale);
+    
+    enemyContainer.hp = baseHp;
+    enemyContainer.reward = reward;
+    
     scene.tweens.add({
-        targets: enemy,
-        duration: 12000 - Math.min(state.wave * 100, 5000), // Gets faster
+        targets: enemyContainer,
+        duration: 12000 - Math.min(state.wave * 100, 5000),
         onUpdate: (tween) => {
             const pos = path.getPoint(tween.progress);
-            enemy.setPosition(pos.x, pos.y);
+            enemyContainer.setPosition(pos.x, pos.y);
         },
         onComplete: () => {
-            if (enemy.active) {
-                enemy.destroy();
-                onEnemyEscaped();
-            }
+            if (enemyContainer.active) enemyContainer.destroy();
         }
     });
-    enemies.add(enemy);
+    enemies.add(enemyContainer);
 }
 
 function handleBulletHit(enemy, bullet) {
@@ -149,18 +146,20 @@ function handleBulletHit(enemy, bullet) {
 // --- Turret & Evolution Logic ---
 
 function placeTurret(scene, x, y, type = 'basic') {
-    const cost = 50;
+    const cost = (type === 'basic') ? 50 : 0; // 進化塔在選擇後是免費放置的
     if (state.gold < cost && type === 'basic') return;
 
     const turret = scene.add.container(x, y);
     let stats = { range: 200, fireRate: 1000, color: 0x00ff00, damage: 20 };
 
-    // Evolution Templates
     if (type === 'machineGun') stats = { range: 400, fireRate: 150, color: 0x5555ff, damage: 10 };
     if (type === 'bow') stats = { range: 250, fireRate: 600, color: 0xffff00, damage: 45 };
     if (type === 'crossbow') stats = { range: 150, fireRate: 1500, color: 0xff00ff, damage: 150 };
 
-    scene.add.rectangle(0, 0, 30, 30, stats.color).setParentContainer(turret);
+    // 建立視覺矩形並放入 Container
+    const rect = scene.add.rectangle(0, 0, 30, 30, stats.color);
+    turret.add(rect); 
+    
     turret.setData({ ...stats, nextFire: 0 });
     turrets.add(turret);
 
