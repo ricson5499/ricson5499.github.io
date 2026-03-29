@@ -105,7 +105,7 @@ function spawnEnemy(scene, type) {
     const enemyContainer = scene.add.container(startPoint.x, startPoint.y);
     
     // 1. 先設定屬性
-    let baseHp = 50 + (state.wave * 20);
+    let baseHp = 50 + (state.wave * 25);
     let color = 0xffffff;
     let scale = 1;
     let reward = 10 + (state.wave * 1.5);
