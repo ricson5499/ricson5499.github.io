@@ -154,7 +154,7 @@ function handleBulletHit(enemy, bullet) {
         state.score += enemy.reward;
         enemy.destroy();
         state.enemiesLeft--;
-        checkWaveEnd(this);
+        checkWaveEnd(enemy.scene);
         updateUI();
     }
 }
@@ -240,7 +240,7 @@ function getEnemyInRange(turret, range) {
 }
 
 function fireBullet(scene, turret, enemy) {
-    const bullet = scene.physics.add.sprite(turret.x, turret.y, 'bullet');
+    const bullet = bullets.create(turret.x, turret.y, 'bullet');
     bullet.damage = turret.getData('damage');
     scene.physics.moveToObject(bullet, enemy, 400);
 }
