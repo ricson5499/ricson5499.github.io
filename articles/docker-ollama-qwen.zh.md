@@ -41,8 +41,11 @@ Windows 11
 ### 2. 软件要求
 
 * Windows 10 / 11
+  * 推荐使用Windows 11，安装wsl会直接是wsl2所以没有这方面问题
+  * 使用Windows 10，必须要升级到 build 19045 或更高
 * Docker Desktop（启用 WSL2）
 * NVIDIA 显卡驱动（支持 CUDA）
+
 
 确认 Docker 已安装：
 
@@ -122,18 +125,24 @@ docker run -d `
 
 * RAM 上限：14GB（不会预占）
 * CPU：3 核
-* GPU：限制显存使用（减少对游戏影响）
+* GPU：限制显存使用（减少对系统影响）
 * Volume：模型持久化，不随容器删除
 
 ---
 
-## 五、安装模型（Qwen2.5-Coder 7B）
-
+## 五、安装模型
+（Qwen3-Coder）
 ```powershell
 docker exec -it ollama ollama pull qwen2.5-coder:7b-instruct-q4_K_M
 ```
 
-首次运行：
+（Qwen2.5-Coder 7B）
+```powershell
+docker exec -it ollama ollama pull qwen2.5-coder:7b-instruct-q4_K_M
+```
+---
+
+首次运行 （如果使用qwen2.5）：
 
 ```powershell
 docker exec -it ollama ollama run qwen2.5-coder:7b-instruct-q4_K_M
@@ -156,6 +165,19 @@ Launching Qwen2.5-Coder 7B...
 ```powershell
 docker exec -it ollama ollama run qwen2.5-coder:7b-instruct-q4_K_M
 ```
+使用batch file 预加载 <code>docker exec -it ollama</code>会更有效率，无论是要检查ollama model list或加载model都会更加方便。
+
+例子：
+```
+:LOADCOMMAND
+echo.
+echo Load ollama command...
+set /p command=Enter the ollama command to run (e.g., "ollama run llama2:13b --gpu --listen"):
+echo Running command: %command%
+docker exec -it ollama %command%
+pause
+```
+可以结合菜单，加上其他常用命令配合日常使用。
 
 ### 2. API（供工具 / UI 使用）
 
@@ -172,6 +194,20 @@ Ollama is running
 ```
 
 是**正常现象（健康检查）**。
+
+---
+
+在之后的日常使用，其实如果不需要 pull 新 model，也可以不用打开powershell或cmd。
+
+日常使用步骤：
+- 打开 docker desktop 软件
+- 点击启动 ollama 容器
+- 点击启动 web ui 容器
+
+
+之后可以在web ui里面 switch 已经pull好的model
+
+请理解镜像以及容器的分别，您可以在 docker 的教学里学习。
 
 ---
 
@@ -204,12 +240,6 @@ docker run -d `
 http://localhost:3000
 ```
 
-登录后选择模型：
-
-```
-qwen2.5-coder:7b-instruct-q4_K_M
-```
-
 ---
 
 ## 八、日常管理命令
@@ -220,6 +250,7 @@ qwen2.5-coder:7b-instruct-q4_K_M
 docker start ollama
 docker stop ollama
 ```
+*也可以用软件启动
 
 ### 查看状态
 
@@ -282,6 +313,42 @@ docker restart ollama
 * 个人笔记
 * 分享给朋友
 * 本地 AI 项目基础设施
+
+---
+模型推荐：
+
+* qwen3.5:4b    
+  https://ollama.com/library/qwen3.5:4b
+   ```
+   ollama run qwen3.5:4b
+   ```
+* qwen3:4b    
+  https://ollama.com/library/qwen3:4b
+   ```
+   ollama run qwen3:4b
+   ```
+* qwen2.5-coder:7b
+  https://ollama.com/library/qwen2.5-coder
+   ```
+   ollama run qwen2.5-coder
+   ```
+
+请注意如果是使用docker，在cmd或powershell使用时记得添加前缀
+```
+docker exec -it ollama
+```
+完整代码示范
+```
+docker exec -it ollama ollama run qwen2.5-coder
+```
+
+
+可以用这个网站测试硬件支持的模型   
+https://www.canirun.ai/
+这个网页的模型只供参考，最新的模型请到 ollama library 查看。   
+推荐直接选择60分以上的模型(S/A/B)，因为速度远比所有事情更加重要。   
+当然也推荐在能力范围里选择比较新的模型，因为新模型架构通常会已经优化过，在各类性能都会比上一代更佳。   
+另外，如果只是使用在代码，推荐选择代码专用模型 - https://www.canirun.ai/?use=code
 
 ---
 
