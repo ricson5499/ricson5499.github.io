@@ -96,8 +96,13 @@
       }
     }
     @keyframes sky {
-      from { background:  #87CEEB; }
-      to { background: #191970; }
+      0%  { background: #3a1c4a; }  /* 黎明前 */
+      10%  { background: #ff7043; }  /* 日出橙红 */
+      20%, 50%   { background: #87CEEB; }  /* 白天 */
+      60%  { background: #ff7043; }  /* 日出橙红 */
+      70%  { background: #3a1c4a; }  /* 黎明前 */      
+      74%, 96%  { background: #0d0d2b; }  /* 深夜 */      
+      100%  { background: #3a1c4a; }  /* 黎明前 */
     }
     @keyframes drive {
       0% { transform: translateX(-0px); }
@@ -106,17 +111,17 @@
       100% { transform: translateX(calc(100vw + 0px)); }
     }
     @keyframes sunset {
-      0%   { transform: translate(0vw,   0vh); }
-      10%  { transform: translate(10vw, -10vh); }
-      20%  { transform: translate(20vw, -18vh); }
-      30%  { transform: translate(30vw, -24vh); }
-      40%  { transform: translate(40vw, -28vh); }
-      50%  { transform: translate(50vw, -30vh); }
-      60%  { transform: translate(60vw, -28vh); }
-      70%  { transform: translate(70vw, -24vh); }
-      80%  { transform: translate(80vw, -18vh); }
-      90%  { transform: translate(90vw, -10vh); }
-      100% { transform: translate(100vw, 0vh); }
+      0%   { transform: translate(0vw,    0vh); opacity: 1; }
+      10%  { transform: translate(10vw, -10vh); opacity: 1; }
+      20%  { transform: translate(20vw, -18vh); opacity: 1; }
+      30%  { transform: translate(30vw, -24vh); opacity: 1; }
+      40%  { transform: translate(40vw, -28vh); opacity: 1; }
+      45%  { transform: translate(50vw, -30vh); opacity: 1; }
+      50%  { transform: translate(60vw, -28vh); opacity: 1; }
+      70%  { transform: translate(90vw, -10vh); opacity: 1; }
+      75%  { transform: translate(100vw,  0vh); opacity: 0; }
+      80%  { transform: translate(0vw, 0vh); opacity: 0; }
+      100% { transform: translate(0vw, 0vh); opacity: 0; }
     }
     @keyframes trafficLight {
       0%, 40% { background-color: green; }
@@ -125,10 +130,10 @@
       81%, 100% { background-color: green; }
     }
     @keyframes windowlight {
-      0%,75% { background-color: none; }
-      76%, 77% { background-color: yellow; }
-      78%, 81% { background-color: black; }
-      83%, 100% { background-color: yellow; }
+      0%, 55% { background-color: none; }
+      56%, 57% { background-color: yellow; }
+      58%, 61% { background-color: black; }
+      63%, 100% { background-color: yellow; }
     }
     .main {
       display:flex;
@@ -145,8 +150,8 @@
       font-weight:bold;      
     }
     @keyframes desc {
-      from { color: #111; }
-      to { color: #eee; }
+      0%,70% { color: #111; }
+      71%,100% { color: #eee; }
     }
 
     /* menu */
