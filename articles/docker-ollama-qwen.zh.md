@@ -209,6 +209,8 @@ Ollama is running
 
 请理解镜像以及容器的分别，您可以在 docker 的教学里学习。
 
+请注意，在不使用docker的情况下，请关闭docker desktop或右键taskar右下角的 docker desktop icon 进行退出。因为docker会保留系统的ram，如果不关闭docker会一直占用。
+
 ---
 
 ## 七、安装 Web Chat UI（可选）
