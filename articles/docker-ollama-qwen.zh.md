@@ -177,7 +177,7 @@ echo Running command: %command%
 docker exec -it ollama %command%
 pause
 ```
-可以结合菜单，加上其他常用命令配合日常使用。
+可以结合菜单，加上其他常用命令配合日常使用，比如 ```ollama list``` 。
 
 ### 2. API（供工具 / UI 使用）
 
@@ -332,6 +332,10 @@ docker restart ollama
    ```
    ollama run qwen2.5-coder
    ```
+其他模型
+- freehuntx/qwen3-coder:8b
+- qwen3:4b-q4_K_M
+- qwen2.5-coder:7b-instruct-q4_K_M
 
 请注意如果是使用docker，在cmd或powershell使用时记得添加前缀
 ```
@@ -345,7 +349,7 @@ docker exec -it ollama ollama run qwen2.5-coder
 
 可以用这个网站测试硬件支持的模型   
 https://www.canirun.ai/
-这个网页的模型只供参考，最新的模型请到 ollama library 查看。   
+这个网页的模型只供参考，最新的模型请到 [ollama library](https://ollama.com/library) 网页查看。   
 推荐直接选择60分以上的模型(S/A/B)，因为速度远比所有事情更加重要。   
 当然也推荐在能力范围里选择比较新的模型，因为新模型架构通常会已经优化过，在各类性能都会比上一代更佳。   
 另外，如果只是使用在代码，推荐选择代码专用模型 - https://www.canirun.ai/?use=code
