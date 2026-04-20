@@ -89,6 +89,14 @@ const MEALS = [
     "tags": []
   },
   {
+    "name": "🍲ah boy肉骨茶",
+    "meal": ["早餐","午餐"],
+    "type": ["肉骨茶","饭"],
+    "location": "Kota Tinggi",
+    "note": "没有冷气，鸡脚和猪脚也不错，开到2pm，星期四星期五休息",
+    "tags": []
+  },
+  {
     "name": "🍚☕啦枫食堂",
     "meal": ["早餐","午餐"],
     "type": ["饭","面","西餐","面包","半生熟蛋","Mee Siam","Nasi Lemak","咖啡"],
