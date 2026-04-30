@@ -217,6 +217,22 @@ const MEALS = [
     "tags": []
   },
   {
+    "name": "🦐🐟翡翠园海鲜酒家",
+    "meal": ["晚餐"],
+    "type": ["海鲜","煮炒"],
+    "location": "Sungai Rengit, Pengerang",
+    "note": "海鲜不错新鲜，风景不错，有冷气，前面可以看日落，就是地点比较远",
+    "tags": []
+  },
+  {
+    "name": "🦐🐟Senibong Bay Seafood",
+    "meal": ["晚餐"],
+    "type": ["海鲜","煮炒"],
+    "location": "Kampung Senibong, Permas Jaya",
+    "note": "有几道比较特别的菜，环境不错，海鲜还挺新鲜，价钱ok，有冷气包厢，做外面也不错",
+    "tags": []
+  },
+  {
     "name": "🍝🍗Meet House Cafe",
     "meal": ["午餐","晚餐"],
     "type": ["西餐","鸡扒"],
