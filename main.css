@@ -224,8 +224,16 @@ body {
 
 @keyframes trafficLight {
 
-  0%, 19% {
-    background-color: green;
+  0%, 9% {
+    background-color: rgb(5, 180, 5);
+  }
+
+  10%, 14% {
+    background-color: #222;
+  }
+
+  15%, 19% {
+    background-color: rgb(5, 180, 5);
   }
 
   20%, 24% {
@@ -233,7 +241,7 @@ body {
   }
 
   25%, 29% {
-    background-color: green;
+    background-color: rgb(5, 180, 5);
   }
 
   30%, 34% {
@@ -241,7 +249,7 @@ body {
   }
 
   35%, 42% {
-    background-color: green;
+    background-color: rgb(5, 180, 5);
   }
 
   43%, 50% {
@@ -253,7 +261,7 @@ body {
   }
 
   81%, 100% {
-    background-color: green;
+    background-color: rgb(5, 180, 5);
   }
 }
 
