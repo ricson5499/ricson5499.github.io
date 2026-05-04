@@ -1,0 +1,362 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: #87CEEB;
+  animation: sky 20s linear infinite;
+  position: relative;
+}
+
+.background {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+
+  & .road {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    background-color: #333;
+  }
+
+  & .building {
+    position: absolute;
+    bottom: 100px;
+    width: 100px;
+    height: 200px;
+    background-color: #555;
+
+    & .grid {
+      display: flex;
+      flex-wrap: wrap;
+      width: 58px;
+      gap: 10px;
+      margin: 30px auto;
+    }
+
+    & .window {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #000;
+      animation: windowlight 20s step-end infinite;
+    }
+  }
+
+  & .building:nth-child(2) {
+    left: 150px;
+    height: 250px;
+  }
+
+  & .building:nth-child(3) {
+    left: 300px;
+    height: 180px;
+  }
+
+  & .car {
+    position: absolute;
+    bottom: 100px;
+    width: 60px;
+    height: 30px;
+    background-color: red;
+    animation: drive 10s linear infinite;
+  }
+
+  & .car:nth-child(2) {
+    animation-delay: 3s;
+    background-color: blue;
+  }
+
+  & .car:nth-child(3) {
+    animation-delay: 6s;
+    background-color: green;
+  }
+
+  & .sun {
+    position: absolute;
+    bottom: 40px;
+    left: 50px;
+
+    width: 80px;
+    height: 80px;
+    background: yellow;
+    border-radius: 50%;
+
+    animation: sunset 20s linear infinite;
+  }
+
+  & .traffic-light {
+    position: absolute;
+    bottom: 100px;
+    right: calc(21vw - 60px);
+    width: 20px;
+    height: 60px;
+    background-color: black;
+  }
+
+  & .light {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    animation: trafficLight 10s step-end infinite;
+  }
+}
+
+@keyframes sky {
+  0% {
+    background: #3a1c4a;
+  }
+
+  /* 黎明前 */
+  10% {
+    background: #ff7043;
+  }
+
+  /* 日出橙红 */
+  20%,
+  50% {
+    background: #87CEEB;
+  }
+
+  /* 白天 */
+  60% {
+    background: #ff7043;
+  }
+
+  /* 日出橙红 */
+  70% {
+    background: #3a1c4a;
+  }
+
+  /* 黎明前 */
+  74%,
+  96% {
+    background: #0d0d2b;
+  }
+
+  /* 深夜 */
+  100% {
+    background: #3a1c4a;
+  }
+
+  /* 黎明前 */
+}
+
+@keyframes drive {
+  0% {
+    transform: translateX(-0px);
+  }
+
+  42% {
+    transform: translateX(calc(70vw + 0px));
+  }
+
+  54%,
+  86% {
+    transform: translateX(calc(78vw + 0px));
+  }
+
+  100% {
+    transform: translateX(calc(100vw + 0px));
+  }
+}
+
+@keyframes sunset {
+  0% {
+    transform: translate(0vw, 0vh);
+    opacity: 1;
+  }
+
+  10% {
+    transform: translate(10vw, -10vh);
+    opacity: 1;
+  }
+
+  20% {
+    transform: translate(20vw, -18vh);
+    opacity: 1;
+  }
+
+  30% {
+    transform: translate(30vw, -24vh);
+    opacity: 1;
+  }
+
+  40% {
+    transform: translate(40vw, -28vh);
+    opacity: 1;
+  }
+
+  45% {
+    transform: translate(50vw, -30vh);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translate(60vw, -28vh);
+    opacity: 1;
+  }
+
+  70% {
+    transform: translate(90vw, -10vh);
+    opacity: 1;
+  }
+
+  75% {
+    transform: translate(100vw, 0vh);
+    opacity: 0;
+  }
+
+  80% {
+    transform: translate(0vw, 0vh);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate(0vw, 0vh);
+    opacity: 0;
+  }
+}
+
+@keyframes trafficLight {
+
+  0%, 19% {
+    background-color: green;
+  }
+
+  20%, 24% {
+    background-color: #222;
+  }
+
+  25%, 29% {
+    background-color: green;
+  }
+
+  30%, 34% {
+    background-color: #222;
+  }
+
+  35%, 42% {
+    background-color: green;
+  }
+
+  43%, 50% {
+    background-color: yellow;
+  }
+
+  51%, 80% {
+    background-color: red;
+  }
+
+  81%, 100% {
+    background-color: green;
+  }
+}
+
+@keyframes windowlight {
+
+  0%, 55% {
+    background-color: none;
+  }
+
+  56%, 57% {
+    background-color: yellow;
+  }
+
+  58%, 61% {
+    background-color: black;
+  }
+
+  63%, 100% {
+    background-color: yellow;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+h1, h3, li {
+  color: #111;
+  animation: desc 20s linear infinite;
+}
+
+li span {
+  font-weight: bold;
+}
+
+@keyframes desc {
+
+  0%, 70% {
+    color: #111;
+  }
+
+  71%, 100% {
+    color: #eee;
+  }
+}
+
+/* menu */
+.menu-toggle {
+  position: absolute;
+  cursor: pointer;
+  background-color: #dfdfdf;
+  line-height: 1;
+  padding: 2px;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.menu-container {
+  display: block;
+  z-index: 2;
+  background: #0a0b1aef;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  padding: 20px 20px 40px;
+  transform: translateY(-100vh);
+  transition: transform .4s ease;
+}
+
+body.menu-open .menu-container {
+  transform: translateY(0);
+}
+
+.menu-container .subtitle {
+  font-size: 40px;
+  color: #949494
+}
+
+.menu-container a {
+  text-decoration: none;
+  padding: 8px 4px;
+  color: #dfdfdf;
+  display: inline-block;
+  line-height: 1.2;
+}
+
+.menu-container .close {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  font-size: 30px;
+  line-height: 1;
+  color: #eee;
+  position: absolute;
+  left: calc(100vw - 15px);
+  bottom: 10px;
+  transform: translateX(-50vw);
+}
