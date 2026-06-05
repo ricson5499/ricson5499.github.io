@@ -131,10 +131,11 @@ docker run -d `
 ---
 
 ## 五、安装模型
-（Qwen3-Coder）
+（Qwen3-Coder 8B）
 ```powershell
-docker exec -it ollama ollama pull qwen2.5-coder:7b-instruct-q4_K_M
+docker exec -it ollama ollama pull freehuntx/qwen3-coder:8b
 ```
+*非官方小模型，利用极端资源环境下测试最新qwen3效果
 
 （Qwen2.5-Coder 7B）
 ```powershell
