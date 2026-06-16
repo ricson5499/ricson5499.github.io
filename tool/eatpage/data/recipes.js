@@ -305,7 +305,7 @@ const RECIPES = [
   /* --- 饭 / 面 --- */
   {
     "title": "姜葱鸡饭",
-    "category": "饭面",
+    "category": "饭",
     "cuisine": "中式",
     "ingredients": [
       "鸡腿 1只",
@@ -323,8 +323,8 @@ const RECIPES = [
   },
   
   {
-    "title": "干捞面（家常版）",
-    "category": "饭面",
+    "title": "干捞面",
+    "category": "面",
     "cuisine": "广东",
     "ingredients": [
       "黄面 1份",
@@ -555,7 +555,7 @@ const RECIPES = [
 
   {
     "title": "日式牛肉盖饭（Gyudon）",
-    "category": "饭面",
+    "category": "饭",
     "cuisine": "日本",
     "ingredients": ["牛肉片 150g", "洋葱 半个", "酱油", "味醂"],
     "steps": ["洋葱炒软。", "加入牛肉片。", "加入酱油＋味醂煮1分钟。"],
@@ -564,8 +564,8 @@ const RECIPES = [
   },
 
   {
-    "title": "韩式拌饭（懒人版）",
-    "category": "饭面",
+    "title": "韩式拌饭",
+    "category": "饭",
     "cuisine": "韩国",
     "ingredients": ["白饭", "鸡蛋 1个", "菠菜", "黄瓜丝", "韩式辣酱"],
     "steps": ["所有材料摆在饭上。", "放一个煎蛋。", "加辣酱拌匀。"],
@@ -575,7 +575,7 @@ const RECIPES = [
 
   {
     "title": "蛋炒饭",
-    "category": "饭面",
+    "category": "饭",
     "cuisine": "中式",
     "ingredients": ["白饭", "鸡蛋 2个", "葱花", "盐", "酱油"],
     "steps": ["鸡蛋打散炒熟盛起。", "热锅下油加入白饭炒散。", "加入鸡蛋翻炒。", "加盐和酱油调味，撒葱花即可。"],
@@ -585,7 +585,7 @@ const RECIPES = [
 
   {
     "title": "鮭魚炒飯",
-    "category": "饭面",
+    "category": "饭",
     "cuisine": "日式",
     "ingredients": ["白饭", "鮭魚 150g", "洋葱 1/4個", "胡萝卜 1/4根", "鸡蛋 1个", "生抽", "油"],
     "steps": ["鮭魚去骨切碎。", "洋葱和胡萝卜切碎。", "鸡蛋炒熟盛起。", "热锅下油炒洋葱和胡萝卜。", "加入鮭魚炒香。", "加入饭和鸡蛋翻炒。", "加生抽调味即可。"],
@@ -595,7 +595,7 @@ const RECIPES = [
 
   {
     "title": "麻油雞飯",
-    "category": "饭面",
+    "category": "饭",
     "cuisine": "中式",
     "ingredients": ["白饭", "鸡肉 100g", "麻油 2汤匙", "姜片 3片", "红枣 3颗", "盐"],
     "steps": ["鸡肉切块。", "热锅下麻油爆香姜片。", "加入鸡肉炒至变色。", "加入红枣和少许水焖5分钟。", "加盐调味。", "铺在饭上即可。"],
