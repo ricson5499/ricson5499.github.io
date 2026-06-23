@@ -34,6 +34,10 @@ const prompts = [
 -在產出前，先檢查答案是否： a. 有清楚依據 b. 未超出題目範圍 c. 沒有出現任何未被明確提及的人名、數字、事件或假設
 
 最終原則：寧可空白，不可捏造。`
+      },
+      {
+        title: "Template-based, maintainable generation prompt",
+        prompt:`Wants to adopt and follow the personal coding principle: 'Template-based, maintainable generation' — preferring template-first approaches with clear structure and maintainability over ad-hoc echo-based or string-concatenation generation, and asks me to remember this rule for future coding discussions.`
       }
     ]
   }
