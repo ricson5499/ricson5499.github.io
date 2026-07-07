@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Office Rage Simulator</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Matter.js Physics Engine -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.20.0/matter.min.js"></script>
+</head>
+
+<body>
+
+    <div id="hud">
+        <h1>💢 Office Rage Simulator</h1>
+
+        <div class="stats">
+            <div>Destroyed: <span id="destroyed">0</span></div>
+            <div>Combo: x<span id="combo">0</span></div>
+            <div>Stress: <span id="stress">100</span>%</div>
+        </div>
+    </div>
+
+    <div id="message"></div>
+
+    <canvas id="game"></canvas>
+
+    <div id="help">
+        🖱 Click anywhere = Explosion
+    </div>
+
+
+    <script src="js/config.js"></script>
+    <script src="js/physics.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>
