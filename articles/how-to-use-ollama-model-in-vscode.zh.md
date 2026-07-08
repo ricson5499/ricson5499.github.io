@@ -6,12 +6,12 @@
 
 ### 1. 啟動 Docker 容器
 
-首先，你需要啟動一個 [Docker](https://www.docker.com/products/docker-desktop/) 容器來運行 [Ollama](https://ollama.com/) 模型。你可以使用以下命令：
+首先，你需要啟動一個 [Docker](https://www.docker.com/products/docker-desktop/) 容器來運行 [Ollama](https://ollama.com/) 模型。你可以參考docker網站：
 
-```bash
-docker run -p 11434:11434 ollama/ollama serve
-```
-這將在本地端口 11434 上運行 Ollama 服務, 或者你可以直接啓動Docker Desktop並運行你現有的ollama container。
+https://hub.docker.com/r/ollama/ollama
+
+或者如果你已經有一個ollama container，可以直接啓動Docker Desktop並運行你現有的ollama container。
+
 
 ### 2. 加載 Qwen2.5 創建器模型
 啟動容器後，你可以使用 Ollama 的命令行工具 ollama 加載 Qwen2.5 創建器模型。你可以通過以下命令來加載：
