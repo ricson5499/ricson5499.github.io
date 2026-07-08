@@ -11,7 +11,7 @@
 ```bash
 docker run -p 11434:11434 ollama/ollama serve
 ```
-這將在本地端口 11434 上運行 Ollama 服務, 或者你可以直接啓動docker並運行你現有的ollama container。
+這將在本地端口 11434 上運行 Ollama 服務, 或者你可以直接啓動Docker Desktop並運行你現有的ollama container。
 
 ### 2. 加載 Qwen2.5 創建器模型
 啟動容器後，你可以使用 Ollama 的命令行工具 ollama 加載 Qwen2.5 創建器模型。你可以通過以下命令來加載：
