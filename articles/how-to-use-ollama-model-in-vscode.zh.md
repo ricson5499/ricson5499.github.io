@@ -1,11 +1,6 @@
----
-title: 如何在 VSCode 使用 Ollama 模型
-description: 本篇文章詳細介述如何在 VSCode 中使用 Ollama 加載並啟動 Qwen2.5 創建和編輯文章。
-tags:
-- vscode
-- ollama
-- model
----
+# 如何在 VSCode 使用 Ollama 模型
+本篇文章詳細介述如何在 VSCode 中使用 Ollama 加載並啟動 Qwen2.5 創建和編輯文章。
+
 
 ## 環境準備
 
