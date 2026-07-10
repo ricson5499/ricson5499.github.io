@@ -19,8 +19,8 @@ function explode(x, y) {
         if (distance < radius) {
             const power = (radius - distance) / radius;
             Body.applyForce(body, body.position, {
-                x: dx * power * 0.05,
-                y: dy * power * 0.05 - 0.008
+                x: dx * power * 0.01,
+                y: dy * power * 0.01 - 0.008
             });
             hit++;
         }
