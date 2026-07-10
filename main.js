@@ -1,20 +1,10 @@
-const menuToggle = (action) => {
-  document.body.classList.toggle("menu-open", action === "open");
-};
+const dialog = document.querySelector(".menu-container");
+const toggleBtn = document.querySelector(".menu-toggle");
+const closeBtn = document.querySelector(".menu-container .close");
 
-document.querySelector(".menu-toggle").addEventListener("click", (e) => {
-  menuToggle("open");
-  e.stopPropagation();
-});
+toggleBtn.addEventListener("click", () => dialog.showModal());
+closeBtn.addEventListener("click", () => dialog.close());
 
-document.querySelector(".menu-container .close").addEventListener("click", () => {
-  menuToggle("close");
-});
-
-document.body.addEventListener("click", () => {
-  menuToggle("close");
-});
-
-document.querySelector(".menu-container").addEventListener("click", (e) => {
-  e.stopPropagation();
+dialog.addEventListener("click", (e) => {
+  if (e.target === dialog) dialog.close();
 });
