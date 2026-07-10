@@ -52,9 +52,6 @@ document.addEventListener("visibilitychange", () => {
     document.hidden ? pauseGame() : resumeGame();
 });
 
-window.addEventListener("blur", pauseGame);
-window.addEventListener("focus", resumeGame);
-
 startSpawning();
 
 Events.on(render, "afterRender", () => {
