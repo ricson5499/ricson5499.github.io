@@ -390,6 +390,7 @@ li span {
 }
 
 .menu-container .tools,
+.menu-container .games,
 .menu-container .others {
   padding: 40px 32px;
   flex: 1;
