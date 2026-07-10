@@ -12,7 +12,8 @@ const render = Render.create({
 });
 
 Render.run(render);
-Runner.run(Runner.create(), engine);
+const runner = Runner.create();
+Runner.run(runner, engine);
 
 Composite.add(engine.world, [
     Bodies.rectangle(WIDTH / 2, HEIGHT + 20, WIDTH, 40, { isStatic: true }),
@@ -29,7 +30,32 @@ function spawnObject() {
     ));
 }
 
-setInterval(spawnObject, 900);
+let spawnInterval;
+function startSpawning() {
+    spawnInterval = setInterval(spawnObject, 900);
+}
+function stopSpawning() {
+    clearInterval(spawnInterval);
+}
+
+function pauseGame() {
+    runner.enabled = false;
+    stopSpawning();
+}
+
+function resumeGame() {
+    runner.enabled = true;
+    startSpawning();
+}
+
+document.addEventListener("visibilitychange", () => {
+    document.hidden ? pauseGame() : resumeGame();
+});
+
+window.addEventListener("blur", pauseGame);
+window.addEventListener("focus", resumeGame);
+
+startSpawning();
 
 Events.on(render, "afterRender", () => {
     const ctx = render.context;
