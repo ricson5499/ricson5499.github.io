@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>倒計時計時器</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="timer-card">
+            <h1 class="title">倒計時計時器</h1>
+            <p class="subtitle">設定時間並開始</p>
+
+            <!-- Timer Display -->
+            <div class="timer-display">
+                <div class="time" id="timerDisplay">00:00:00</div>
+                <div class="status" id="statusDisplay">準備就緒</div>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls" id="controlsContainer">
+                <button class="btn btn-primary" id="startBtn" aria-label="開始計時">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="btn btn-primary hidden" id="pauseBtn" aria-label="暫停計時">
+                    <i class="fas fa-pause"></i>
+                </button>
+                <button class="btn btn-primary hidden" id="resumeBtn" aria-label="繼續計時">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="btn btn-secondary hidden" id="stopBtn" aria-label="停止計時">
+                    <i class="fas fa-square"></i>
+                </button>
+            </div>
+
+            <!-- Preset Buttons -->
+            <div class="presets" id="presetsContainer">
+                <button class="preset-btn" data-seconds="60">1分</button>
+                <button class="preset-btn" data-seconds="300">5分</button>
+                <button class="preset-btn" data-seconds="600">10分</button>
+                <button class="preset-btn" data-seconds="900">15分</button>
+                <button class="preset-btn" data-seconds="1500">25分</button>
+                <button class="preset-btn" data-seconds="1800">30分</button>
+                <button class="preset-btn" data-seconds="2700">45分</button>
+                <button class="preset-btn" data-seconds="3600">60分</button>
+            </div>
+
+            <!-- Custom Input -->
+            <div class="custom-input" id="customInputContainer">
+                <div class="input-group">
+                    <input type="number" id="hoursInput" min="0" max="23" placeholder="時" class="time-input">
+                    <span class="separator">:</span>
+                    <input type="number" id="minutesInput" min="0" max="59" placeholder="分" class="time-input">
+                    <span class="separator">:</span>
+                    <input type="number" id="secondsInput" min="0" max="59" placeholder="秒" class="time-input">
+                </div>
+                <div class="error-message" id="errorMessage"></div>
+                <button class="btn btn-primary full-width" id="setTimeBtn">設定時間</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="timer.js"></script>
+</body>
+</html>
