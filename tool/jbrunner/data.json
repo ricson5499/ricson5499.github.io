@@ -1,0 +1,65 @@
+{
+  "locations": [
+    {
+      "id": 1,
+      "name": "Hutan Bandar Mutiara Rini",
+      "features": "跑馬路，很寬，有2個爬坡",
+      "cons": "爬坡較累",
+      "status": "visited"
+    },
+    {
+      "id": 2,
+      "name": "Adda Heights Town Park",
+      "features": "有大湖，基本平地",
+      "cons": "人多，可跑空間小",
+      "status": "visited"
+    },
+    {
+      "id": 3,
+      "name": "Setia Indah Park",
+      "features": "平地，看起來很寬闊",
+      "cons": "樹比較少可能會熱，附近都是小販中心",
+      "status": "wishlist"
+    },
+    {
+      "id": 4,
+      "name": "Crest Austin Central Lake Park",
+      "features": "有湖，就在路旁很方便，感覺不錯",
+      "cons": "沒什麼樹",
+      "status": "wishlist"
+    },
+    {
+      "id": 5,
+      "name": "Kulai Cycling Park",
+      "features": "新地點",
+      "cons": "可能比較適合騎腳車",
+      "status": "wishlist"
+    }
+  ],
+  "equipment": [
+    {
+      "name": "跑鞋",
+      "description": "選擇適合自己腳型的跑鞋，提供足夠支撐"
+    },
+    {
+      "name": "運動服裝",
+      "description": "透氣排汗的衣服和短褲"
+    },
+    {
+      "name": "運動手錶",
+      "description": "追蹤距離、速度和心率"
+    },
+    {
+      "name": "水瓶",
+      "description": "保持水分補充"
+    },
+    {
+      "name": "耳機",
+      "description": "音樂讓跑步更有趣"
+    },
+    {
+      "name": "帽子/太陽眼鏡",
+      "description": "保護頭部和眼睛"
+    }
+  ]
+}
