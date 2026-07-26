@@ -10,6 +10,76 @@ const prompts = [
       {
         title: "Template-based, maintainable generation prompt",
         prompt:`Wants to adopt and follow the personal coding principle: 'Template-based, maintainable generation' — preferring template-first approaches with clear structure and maintainability over ad-hoc echo-based or string-concatenation generation, and asks me to remember this rule for future coding discussions.`
+      },
+      {
+        title: "Context Compression (Project Ready) - Generate Key Context Markdown",
+        prompt:`Please compress this conversation into a Project-ready Markdown context file.
+
+This is NOT a summary for humans.
+It is a context-compression file intended for another ChatGPT conversation, so preserve everything that will affect future reasoning while removing everything else.
+
+Requirements:
+
+- Output ONLY valid Markdown.
+- Do not explain what you are doing.
+- Remove greetings, filler, repeated discussions, trial-and-error, and duplicated ideas.
+- Keep only information that would help another ChatGPT continue this project with minimal context loss.
+
+The output should contain these sections:
+
+# Project Overview
+A concise explanation of the project's objective and current progress.
+
+# Final Decisions
+List every confirmed decision that was made.
+Do NOT include ideas that were rejected or only discussed.
+
+# Important Facts
+Record all factual information that future conversations may depend on.
+Examples:
+- versions
+- APIs
+- libraries
+- file names
+- configurations
+- URLs
+- dependencies
+- environment
+- commands
+- architecture
+- constraints
+
+# Key Reasoning
+Only preserve reasoning that explains WHY a decision was made.
+Do not include failed attempts unless they explain the final solution.
+
+# Current State
+Describe exactly where the project currently stands.
+
+# Remaining Tasks
+List unfinished work.
+
+# Risks / Known Issues
+List unresolved problems, assumptions, edge cases, technical debt, or uncertainties.
+
+# Useful Snippets
+Include only code snippets, commands, prompts, regex, SQL, or configuration that are likely to be reused later.
+
+# Conversation Memory
+Anything about user preferences or project conventions established during this conversation that future ChatGPT should continue following.
+
+Compression rules:
+
+- Remove approximately 70–90% of conversational text.
+- Preserve 95%+ of the information needed to continue the project.
+- Merge duplicated information.
+- Convert long explanations into concise bullet points.
+- Prefer structured data over paragraphs.
+- Keep technical accuracy.
+- Do not invent or infer missing information.
+- If information is uncertain, explicitly mark it as "Unconfirmed".
+
+The resulting Markdown should be suitable for attaching to a new Project as the primary context document.`
       }
     ]
   }
