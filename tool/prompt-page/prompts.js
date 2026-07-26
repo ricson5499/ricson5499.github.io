@@ -18,15 +18,14 @@ const prompts = [
         usage: "用於將對話內容壓縮成適合專案使用的Markdown上下文文件。",
         prompt:`Please compress this conversation into a Project-ready Markdown context file.
 
-This is NOT a summary for humans.
-It is a context-compression file intended for another ChatGPT conversation, so preserve everything that will affect future reasoning while removing everything else.
+It is a context-compression file intended for another Large Language Model conversation, so preserve everything that will affect future reasoning while removing everything else.
 
 Requirements:
 
 - Output ONLY valid Markdown.
 - Do not explain what you are doing.
 - Remove greetings, filler, repeated discussions, trial-and-error, and duplicated ideas.
-- Keep only information that would help another ChatGPT continue this project with minimal context loss.
+- Keep only information that would help another Large Language Model continue this project with minimal context loss.
 
 The output should contain these sections:
 
@@ -69,7 +68,7 @@ List unresolved problems, assumptions, edge cases, technical debt, or uncertaint
 Include only code snippets, commands, prompts, regex, SQL, or configuration that are likely to be reused later.
 
 # Conversation Memory
-Anything about user preferences or project conventions established during this conversation that future ChatGPT should continue following.
+Anything about user preferences or project conventions established during this conversation that future Large Language Model should continue following.
 
 Compression rules:
 
