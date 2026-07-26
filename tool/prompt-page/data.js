@@ -1,7 +1,8 @@
 // prompts.js
 const prompts = [
   {
-    category: "AI行為控制",
+    category: "AI行為控制記憶",
+    description: "這些提示詞用於控制AI的行為和記憶，幫助AI在回答問題時遵循特定的原則和規範。",
     items: [
       {
         title: "反幻覺提示詞",
@@ -12,7 +13,13 @@ const prompts = [
         title: "Template-based, maintainable generation prompt",
         usage: "用於要求AI採用基於模板、可維護的生成方式，避免即興生成或字符串連接生成。",
         prompt:`Wants to adopt and follow the personal coding principle: 'Template-based, maintainable generation' — preferring template-first approaches with clear structure and maintainability over ad-hoc echo-based or string-concatenation generation, and asks me to remember this rule for future coding discussions.`
-      },
+      }
+    ]
+  },
+  {
+    category: "AI Context Management",
+    description: "這些提示詞用於管理AI的上下文，幫助AI在對話中保持一致性和連貫性。",
+    items: [
       {
         title: "Context Compression (Project Ready) - Generate Key Context Markdown",
         usage: "用於將對話內容壓縮成適合專案使用的Markdown上下文文件。",

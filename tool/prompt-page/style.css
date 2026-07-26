@@ -11,6 +11,11 @@ h1 {
   margin-bottom: 2rem;
 }
 
+.prompt-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .prompt-section {
   margin-bottom: 2.5rem;
 }
@@ -23,7 +28,7 @@ h1 {
 
 .prompt-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(425px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
 }
 
@@ -45,6 +50,25 @@ h1 {
   color: #333;
 }
 
+.prompt-card h3:after {
+    display: block;
+    content: '';
+    height: 2px;
+    margin-top: 2px;
+    border: 2px;
+    border-radius: 4px;
+    background: linear-gradient(45deg, #00000021, transparent);
+}
+
+.clickable-title {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.clickable-title:hover {
+  color: #4a90e2;
+}
+
 pre {
   white-space: pre-wrap;
   font-family: inherit;
@@ -52,4 +76,73 @@ pre {
   padding: 0.5rem;
   border-radius: 8px;
   font-size: 0.9rem;
+}
+
+pre.clickable {
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+pre.clickable:hover {
+  background: #e8e8e8;
+}
+
+.full-text-dialog {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  max-width: 50vw;
+  max-height: 80vh;
+  padding: 0;
+  flex-direction: column;
+}
+
+dialog[open] {
+    display: flex;
+}
+
+.full-text-dialog::backdrop {
+  background: rgba(0,0,0,0.5);
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f9f9f9;
+}
+
+.dialog-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+.dialog-content {
+  padding: 1rem;
+  margin: 0;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: 1.6;
 }
