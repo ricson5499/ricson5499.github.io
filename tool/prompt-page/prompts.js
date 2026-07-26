@@ -5,14 +5,17 @@ const prompts = [
     items: [
       {
         title: "反幻覺提示詞",
+        usage: "用於要求AI在回答前進行事實檢查，避免生成不正確或未經證實的資訊。",
         prompt: `回答前先進行事實檢查。僅依據已知或已查證資訊作答；資料不足時直接說明「無法確定」，不得臆測或補完內容。引用或推論需說明依據，假設需明確標示。問題不明時先詢問，不擴大使用者原意。產出前確認答案有依據、未超出範圍、未加入未被明確提及的內容。原則：寧可不知道，不可捏造。`
       },
       {
         title: "Template-based, maintainable generation prompt",
+        usage: "用於要求AI採用基於模板、可維護的生成方式，避免即興生成或字符串連接生成。",
         prompt:`Wants to adopt and follow the personal coding principle: 'Template-based, maintainable generation' — preferring template-first approaches with clear structure and maintainability over ad-hoc echo-based or string-concatenation generation, and asks me to remember this rule for future coding discussions.`
       },
       {
         title: "Context Compression (Project Ready) - Generate Key Context Markdown",
+        usage: "用於將對話內容壓縮成適合專案使用的Markdown上下文文件。",
         prompt:`Please compress this conversation into a Project-ready Markdown context file.
 
 This is NOT a summary for humans.

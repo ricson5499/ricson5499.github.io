@@ -26,6 +26,7 @@
         card.className = 'prompt-card';
         card.innerHTML = `
           <h3>${item.title}</h3>
+          <p><strong>用途：</strong>${item.usage}</p>
           <pre>${item.prompt}</pre>
         `;
         list.appendChild(card);
