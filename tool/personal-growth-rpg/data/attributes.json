@@ -1,0 +1,38 @@
+{
+  "body": {
+    "name": "Body",
+    "description": "Physical strength and fitness",
+    "icon": "💪",
+    "color": "#FF6A00"
+  },
+  "mind": {
+    "name": "Mind",
+    "description": "Mental clarity and focus",
+    "icon": "🧠",
+    "color": "#FF9D42"
+  },
+  "rest": {
+    "name": "Rest",
+    "description": "Recovery and sleep quality",
+    "icon": "😴",
+    "color": "#70D6A0"
+  },
+  "fuel": {
+    "name": "Fuel",
+    "description": "Nutrition and hydration",
+    "icon": "🥗",
+    "color": "#FFB84D"
+  },
+  "connection": {
+    "name": "Connection",
+    "description": "Social bonds and relationships",
+    "icon": "🤝",
+    "color": "#FF8C42"
+  },
+  "purpose": {
+    "name": "Purpose",
+    "description": "Meaning and direction",
+    "icon": "🎯",
+    "color": "#FF7A3D"
+  }
+}

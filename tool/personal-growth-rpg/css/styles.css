@@ -1,0 +1,245 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #0F0F12;
+  --bg-secondary: #1A1A1F;
+  --primary: #FF6A00;
+  --primary-light: #FF9D42;
+  --secondary: #FF9D42;
+  --text-primary: #FFFFFF;
+  --text-muted: #9A9A9A;
+  --success: #70D6A0;
+  --border: #2A2A2F;
+  
+  --attr-body: #FF6A00;
+  --attr-mind: #FF9D42;
+  --attr-rest: #70D6A0;
+  --attr-fuel: #FFB84D;
+  --attr-connection: #FF8C42;
+  --attr-purpose: #FF7A3D;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.6;
+}
+
+/* 容器 */
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+  min-height: 100vh;
+}
+
+/* 卡片 */
+.card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* 按钮 */
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #E55A00;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background-color: var(--border);
+}
+
+.btn-success {
+  background-color: var(--success);
+  color: #000;
+}
+
+.btn-success:hover {
+  background-color: #5BC88F;
+}
+
+.btn-small {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+/* 进度条 */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: var(--bg-primary);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  transition: width 0.3s ease;
+}
+
+/* 属性显示 */
+.attribute {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+  padding: 8px;
+  background-color: var(--bg-primary);
+  border-radius: 8px;
+}
+
+.attribute-icon {
+  font-size: 20px;
+}
+
+.attribute-name {
+  flex: 1;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.attribute-value {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* 任务卡片 */
+.quest-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.quest-card:hover {
+  border-color: var(--primary);
+  background-color: rgba(255, 106, 0, 0.05);
+}
+
+.quest-info {
+  flex: 1;
+}
+
+.quest-name {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.quest-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.quest-reward {
+  text-align: right;
+}
+
+.quest-xp {
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 16px;
+}
+
+.quest-attr {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* 网格布局 */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* 文本工具 */
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-success {
+  color: var(--success);
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+/* 间距 */
+.mt-1 { margin-top: 8px; }
+.mt-2 { margin-top: 16px; }
+.mt-3 { margin-top: 24px; }
+.mb-1 { margin-bottom: 8px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-3 { margin-bottom: 24px; }
+
+/* 响应式 */
+@media (max-width: 480px) {
+  .container {
+    padding: 12px;
+  }
+  
+  .card {
+    padding: 12px;
+  }
+}

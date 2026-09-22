@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Growth RPG</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- 初始化屏幕 -->
+    <div id="onboarding-screen" style="display: none;">
+      <div class="card text-center mt-3">
+        <h1 style="font-size: 32px; margin-bottom: 16px;">⚔️</h1>
+        <h2 style="margin-bottom: 8px;">Personal Growth RPG</h2>
+        <p class="text-muted" style="margin-bottom: 24px;">Level up in real life</p>
+        
+        <div style="text-align: left; margin-bottom: 24px;">
+          <label style="display: block; margin-bottom: 8px;">
+            <span style="font-size: 14px; color: var(--text-muted);">Your Name</span>
+            <input id="onboarding-name" type="text" placeholder="Enter your name" 
+              style="width: 100%; padding: 12px; margin-top: 4px; background-color: var(--bg-primary); 
+                     border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary);">
+          </label>
+          
+          <label style="display: block; margin-bottom: 8px; margin-top: 16px;">
+            <span style="font-size: 14px; color: var(--text-muted);">Difficulty</span>
+            <select id="onboarding-difficulty" 
+              style="width: 100%; padding: 12px; margin-top: 4px; background-color: var(--bg-primary); 
+                     border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary);">
+              <option value="easy">Easy</option>
+              <option value="normal" selected>Normal</option>
+              <option value="hard">Hard</option>
+            </select>
+          </label>
+          
+          <label style="display: block; margin-bottom: 8px; margin-top: 16px;">
+            <span style="font-size: 14px; color: var(--text-muted);">Journey Duration</span>
+            <select id="onboarding-duration" 
+              style="width: 100%; padding: 12px; margin-top: 4px; background-color: var(--bg-primary); 
+                     border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary);">
+              <option value="14">14 Days</option>
+              <option value="30">30 Days</option>
+              <option value="66" selected>66 Days</option>
+            </select>
+          </label>
+        </div>
+        
+        <button class="btn btn-primary" onclick="startGame()" style="width: 100%;">Start Journey</button>
+      </div>
+    </div>
+
+    <!-- 主仪表板 -->
+    <div id="dashboard-screen" style="display: none;">
+      <!-- 顶部信息 -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div style="font-size: 12px; color: var(--text-muted);">DAY <span id="current-day">1</span></div>
+            <div style="font-size: 24px; font-weight: 700; margin-top: 4px;">LEVEL <span id="current-level">1</span></div>
+          </div>
+          <button class="btn btn-secondary btn-small" onclick="openSettings()">⚙️</button>
+        </div>
+        
+        <div class="progress-bar">
+          <div class="progress-fill" id="xp-progress" style="width: 0%"></div>
+        </div>
+        <div style="font-size: 12px; color: var(--text-muted); text-align: right;">
+          <span id="xp-text">0 / 100</span> XP
+        </div>
+        
+        <div style="margin-top: 16px; padding: 12px; background-color: var(--bg-primary); border-radius: 8px; text-align: center;">
+          <p id="daily-message" style="font-style: italic; color: var(--text-muted);">Keep going.</p>
+        </div>
+      </div>
+
+      <!-- 今日任务 -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">TODAY'S QUESTS</h3>
+          <span id="quest-progress" style="font-size: 14px; color: var(--text-muted);">0 / 4</span>
+        </div>
+        <div id="quests-container"></div>
+      </div>
+
+      <!-- 属性显示 -->
+      <div class="card">
+        <h3 class="card-title" style="margin-bottom: 12px;">ATTRIBUTES</h3>
+        <div id="attributes-container"></div>
+      </div>
+
+      <!-- 操作按钮 -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
+        <button class="btn btn-secondary" onclick="openCharacter()">👤 Character</button>
+        <button class="btn btn-secondary" onclick="openProgress()">📊 Progress</button>
+      </div>
+    </div>
+
+    <!-- 角色页面 -->
+    <div id="character-screen" style="display: none;">
+      <div class="card text-center">
+        <h2 style="margin-bottom: 16px;">YOUR CHARACTER</h2>
+        <div style="font-size: 64px; margin: 24px 0;">⚔️</div>
+        <div style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">LEVEL <span id="char-level">1</span></div>
+        <div style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">
+          <span id="char-xp">0</span> / <span id="char-xp-next">100</span> XP
+        </div>
+        
+        <div class="progress-bar">
+          <div class="progress-fill" id="char-xp-progress" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title" style="margin-bottom: 16px;">ATTRIBUTES</h3>
+        <div id="character-attributes-container"></div>
+      </div>
+
+      <button class="btn btn-secondary" onclick="backToDashboard()" style="width: 100%; margin-bottom: 24px;">← Back</button>
+    </div>
+
+    <!-- 进度页面 -->
+    <div id="progress-screen" style="display: none;">
+      <div class="card">
+        <h3 class="card-title" style="margin-bottom: 16px;">JOURNEY PROGRESS</h3>
+        <div style="text-align: center; margin-bottom: 16px;">
+          <div style="font-size: 32px; font-weight: 700; color: var(--primary);">
+            <span id="progress-day">1</span> / <span id="progress-total">66</span>
+          </div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="journey-progress" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title" style="margin-bottom: 16px;">ACHIEVEMENTS</h3>
+        <div id="achievements-container"></div>
+      </div>
+
+      <button class="btn btn-secondary" onclick="backToDashboard()" style="width: 100%; margin-bottom: 24px;">← Back</button>
+    </div>
+
+    <!-- 设置页面 -->
+    <div id="settings-screen" style="display: none;">
+      <div class="card">
+        <h3 class="card-title" style="margin-bottom: 16px;">SETTINGS</h3>
+        
+        <div style="margin-bottom: 16px;">
+          <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px;">Player: <strong id="settings-name">Player</strong></p>
+          <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px;">Difficulty: <strong id="settings-difficulty">Normal</strong></p>
+          <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">Started: <strong id="settings-date">-</strong></p>
+        </div>
+
+        <button class="btn btn-secondary" onclick="downloadBackup()" style="width: 100%; margin-bottom: 8px;">📥 Download Backup</button>
+        <button class="btn btn-secondary" onclick="uploadBackup()" style="width: 100%; margin-bottom: 8px;">📤 Upload Backup</button>
+        <button class="btn btn-secondary" onclick="resetGame()" style="width: 100%; margin-bottom: 8px; background-color: rgba(255, 106, 0, 0.2); color: var(--primary);">🔄 Reset Game</button>
+      </div>
+
+      <button class="btn btn-secondary" onclick="backToDashboard()" style="width: 100%; margin-bottom: 24px;">← Back</button>
+    </div>
+
+    <!-- 隐藏的文件输入 -->
+    <input type="file" id="backup-file-input" accept=".json" style="display: none;">
+  </div>
+
+  <script src="./js/storage.js"></script>
+  <script src="./js/game.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>

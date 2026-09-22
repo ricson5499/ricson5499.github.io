@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "name": "Drink Water",
+    "category": "fuel",
+    "attribute": "fuel",
+    "difficulty": 1,
+    "duration": 5,
+    "xp": 10,
+    "attributeXp": 2
+  },
+  {
+    "id": 2,
+    "name": "15 Squats",
+    "category": "exercise",
+    "attribute": "body",
+    "difficulty": 2,
+    "duration": 10,
+    "xp": 20,
+    "attributeXp": 3
+  },
+  {
+    "id": 3,
+    "name": "Walk 20 min",
+    "category": "exercise",
+    "attribute": "body",
+    "difficulty": 2,
+    "duration": 20,
+    "xp": 25,
+    "attributeXp": 4
+  },
+  {
+    "id": 4,
+    "name": "Focus 15 min",
+    "category": "focus",
+    "attribute": "mind",
+    "difficulty": 2,
+    "duration": 15,
+    "xp": 20,
+    "attributeXp": 3
+  },
+  {
+    "id": 5,
+    "name": "Meditate 10 min",
+    "category": "mindfulness",
+    "attribute": "mind",
+    "difficulty": 2,
+    "duration": 10,
+    "xp": 18,
+    "attributeXp": 3
+  },
+  {
+    "id": 6,
+    "name": "Sleep 8 hours",
+    "category": "rest",
+    "attribute": "rest",
+    "difficulty": 1,
+    "duration": 480,
+    "xp": 30,
+    "attributeXp": 5
+  },
+  {
+    "id": 7,
+    "name": "Call a friend",
+    "category": "social",
+    "attribute": "connection",
+    "difficulty": 2,
+    "duration": 15,
+    "xp": 22,
+    "attributeXp": 4
+  },
+  {
+    "id": 8,
+    "name": "Read 20 pages",
+    "category": "learning",
+    "attribute": "mind",
+    "difficulty": 2,
+    "duration": 30,
+    "xp": 25,
+    "attributeXp": 4
+  },
+  {
+    "id": 9,
+    "name": "Stretch 10 min",
+    "category": "exercise",
+    "attribute": "body",
+    "difficulty": 1,
+    "duration": 10,
+    "xp": 15,
+    "attributeXp": 2
+  },
+  {
+    "id": 10,
+    "name": "Journal 10 min",
+    "category": "reflection",
+    "attribute": "purpose",
+    "difficulty": 2,
+    "duration": 10,
+    "xp": 20,
+    "attributeXp": 3
+  }
+]
