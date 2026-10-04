@@ -1,0 +1,510 @@
+:root {
+  --bg: #f5f6fa;
+  --surface: #ffffff;
+  --surface-soft: #f8f8fc;
+  --text: #171923;
+  --muted: #747887;
+  --border: #e6e7ee;
+  --accent: #6d4aff;
+  --accent-soft: #eeeaff;
+  --success: #21a366;
+  --success-soft: #e9f8f0;
+  --danger: #d94b5b;
+  --shadow: 0 10px 35px rgba(25, 25, 45, .08);
+  --radius: 18px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app-shell {
+  width: min(100%, 760px);
+  margin: 0 auto;
+  padding: 28px 18px 60px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.brand p {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.icon-button {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.icon-button:hover {
+  background: var(--surface-soft);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.hero {
+  padding: 22px;
+  margin-bottom: 16px;
+}
+
+.date-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.date-center {
+  text-align: center;
+  flex: 1;
+}
+
+.date-center .weekday {
+  display: block;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.date-center .date {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 3px;
+}
+
+.nav-button {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 11px;
+  background: var(--surface-soft);
+  color: var(--text);
+}
+
+.today-button {
+  margin: 14px auto 0;
+  display: block;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-top: 22px;
+}
+
+.progress-number {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.progress-label {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.progress-percent {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.progress-track {
+  height: 9px;
+  overflow: hidden;
+  margin-top: 10px;
+  border-radius: 99px;
+  background: var(--accent-soft);
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width .25s ease;
+}
+
+.section-title {
+  margin: 22px 2px 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+
+.training-list {
+  display: grid;
+  gap: 10px;
+}
+
+.training-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  text-align: left;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--text);
+  transition: transform .15s ease, border-color .15s ease, background .15s ease;
+}
+
+.training-card:hover {
+  transform: translateY(-1px);
+  border-color: #d5d0ff;
+}
+
+.training-card.completed {
+  border-color: #ccebdc;
+  background: var(--success-soft);
+}
+
+.check {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #cfd1dc;
+  border-radius: 50%;
+  color: transparent;
+  transition: all .2s ease;
+}
+
+.completed .check {
+  border-color: var(--success);
+  background: var(--success);
+  color: #fff;
+}
+
+.training-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.training-name {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.completed .training-name {
+  text-decoration: line-through;
+  opacity: .72;
+}
+
+.training-description {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.training-target {
+  flex: 0 0 auto;
+  padding: 6px 9px;
+  border-radius: 9px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.completed .training-target {
+  background: #d8f1e4;
+  color: #278153;
+}
+
+.empty-state {
+  padding: 40px 22px;
+  text-align: center;
+}
+
+.empty-state .empty-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 14px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.empty-state h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.empty-state p {
+  margin: 7px 0 18px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.primary-button,
+.secondary-button {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+.primary-button {
+  background: var(--accent);
+  color: #fff;
+}
+
+.primary-button:hover {
+  filter: brightness(.96);
+}
+
+.secondary-button {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.full-button {
+  width: 100%;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(15, 16, 25, .5);
+}
+
+.modal {
+  width: min(100%, 620px);
+  max-height: min(88vh, 780px);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-radius: 20px;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, .2);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.modal-header p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.modal-body {
+  overflow: auto;
+  padding: 16px 20px;
+}
+
+.search {
+  width: 100%;
+  height: 44px;
+  padding: 0 13px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  outline: none;
+  background: var(--surface-soft);
+  color: var(--text);
+}
+
+.search:focus {
+  border-color: #bdb5ff;
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.selection-list {
+  display: grid;
+  gap: 8px;
+}
+
+.selection-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+}
+
+.selection-item input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+
+.selection-info {
+  flex: 1;
+}
+
+.selection-name {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.selection-description {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.selection-target {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  padding: 15px 20px;
+  border-top: 1px solid var(--border);
+}
+
+.modal-footer > * {
+  flex: 1;
+}
+
+.toast {
+  position: fixed;
+  z-index: 50;
+  left: 50%;
+  bottom: 24px;
+  transform: translate(-50%, 15px);
+  opacity: 0;
+  pointer-events: none;
+  padding: 11px 15px;
+  border-radius: 12px;
+  background: #20212b;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.complete-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  padding: 12px 14px;
+  border-radius: 13px;
+  background: var(--success-soft);
+  color: #278153;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+@media (max-width: 560px) {
+  .app-shell {
+    padding: 18px 12px 45px;
+  }
+
+  .hero {
+    padding: 18px;
+  }
+
+  .training-card {
+    padding: 14px;
+  }
+
+  .training-target {
+    display: none;
+  }
+}
