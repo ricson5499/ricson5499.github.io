@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "name": "First Step",
+    "description": "Complete your first quest",
+    "condition": "firstQuestComplete",
+    "icon": "👣",
+    "reward": 50
+  },
+  {
+    "id": 2,
+    "name": "Consistency",
+    "description": "Complete 7 quests in a row",
+    "condition": "streak7",
+    "icon": "🔥",
+    "reward": 100
+  },
+  {
+    "id": 3,
+    "name": "Week Warrior",
+    "description": "Reach Day 7",
+    "condition": "day7",
+    "icon": "⚔️",
+    "reward": 150
+  },
+  {
+    "id": 4,
+    "name": "Level 5",
+    "description": "Reach character level 5",
+    "condition": "level5",
+    "icon": "⭐",
+    "reward": 100
+  },
+  {
+    "id": 5,
+    "name": "Balanced Growth",
+    "description": "All attributes reach 50",
+    "condition": "allAttributes50",
+    "icon": "⚖️",
+    "reward": 200
+  },
+  {
+    "id": 6,
+    "name": "Month Master",
+    "description": "Reach Day 30",
+    "condition": "day30",
+    "icon": "👑",
+    "reward": 300
+  },
+  {
+    "id": 7,
+    "name": "Journey Complete",
+    "description": "Reach Day 66",
+    "condition": "day66",
+    "icon": "🏆",
+    "reward": 500
+  },
+  {
+    "id": 8,
+    "name": "Perfect Day",
+    "description": "Complete all daily quests",
+    "condition": "perfectDay",
+    "icon": "✨",
+    "reward": 75
+  }
+]
