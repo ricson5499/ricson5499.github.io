@@ -349,7 +349,7 @@ li span {
   z-index: 2;
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%);
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   padding: 0;
   border: none;
   margin: 0;
