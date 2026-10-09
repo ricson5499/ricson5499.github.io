@@ -13,6 +13,8 @@ async function getJohorBahruAPI() {
         throw new Error('Larkin API data unavailable');
     }
 
+    const api = data.api;
+
     switch (true) {
         case api > 300:
           data.status = "Hazardous";
@@ -33,7 +35,7 @@ async function getJohorBahruAPI() {
     return {
         location:data.location,
         stationId:data.stationId,
-        api: data.api,
+        api: api,
         updatedAt: data.updatedAt,
         status: data.status
     };
