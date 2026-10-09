@@ -58,5 +58,13 @@ function renderPSI(data) {
     : "Update time unavailable";
 }
 
-const data = await getJohorBahruAPI();
-renderPSI(data);
+async function showPSI() {
+  try {
+    const data = await getJohorBahruAPI();
+    renderPSI(data);
+  } catch (error) {
+    console.error("Failed to load PSI:", error);
+  }
+}
+
+showPSI();
