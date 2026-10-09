@@ -13,11 +13,29 @@ async function getJohorBahruAPI() {
         throw new Error('Larkin API data unavailable');
     }
 
+    switch (true) {
+        case api > 300:
+          data.status = "Hazardous";
+          break;
+        case api >= 201:
+          data.status = "Very Unhealthy";
+          break;
+        case api >= 101:
+          data.status = "Unhealthy";
+          break;
+        case api >= 51:
+          data.status = "Moderate";
+          break;
+        default:
+          data.status = "Good";
+    }
+
     return {
         location:data.location,
         stationId:data.stationId,
         api: data.api,
-        updatedAt: data.updatedAt
+        updatedAt: data.updatedAt,
+        status: data.status
     };
 }
 
