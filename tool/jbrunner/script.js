@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.nav-link');
     const pages = document.querySelectorAll('.page');
     const thumbnails = document.querySelectorAll('.thumbnail');
-    const strPSINum = document.querySelector('.navbar .psi .num');
 
     function showPage(pageName) {
         pages.forEach(page => page.classList.remove('active'));
@@ -23,31 +22,36 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const data = await getJohorBahruAPI();
 
-            if (!data || data.api == null) {
+            if (!data) {
                 throw new Error("PSI data unavailable");
             }
 
-            const num = data.api;
+            const location = data.location || "";
+            const date = data.updatedAt || "";
+            const num = data.api || "";
 
-            console.log(num);
-            strPSINum.innerHTML = num;
+            const strStatus = `${location} - ${num} - ${date}`;
 
-            strPSINum.classList.remove("red", "yellow", "green");
+            const strPSIStatus = document.querySelector('.navbar .psi .status');
+
+            strPSIStatus.innerHTML = strStatus;
+            strPSIStatus.classList.remove("red", "yellow", "green");
 
             switch (true) {
                 case num > 200:
-                    strPSINum.classList.add("red");
+                    strPSIStatus.classList.add("red");
                     break;
                 case num > 100:
-                    strPSINum.classList.add("yellow");
+                    strPSIStatus.classList.add("yellow");
                     break;
                 default:
-                    strPSINum.classList.add("green");
+                    strPSIStatus.classList.add("green");
             }
+            
         } catch (error) {
             console.error("Unable to show PSI:", error);
-            strPSINum.innerHTML = "--";
-            strPSINum.classList.remove("red", "yellow", "green");
+            strPSIStatus.innerHTML = "--";
+            strPSIStatus.classList.remove("red", "yellow", "green");
         }
     }
     showPSI();
