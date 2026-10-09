@@ -293,6 +293,7 @@ body {
   align-items: center;
   position: relative;
   z-index: 1;
+  padding-top:30px;
 }
 
 h1, h3, li {
@@ -495,4 +496,10 @@ li span {
   background: rgba(102, 126, 234, 0.25);
   color: #667eea;
   transform: rotate(90deg);
+}
+
+@media screen and (min-width:768px) {
+  .main {
+    padding-top:0;
+  }
 }
