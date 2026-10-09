@@ -20,3 +20,43 @@ async function getJohorBahruAPI() {
         updatedAt: data.updatedAt
     };
 }
+
+function renderPSI(data) {
+  const value = document.getElementById("psi-value");
+  const status = document.getElementById("psi-status");
+  const updated = document.getElementById("psi-updated");
+
+  value.textContent = data.api ?? "--";
+  status.className = "psi-badge";
+
+  const levels = {
+    "Good": ["GOOD", "psi-good"],
+    "Moderate": ["MODERATE", "psi-moderate"],
+    "Unhealthy": ["UNHEALTHY", "psi-unhealthy"],
+    "Very Unhealthy": ["VERY UNHEALTHY", "psi-very-unhealthy"],
+    "Hazardous": ["HAZARDOUS", "psi-hazardous"]
+  };
+
+  const level = levels[data.status];
+
+  status.textContent = level?.[0] ?? data.status ?? "UNKNOWN";
+
+  if (level) {
+    status.classList.add(level[1]);
+  }
+
+  updated.textContent = data.updatedAt
+    ? "Updated " + new Date(data.updatedAt).toLocaleString(
+        "en-MY",
+        {
+          timeZone: "Asia/Kuala_Lumpur",
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true
+        }
+      ) + " · Malaysia time"
+    : "Update time unavailable";
+}
+
+const data = await getJohorBahruAPI();
+renderPSI(data);

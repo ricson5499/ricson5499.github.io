@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JB Runner - 跑步指南</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="psi.css">
 </head>
 <body>
     <nav class="navbar">
-        <h1>JB Runner</h1>
-        <div class="psi">JB psi:<span class="status"></span></div>
+        <h1>JB Runner</h1>        
         <ul class="nav-menu">
             <li><a href="#" data-page="home" class="nav-link active">首頁</a></li>
             <li><a href="#" data-page="locations" class="nav-link">跑步地點</a></li>
@@ -17,6 +17,26 @@
             <li><a href="#" data-page="tips" class="nav-link">熱身與技巧</a></li>
         </ul>
     </nav>
+
+    <div class="psi-card">
+        <div class="psi-header">
+            <span class="psi-location">
+            <span class="psi-pin">●</span>
+            JOHOR BAHRU · LARKIN
+            </span>
+            <span id="psi-status" class="psi-badge">LOADING</span>
+        </div>
+
+        <div class="psi-content">
+            <strong id="psi-value" class="psi-value">--</strong>
+            <div class="psi-details">
+            <div class="psi-title">Air Pollution Index (API)</div>
+            <div id="psi-updated" class="psi-updated">
+                Waiting for data...
+            </div>
+            </div>
+        </div>
+    </div>
 
     <main class="container">
         <!-- Home Page -->
@@ -169,7 +189,7 @@
         </section>
     </main>
 
-    <script src="psi.js"></script>
     <script src="script.js"></script>
+    <script src="psi.js"></script>
 </body>
 </html>

@@ -18,44 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function showPSI(){
-        try {
-            const data = await getJohorBahruAPI();
-
-            if (!data) {
-                throw new Error("PSI data unavailable");
-            }
-
-            const location = data.location || "";
-            const date = data.updatedAt || "";
-            const num = data.api || "";
-
-            const strStatus = `${location} - ${num} - ${date}`;
-
-            const strPSIStatus = document.querySelector('.navbar .psi .status');
-
-            strPSIStatus.innerHTML = strStatus;
-            strPSIStatus.classList.remove("red", "yellow", "green");
-
-            switch (true) {
-                case num > 200:
-                    strPSIStatus.classList.add("red");
-                    break;
-                case num > 100:
-                    strPSIStatus.classList.add("yellow");
-                    break;
-                default:
-                    strPSIStatus.classList.add("green");
-            }
-            
-        } catch (error) {
-            console.error("Unable to show PSI:", error);
-            strPSIStatus.innerHTML = "--";
-            strPSIStatus.classList.remove("red", "yellow", "green");
-        }
-    }
-    showPSI();
-
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();

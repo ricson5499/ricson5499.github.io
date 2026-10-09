@@ -23,10 +23,6 @@ body {
     z-index: 100;
 }
 
-.navbar .red{color:red;}
-.navbar .yellow{color:yellow;}
-.navbar .green{color:lightgreen;}
-
 .navbar h1 {
     font-size: 1.5rem;
 }

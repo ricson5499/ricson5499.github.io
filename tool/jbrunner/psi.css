@@ -1,0 +1,102 @@
+.psi-card {
+  max-width: 420px;
+  padding: 8px;
+  margin:6px;
+  border: 1px solid #e7e5e4;
+  border-radius: 14px;
+  background: #fff;
+  font-family: Arial, sans-serif;
+  color: #292524;
+}
+
+.psi-header,
+.psi-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.psi-location {
+  color: #78716c;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .5px;
+}
+
+.psi-pin {
+  color: #a16207;
+  font-size: 10px;
+  margin-right: 5px;
+}
+
+.psi-badge {
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.psi-content {
+  justify-content: flex-start;
+  margin-top: 5px;
+}
+
+.psi-value {
+  font-size: 42px;
+  line-height: 1;
+  color: #a16207;
+  font-weight: 700;
+}
+
+.psi-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.psi-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.psi-updated {
+  font-size: 11px;
+  color: #78716c;
+}
+
+.psi-good {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.psi-moderate {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.psi-unhealthy {
+  background: #ffedd5;
+  color: #9a3412;
+}
+
+.psi-very-unhealthy {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.psi-hazardous {
+  background: #f3e8ff;
+  color: #6b21a8;
+}
+
+@media screen and (min-width:992px) {
+  .psi-card {
+    padding:18px;
+  }
+  .psi-content {
+    margin-top: 20px;
+  }
+}
