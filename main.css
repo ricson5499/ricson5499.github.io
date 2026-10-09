@@ -367,7 +367,7 @@ li span {
 
 .menu-container[open] {
   display:flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 .menu-container[open]::backdrop {
   animation: fadeIn 0.4s ease;
@@ -396,11 +396,15 @@ li span {
 .menu-container .tools,
 .menu-container .games,
 .menu-container .others {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   padding: 40px 32px;
   flex: 1;
 }
 
 .menu-container .subtitle {
+  width: 100%;
   font-size: 28px;
   font-weight: 700;
   color: #667eea;
