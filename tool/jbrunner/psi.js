@@ -64,16 +64,19 @@ function renderPSI(data) {
   }
 
   updated.textContent = data.updatedAt
-    ? "Updated " + new Date(data.updatedAt).toLocaleString(
-        "en-MY",
-        {
-          timeZone: "Asia/Kuala_Lumpur",
-          hour: "numeric",
-          minute: "2-digit",
-          hour12: true
-        }
-      ) + " · Malaysia time"
-    : "Update time unavailable";
+  ? "Updated " + new Date(data.updatedAt).toLocaleString(
+      "en-MY",
+      {
+        timeZone: "Asia/Kuala_Lumpur",
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+      }
+    ) + " · Malaysia time"
+  : "Update time unavailable";
 }
 
 async function showPSI() {
