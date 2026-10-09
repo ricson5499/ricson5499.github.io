@@ -1,0 +1,74 @@
+{
+  "trainingItems": [
+    {
+      "id": "easy-run",
+      "name": "Easy Run",
+      "description": "Comfortable pace. Keep the effort relaxed.",
+      "target": 5,
+      "unit": "km"
+    },
+    {
+      "id": "walking",
+      "name": "Walking",
+      "description": "Easy walking for recovery or general activity.",
+      "target": 30,
+      "unit": "min"
+    },
+    {
+      "id": "intervals",
+      "name": "Intervals",
+      "description": "Short faster efforts with recovery between sets.",
+      "target": 5,
+      "unit": "sets"
+    },
+    {
+      "id": "strength",
+      "name": "Strength Training",
+      "description": "Basic full-body strength session.",
+      "target": 20,
+      "unit": "min"
+    },
+    {
+      "id": "pushups",
+      "name": "Push Ups",
+      "description": "Standard push ups.",
+      "target": 20,
+      "unit": "reps"
+    },
+    {
+      "id": "squats",
+      "name": "Squats",
+      "description": "Bodyweight squats.",
+      "target": 30,
+      "unit": "reps"
+    },
+    {
+      "id": "plank",
+      "name": "Plank",
+      "description": "Core stability exercise.",
+      "target": 60,
+      "unit": "sec"
+    },
+    {
+      "id": "stretching",
+      "name": "Stretching",
+      "description": "Gentle full-body stretching.",
+      "target": 10,
+      "unit": "min"
+    },
+    {
+      "id": "cycling",
+      "name": "Cycling",
+      "description": "Easy to moderate cycling.",
+      "target": 30,
+      "unit": "min"
+    },
+    {
+      "id": "swimming",
+      "name": "Swimming",
+      "description": "Relaxed swimming session.",
+      "target": 30,
+      "unit": "min"
+    }
+  ]
+}
