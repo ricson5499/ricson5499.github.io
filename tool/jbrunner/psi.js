@@ -9,7 +9,7 @@ async function getJohorBahruAPI() {
 
     const data = await response.json();
 
-    if (!data || data.API == null) {
+    if (!data || data.api == null) {
         throw new Error('Larkin API data unavailable');
     }
 
