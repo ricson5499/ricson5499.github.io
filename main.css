@@ -462,7 +462,7 @@ li span {
 .menu-container a:hover {
   background: rgba(102, 126, 234, 0.15);
   color: #667eea;
-  padding-left: 24px;
+  /* padding-left: 24px; */
 }
 
 .menu-container a:hover::before {
