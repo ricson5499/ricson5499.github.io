@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>Autonomous Rescue Drone System 自動化救災無人機系統</title>
+  <link rel="stylesheet" href="../style/journal.css">
+  <style>
+    table {
+      width: 100%;
+      max-width: 1100px;
+      border-collapse: collapse;
+      background: #fff;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      color: #111;
+    }
+    th, td {
+      padding: 14px 16px;
+      border: 1px solid #e5e7eb;
+      vertical-align: top;
+    }
+    th {
+      background: #0f172a;
+      color: #fff;
+      text-align: left;
+      font-size: 15px;
+    }
+    th:nth-child(2) { background: #334155; }
+    th:nth-child(3) { background: #1e40af; }
+    td { font-size: 14px; line-height: 1.5; }
+    tr:nth-child(even) td { background: #f8fafc; }
+    .highlight { font-weight: 600; color: #1e40af; }
+    .status {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      color: #334155;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .note {
+      padding: 12px 16px;
+      border-left: 4px solid #1e40af;
+      background: #1b447a;
+      margin: 16px 0;
+    }
+    code {
+      background: #f1f5f9;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 8px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Metadata Block: consumed by ../script/entries.js -->
+  <div class="meta-block">
+    <meta name="title" content="Autonomous Rescue Drone System 自動化救災無人機系統">
+    <meta name="date" content="2026-10-09">
+    <meta name="type" content="原型研究">
+    <meta name="abstract" content="以電池動力無人機建立可自主規劃任務、往返補給、管理電池與載荷的救災輔助系統。採用模組化任務架構，先以模擬器驗證，再逐步進入受監督的硬體測試。">
+  </div>
+
+  <!-- Auto-generated title and metadata -->
+  <h1></h1>
+  <div class="meta"></div>
+
+  <h2>專案概念</h2>
+  <p id="auto-abstract">
+    設計一套以電池動力為主、能持續執行多輪任務的自主無人機系統。首個使用情境是消防隊到達前的初期火點支援：在安全及法規允許的條件下，協助偵察、定位、運送少量水或適用載荷，並自動返回補給站。
+  </p>
+  <div class="note">
+    <strong>核心目標：</strong>自動化整個任務循環，而不只是讓無人機自動飛行。系統應能接收任務要求、評估可行性、選擇載荷與路線、執行任務、確認結果、返航、補給、自主更換電池、檢查狀態，並在條件允許時開始下一項任務。
+  </div>
+
+  <hr>
+
+  <h2>設計原則</h2>
+  <ul>
+    <li><strong>任務導向：</strong>依照任務目標、距離、載荷、時限、環境與風險決定執行方式，而不是固定只執行一種任務。</li>
+    <li><strong>全流程自動化：</strong>涵蓋任務規劃、派遣、飛行、載荷操作、返航、補水、換電、健康檢查及任務紀錄。</li>
+    <li><strong>模組化：</strong>任務規劃、飛控、感測器、載荷、補給站及能源管理使用清楚的介面分離。</li>
+    <li><strong>安全優先：</strong>自動化不代表無限制自主。遇到低電量、失聯、定位異常、天候不適合或任務風險超標時，系統必須中止、返航或進入安全狀態。</li>
+    <li><strong>逐步驗證：</strong>先建立軟體模擬，再進行飛控模擬、地面補給測試、無載荷飛行與受監督的載荷測試。</li>
+    <li><strong>不預設任務上限：</strong>架構允許未來加入偵察、巡檢、測繪、物資運送等任務，但每種任務都必須先定義載荷、能力、法規與安全驗證條件。</li>
+  </ul>
+
+  <hr>
+
+  <h2>第一個任務情境：初期火點支援</h2>
+  <ol>
+    <li>接收火點位置、任務優先級、可用時間與作業限制。</li>
+    <li>取得或確認火點資訊，評估航線、天候、禁飛區、電池餘量及補給站狀態。</li>
+    <li>選擇合適的無人機、載荷與任務策略；若條件不符合安全門檻，拒絕派遣並回報原因。</li>
+    <li>自動執行已批准的航點任務，在允許條件下完成偵察或載荷投放。</li>
+    <li>確認任務結果並記錄影像、位置、耗電、載荷狀態與異常事件。</li>
+    <li>返回補給站，降落、補水或更換任務載荷、自主更換電池，並執行機體健康檢查。</li>
+    <li>系統重新計算可執行任務；通過所有檢查後才進入下一輪。</li>
+  </ol>
+  <p>無人機所攜帶的水量有限，實際效果會受火勢、燃料、風況及投放精度影響。本專案定位為消防隊到場前的輔助系統，不宣稱小型無人機可以取代消防車或處理大型森林火災。</p>
+
+  <hr>
+
+  <h2>系統架構</h2>
+  <table>
+    <tr><th>模組</th><th>主要責任</th><th>初步方向</th></tr>
+    <tr><td><strong>任務管理器</strong></td><td>接收任務要求、建立任務狀態、追蹤進度、管理優先級與逾時。</td><td>Node.js / TypeScript；狀態機與事件紀錄。</td></tr>
+    <tr><td><strong>任務規劃器</strong></td><td>依照距離、載荷、剩餘電量、環境與任務限制判斷可行性，安排航線與資源。</td><td>先使用規則與成本模型；避免初期依賴不可解釋的 AI 決策。</td></tr>
+    <tr><td><strong>飛控適配器</strong></td><td>將任務轉成飛控可執行的命令，讀取位置、速度、電池與飛行狀態。</td><td>評估 PX4 與 MAVLink；飛控獨立負責即時穩定與基本失效保護。</td></tr>
+    <tr><td><strong>能源管理</strong></td><td>估算任務能耗、判斷是否出動、安排返航及電池輪替。</td><td>依實測資料建立保守的電量與返航門檻。</td></tr>
+    <tr><td><strong>載荷控制器</strong></td><td>控制水泵、閥門、液位感測器及可替換任務載荷。</td><td>獨立控制介面；投放需有明確的任務授權與安全條件。</td></tr>
+    <tr><td><strong>自動補給站</strong></td><td>識別無人機、引導降落、固定機體、補水、換電、確認接頭及檢查結果。</td><td>先做地面測試台；換電機構必須具備防夾、防短路、電池識別與鎖定確認。</td></tr>
+    <tr><td><strong>感測與環境評估</strong></td><td>取得定位、影像、熱成像、風況、障礙物及區域限制資訊。</td><td>感測能力按任務逐步增加；單一感測器不得被視為絕對可靠。</td></tr>
+    <tr><td><strong>監控儀表板</strong></td><td>顯示地圖、任務狀態、電池、載荷、補給站、警報及歷史紀錄。</td><td>Web UI；人工可監督、取消任務或接管。</td></tr>
+    <tr><td><strong>模擬器與測試工具</strong></td><td>模擬飛行、耗電、載荷、補給、故障與多機排程。</td><td>先以可重複的模擬測試驗證任務流程。</td></tr>
+  </table>
+
+  <hr>
+
+  <h2>全自動任務循環</h2>
+  <pre>
+TASK_RECEIVED
+  -> VALIDATE_REQUIREMENTS
+  -> PLAN_TASK
+  -> CHECK_WEATHER_AND_AIRSPACE
+  -> CHECK_DRONE_AND_STATION
+  -> DISPATCH
+  -> EXECUTE_MISSION
+  -> VERIFY_RESULT
+  -> RETURN_TO_STATION
+  -> LAND_AND_SECURE
+  -> REFILL_OR_SWAP_PAYLOAD
+  -> AUTONOMOUS_BATTERY_SWAP
+  -> POST_SERVICE_HEALTH_CHECK
+  -> UPDATE_RESOURCES
+  -> READY_FOR_NEXT_TASK
+
+任何階段出現安全條件不滿足：
+  -> ABORT_OR_SAFE_MODE
+  -> REPORT_REASON
+  -> WAIT_FOR_RECOVERY_OR_HUMAN_REVIEW
+  </pre>
+  <p>狀態切換必須由明確事件及可驗證條件觸發。補水完成、電池更換成功、機體鎖定、感測器正常等狀態都不能只靠延遲時間推定，必須由感測器或控制器確認。</p>
+
+  <hr>
+
+  <h2>自主換電與補給站</h2>
+  <h3>預期流程</h3>
+  <ol>
+    <li>無人機降落並確認已停止旋翼，補給站確認機體位置及固定狀態。</li>
+    <li>讀取電池識別碼、健康狀態、溫度及可用性；不接受不符合規格的電池。</li>
+    <li>使用機械機構安全移除舊電池，確認舊電池已完全脫離。</li>
+    <li>取出符合機型、電壓、容量及健康門檻的備用電池並完成插入、鎖定及電氣連接檢查。</li>
+    <li>執行電池通訊、電壓、溫度及飛控狀態檢查；任何驗證失敗都禁止起飛。</li>
+    <li>執行補水或載荷更換，確認液位、重量或載荷識別結果。</li>
+    <li>完成機體、旋翼、感測器、通訊及任務區域檢查後，回報可再次派遣。</li>
+  </ol>
+  <div class="note">
+    <strong>設計限制：</strong>自主換電是高風險機械與電氣整合工作。初期應使用人工換電或地面測試架驗證介面；在機械鎖定、電池辨識、斷電保護與異常復原未通過測試前，不應讓機構在無人監督下操作真實飛行電池。
+  </div>
+
+  <hr>
+
+  <h2>載重與續航：目前的假設</h2>
+  <table>
+    <tr><th>項目</th><th>初期研究目標</th><th>驗證方式</th></tr>
+    <tr><td>水載荷</td><td>以 2–5 L 作為概念原型的初始研究範圍，不視為已驗證的消防規格。</td><td>確認整機起飛重量、重心、結構與滿載耗電；先做地面載荷測試。</td></tr>
+    <tr><td>任務距離</td><td>先設定可調整的模擬參數，不在未選定機型前承諾固定距離。</td><td>記錄空載與滿載的去程、返程能耗及風況。</td></tr>
+    <tr><td>續航</td><td>不使用廠商標稱最長飛行時間直接推算任務能力。</td><td>在受控條件下量測任務循環耗電，加入返航及異常處置預留。</td></tr>
+    <tr><td>補給時間</td><td>分別量測降落、固定、換電、補水、檢查與再次起飛時間。</td><td>多輪重複測試，統計平均值及最差情境。</td></tr>
+    <tr><td>任務效率</td><td>以每小時成功完成的任務數、有效載荷量及安全中止率評估。</td><td>用任務日誌和模擬資料計算，避免只看飛行分鐘數。</td></tr>
+  </table>
+
+  <hr>
+
+  <h2>軟體實作方向</h2>
+  <ul>
+    <li><strong>Runtime：</strong>Node.js / TypeScript，負責任務管理、資源管理、事件處理與系統整合。</li>
+    <li><strong>Flight control：</strong>評估 PX4、MAVLink 及對應模擬器；即時飛行穩定與失效保護留在飛控層。</li>
+    <li><strong>Dashboard：</strong>使用 Web 前端顯示地圖、機隊狀態、任務佇列、補給站及告警。</li>
+    <li><strong>Storage：</strong>保存任務、遙測摘要、電池循環、載荷、維護、錯誤及復原紀錄。</li>
+    <li><strong>Communication：</strong>定義命令、回報、逾時、重試、去重及斷線後狀態同步規則。</li>
+    <li><strong>Simulation：</strong>先建立可注入故障的虛擬無人機與補給站，不依賴真實硬體即可測試流程。</li>
+  </ul>
+
+  <h3>建議的核心資料模型</h3>
+  <pre>
+Mission
+  id
+  type
+  priority
+  objective
+  location
+  payloadRequirements
+  constraints
+  deadline
+  status
+  assignedDroneId
+  result
+  createdAt
+  completedAt
+
+Drone
+  id
+  capabilities
+  batteryState
+  payloadState
+  position
+  healthState
+  availability
+  currentMissionId
+
+Station
+  id
+  location
+  waterAvailable
+  batteryInventory
+  chargingSlots
+  dockingState
+  healthState
+
+MissionEvent
+  id
+  missionId
+  timestamp
+  eventType
+  source
+  details
+  severity
+  </pre>
+
+  <hr>
+
+  <h2>不限制任務：能力與任務插件</h2>
+  <p>系統不應把「消防」寫死在核心流程。核心負責資源、安全、任務狀態與排程；每一種任務透過插件定義自己的需求與執行步驟。</p>
+  <table>
+    <tr><th>任務插件</th><th>可能用途</th><th>需額外驗證的能力</th></tr>
+    <tr><td>Fire Support</td><td>火點偵察、初期火點輔助處置</td><td>熱成像、火場風險、載荷控制、消防單位協調</td></tr>
+    <tr><td>Reconnaissance</td><td>災區影像、狀況回報、路線偵察</td><td>影像品質、定位準確度、通訊與隱私</td></tr>
+    <tr><td>Inspection</td><td>設施、屋頂、管線或環境巡檢</td><td>感測器、飛行路線、障礙物與作業許可</td></tr>
+    <tr><td>Mapping</td><td>地形或災區資料蒐集</td><td>測繪精度、相機校準、資料處理</td></tr>
+    <tr><td>Supply Delivery</td><td>運送已核准的輕型物資</td><td>重量、固定、投送方式及地面人員安全</td></tr>
+  </table>
+  <p>「不限制任務」代表架構可擴充，不代表任何任務都能自動執行。每個插件必須聲明所需硬體、允許環境、載荷限制、風險等級、成功條件及中止規則；未通過能力與安全驗證的任務不得派遣。</p>
+
+  <hr>
+
+  <h2>風險與控制方式</h2>
+  <table>
+    <tr><th>風險</th><th>可能影響</th><th>控制方式</th></tr>
+    <tr><td>電量估算錯誤</td><td>無法返航或被迫緊急降落</td><td>以實測建立保守模型，保留返航與異常處置電量；飛控獨立監控低電量。</td></tr>
+    <tr><td>換電失敗</td><td>電源中斷、短路或電池脫落</td><td>機械互鎖、電池識別、鎖定回饋、電氣檢查與禁止起飛條件。</td></tr>
+    <tr><td>補水故障或洩漏</td><td>載荷不足、電子設備進水或重心改變</td><td>液位與重量交叉檢查、防水隔離、洩漏檢測與補給失敗復原。</td></tr>
+    <tr><td>通訊中斷</td><td>任務狀態失去同步</td><td>飛控獨立失效保護、命令逾時、事件日誌及重新連線同步。</td></tr>
+    <tr><td>定位或感測器失效</td><td>偏離航線或誤判火點</td><td>健康檢查、多來源交叉驗證、限制操作區域及安全中止。</td></tr>
+    <tr><td>多機資源衝突</td><td>航線衝突或補給站排隊</td><td>任務鎖定、資源預約、空域隔離與排程器檢查。</td></tr>
+    <tr><td>環境不適合</td><td>強風、熱流、煙霧或能見度影響飛行</td><td>定義可接受環境門檻；超出門檻就拒絕出動或中止。</td></tr>
+    <tr><td>錯誤任務要求</td><td>派遣不合能力或不安全的任務</td><td>任務能力驗證、權限控制、任務範圍限制與審核流程。</td></tr>
+  </table>
+
+  <hr>
+
+  <h2>開發階段</h2>
+  <h3>Phase 1 — Mission Simulator</h3>
+  <ul>
+    <li>建立任務、無人機、電池、載荷及補給站資料模型。</li>
+    <li>實作任務狀態機、派遣條件、返航判斷與故障事件。</li>
+    <li>模擬補水、換電、充電排隊及多任務排程。</li>
+    <li>建立 Web Dashboard 與可重播的任務日誌。</li>
+  </ul>
+
+  <h3>Phase 2 — Flight Simulation</h3>
+  <ul>
+    <li>整合 PX4 SITL 或適合的飛控模擬環境。</li>
+    <li>測試航點、返航、低電量、失聯與任務中止。</li>
+    <li>模擬錯誤感測值、站點不可用、換電失敗及通訊恢復。</li>
+  </ul>
+
+  <h3>Phase 3 — Ground Station Prototype</h3>
+  <ul>
+    <li>建立無人機停靠、固定、電池辨識及補水的地面測試架。</li>
+    <li>先在不連接飛行器的條件下驗證換電機構與安全互鎖。</li>
+    <li>測試感測器回饋與控制器失效時的安全狀態。</li>
+  </ul>
+
+  <h3>Phase 4 — Supervised Flight Tests</h3>
+  <ul>
+    <li>在合法且受控的場地進行無載荷飛行與返航測試。</li>
+    <li>逐步加入經核准的測試載荷，量測重量、重心及能耗。</li>
+    <li>在專業監督下測試自動對接、補給與任務復原。</li>
+  </ul>
+
+  <h3>Phase 5 — Multi-Mission Operations</h3>
+  <ul>
+    <li>驗證多種任務插件與能力宣告機制。</li>
+    <li>加入多機派遣、補給站排程及任務優先級管理。</li>
+    <li>根據真實測試資料調整任務模型，形成可審核的運行程序。</li>
+  </ul>
+
+  <hr>
+
+  <h2>第一版完成條件</h2>
+  <ul>
+    <li>可以建立、驗證、派遣、取消及完成一項模擬任務。</li>
+    <li>任務不可行時，能回報具體原因而不是盲目出動。</li>
+    <li>模擬器能處理低電量、失聯、補水失敗、換電失敗及站點不可用。</li>
+    <li>只有在補給及健康檢查成功後，無人機才會進入 READY 狀態。</li>
+    <li>所有狀態變化、命令、異常與復原步驟都有時間戳記錄。</li>
+    <li>飛控失效保護不依賴 Web Dashboard 或雲端服務正常運作。</li>
+    <li>任務插件可新增，而無須重寫核心任務循環。</li>
+  </ul>
+
+  <hr>
+
+  <h2>尚待研究的問題</h2>
+  <ul>
+    <li>機型、最大起飛重量、有效載荷與滿載耗電量。</li>
+    <li>電池規格、電池更換機構、充電策略及電池健康管理。</li>
+    <li>補水接口、過濾、防漏、液位量測及水箱防晃設計。</li>
+    <li>實際任務距離、風況限制、返航餘量與每小時任務吞吐量。</li>
+    <li>感測器、避障、熱成像與火點確認策略。</li>
+    <li>馬來西亞適用的無人機操作許可、空域限制、消防協作及測試要求。</li>
+    <li>任務插件的安全分類、授權機制與可追溯性。</li>
+  </ul>
+
+  <hr>
+
+  <h2>結論</h2>
+  <p>本專案的核心不是單一消防無人機，而是一套可以自動管理任務、飛行、能源、載荷、補給與復原流程的模組化自主系統。消防輔助是第一個驗證場景；長期方向是讓系統依照每項任務的要求，自行判斷能力、安排資源、執行工作並確認結果。</p>
+  <p><strong>第一個可交付成果：</strong>先建立 Node.js 任務模擬器與補給站狀態機，讓「任務完成 → 返航 → 自主換電與補給 → 健康檢查 → 再次派遣」在模擬環境中完整運作，再逐步連接真實飛控和硬體。</p>
+
+  <script src="../script/entries.js"></script>
+</body>
+</html>
